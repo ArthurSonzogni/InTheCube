@@ -1,5 +1,5 @@
 
-OpenGL CMake Skeleton ![Travis](https://travis-ci.org/ArthurSonzogni/OpenGL_CMake_Skeleton.svg?branch=master)
+OpenGL CMake Skeleton [![Build Status](https://travis-ci.org/ArthurSonzogni/OpenGL_CMake_Skeleton.svg?branch=master)](https://travis-ci.org/ArthurSonzogni/OpenGL_CMake_Skeleton)
 =======================
 
 A ready to use C++11 CMake skeleton using **GLFW**, **Glew** and **glm**. (use git submodules)
