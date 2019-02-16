@@ -56,14 +56,15 @@ MyApplication::MyApplication()
   std::vector<VertexType> vertices;
   std::vector<GLuint> index;
 
-  for (int y = 0; y <= size; ++y)
+  for (int y = 0; y <= size; ++y) {
     for (int x = 0; x <= size; ++x) {
       float xx = (x - size / 2) * 0.1f;
       float yy = (y - size / 2) * 0.1f;
       vertices.push_back(getHeightMap({xx, yy}));
     }
+  }
 
-  for (int y = 0; y < size; ++y)
+  for (int y = 0; y < size; ++y) {
     for (int x = 0; x < size; ++x) {
       index.push_back((x + 0) + (size + 1) * (y + 0));
       index.push_back((x + 1) + (size + 1) * (y + 0));
@@ -73,6 +74,7 @@ MyApplication::MyApplication()
       index.push_back((x + 0) + (size + 1) * (y + 1));
       index.push_back((x + 0) + (size + 1) * (y + 0));
     }
+  }
 
   std::cout << "vertices=" << vertices.size() << std::endl;
   std::cout << "index=" << index.size() << std::endl;
