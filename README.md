@@ -4,7 +4,7 @@ OpenGL CMake Skeleton [![Build Status](https://travis-ci.org/ArthurSonzogni/Open
 
 A ready to use C++11 CMake skeleton using **GLFW**, **Glew** and **glm**. (use git submodules)
 
-Shader class and example Application ar included.
+Shader class and example Application are included.
 
 ![output result](output.gif)
 
