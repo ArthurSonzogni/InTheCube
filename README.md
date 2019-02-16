@@ -2,16 +2,20 @@
 OpenGL CMake Skeleton WebAssembly[![Build Status](https://travis-ci.org/ArthurSonzogni/OpenGL_CMake_Skeleton_WebAssembly.svg?branch=master)](https://travis-ci.org/ArthurSonzogni/OpenGL_CMake_Skeleton_WebAssembly)
 =======================
 
-A ready to use C++11 CMake skeleton using **GLFW**, **Glew** and **glm**. (use git submodules)
-
-It can compile for the Web with WebAssembly thanks to emscripten, as well as on
-Linux, Windows and Mac.
-
+A ready to use C++11 CMake OpenGL skeleton using **GLFW**, **Glew** and **glm**. (use git submodules)
 Shader class and example Application are included.
+
+It compiles on:
+ * **WebAssembly**
+ * Linux
+ * Windows
+ * Mac
 
 ![output result](output.gif)
 
 I am open to any comments and contributions.
+
+This is based on the [non-WebAssembly version](https://github.com/ArthurSonzogni/OpenGL_CMake_Skeleton)
 
 git submodules :
 ================
@@ -22,8 +26,10 @@ To clone this repository you must add the --recursive option.
 git clone --recursive git@github.com:ArthurSonzogni/OpenGL_CMake_Skeleton_WebAssembly.git
 ```
 Alternatively, if you don't used the --recursive option, you can type:
-* git submodule init
-* git submodule update
+```bash
+git submodule init
+git submodule update
+```
 
 Requirement:
 ============
