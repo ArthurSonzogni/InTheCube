@@ -1,0 +1,22 @@
+v 0 0 1056 480
+b 0 0 128 96
+b 0 96 32 384
+b 0 256 352 224
+h 128 0
+b 160 0 128 96
+b 256 0 800 32
+b 352 192 288 288
+b 640 128 224 352
+b 960 32 96 448
+b 896 128 64 352
+b 608 128 32 32
+arrowLauncher 352 224 180
+arrowLauncher 608 160 180
+arrowLauncher 960 64 180
+arrowLauncher 960 96 180
+arrowLauncherDetector 192 96 32 160 1 0
+arrowLauncherDetector 384 160 192 32 2 1
+arrowLauncherDetector 676 96 224 32 2 3
+arrowLauncherDetector 676 64 224 32 2 2
+d1 128 0 9
+e 864 480 32 32

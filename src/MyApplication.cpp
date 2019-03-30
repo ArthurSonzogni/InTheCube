@@ -14,7 +14,7 @@
 #include <iostream>
 #include <vector>
 
-#include "glError.hpp"
+#include "GlError.hpp"
 
 #define SHADER_DIR "../shader/"
 
@@ -28,7 +28,7 @@ float heightMap(const glm::vec2 position) {
   return 2.0 * sin(position.x) * sin(position.y);
 }
 
-VertexType getHeightMap(const glm::vec2 position) {
+VertexType GetHeightMap(const glm::vec2 position) {
   const glm::vec2 dx(1.0, 0.0);
   const glm::vec2 dy(0.0, 1.0);
 
@@ -60,7 +60,7 @@ MyApplication::MyApplication()
     for (int x = 0; x <= size; ++x) {
       float xx = (x - size / 2) * 0.1f;
       float yy = (y - size / 2) * 0.1f;
-      vertices.push_back(getHeightMap({xx, yy}));
+      vertices.push_back(GetHeightMap({xx, yy}));
     }
   }
 
@@ -119,13 +119,13 @@ MyApplication::MyApplication()
 
 void MyApplication::loop() {
   // exit on window close button pressed
-  if (glfwWindowShouldClose(getWindow()))
-    exit();
+  //if (glfwWindowShouldClose(GetWindow()))
+    //exit();
 
-  float t = getTime();
+  float t = GetTime();
   // set matrix : projection + view
-  projection = glm::perspective(float(2.0 * atan(getHeight() / 1920.f)),
-                                getWindowRatio(), 0.1f, 100.f);
+  projection = glm::perspective(float(2.0 * atan(Height() / 1920.f)),
+                                GetWindowRatio(), 0.1f, 100.f);
   view = glm::lookAt(glm::vec3(20.0 * sin(t), 20.0 * cos(t), 20.0),
                      glm::vec3(0.0, 0.0, 0.0), glm::vec3(0.0, 0.0, 1.0));
 

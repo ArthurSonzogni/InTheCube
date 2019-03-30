@@ -9,10 +9,11 @@
 #ifndef OPENGL_CMAKE_SKELETON_MYAPPLICATION
 #define OPENGL_CMAKE_SKELETON_MYAPPLICATION
 
-#include "Application.hpp"
+#include "Screen.hpp"
 #include "Shader.hpp"
+#include "Level.hpp"
 
-class MyApplication : public Application {
+class MyApplication : public Screen {
  public:
   MyApplication();
 
@@ -20,7 +21,7 @@ class MyApplication : public Application {
   virtual void loop();
 
  private:
-  float time = 0.f;
+  //float time = 0.f;
   const int size = 100;
 
   // shader
@@ -34,6 +35,8 @@ class MyApplication : public Application {
 
   // VBO/VAO/ibo
   GLuint vao, vbo, ibo;
+
+  Level level;
 };
 
 #endif  // OPENGL_CMAKE_SKELETON_MYAPPLICATION

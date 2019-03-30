@@ -7,3 +7,6 @@
 [submodule "lib/glm"]
 	path = lib/glm
 	url = https://github.com/g-truc/glm
+[submodule "lib/freetype2"]
+	path = lib/freetype2
+	url = https://github.com/aseprite/freetype2

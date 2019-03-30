@@ -1,195 +1,103 @@
 #include "TextureManager.hpp"
-#include <iostream>
 #include <cstdlib>
+#include <iostream>
+#include <vector>
 
-#include "stb_image.h"
-#include "glError.hpp"
+#include "GL_CHECK_ERROR.hpp"
+#include "StbImage.hpp"
 
-using namespace std;
+int next_power_of_2(int v) {
+  return v;
+  v--;
+  v |= v >> 1;
+  v |= v >> 2;
+  v |= v >> 4;
+  v |= v >> 8;
+  v |= v >> 16;
+  v++;
+  return v;
+}
 
-unsigned char * imageLoad(
-		const std::string &filename,
-		int& width,
-		int& height,
-		int &comp)
-{
-	cout<<"imageLoad[\""<<filename<<"\");"<<endl;
-	unsigned char *data;
+unsigned char* imageLoad(const std::string& filename,
+                         int& width,
+                         int& height,
+                         int& comp) {
+  std::cout << "imageLoad[\"" << filename << "\");" << std::endl;
+  unsigned char* data;
 
-	FILE *file = fopen(filename.c_str(), "rb");
-	if (!file) {
+  FILE* file = fopen(filename.c_str(), "rb");
+  if (!file) {
     std::cerr << "File not found" << std::endl;
-		return 0;
+    return 0;
   }
 
-	data = stbi_load_from_file(file, &width, &height, &comp, 0);
+  data = stbi_load_from_file(file, &width, &height, &comp, 0);
 
-  cout << "imageLoad[\"" << filename << "\"," << (void *)data << ","
-       << width << "," << height << "," << comp << "]" << endl;
+  std::cout << "imageLoad[\"" << filename << "\"," << (void*)data << ","
+            << width << "," << height << "," << comp << "]" << std::endl;
   fclose(file);
 
-	return data;
+  return data;
 }
 
-void imageFree(unsigned char * data)
-{
-	if (data) stbi_image_free(data);
+void imageFree(unsigned char* data) {
+  if (data)
+    stbi_image_free(data);
 }
 
-// load a 256x256 RGB .RAW file as a texture
-GLuint TextureManager::loadTexture(const std::string& filename)
-{
-	glCheckError(__FILE__, __LINE__);
+Texture TextureManager::LoadTexture(const std::string& filename) {
+  GL_CHECK_ERROR(__FILE__, __LINE__);
 
-	auto it(textures.find(filename));
-	if (it != textures.end())
-		return it->second.id;
+  auto it(textures.find(filename));
+  if (it != textures.end())
+    return it->second;
 
-	GLuint texture;
-	int width, height, comp;
+  GLuint texture;
+  int width, height, comp;
 
-	unsigned char * data=imageLoad(filename,width,height,comp);
+  unsigned char* data = imageLoad(filename, width, height, comp);
 
-	glGenTextures(1, &texture);
-	glBindTexture(GL_TEXTURE_2D, texture);
-#ifndef __EMSCRIPTEN__
-  gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGB, width, height, (comp==3)?GL_RGB:GL_RGBA, GL_UNSIGNED_BYTE, data);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 5);
-  glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-  glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-  glBindTexture(GL_TEXTURE_2D,GL_NONE);
+  int width_b = next_power_of_2(width);
+  int height_b = next_power_of_2(height);
 
+  std::cout << "enlarged = " << width_b << "," << height_b << std::endl;
+
+  std::vector<unsigned char> transformed(width_b * height_b * 4, 0);
+  for (int y = 0; y < height; ++y) {
+    for (int x = 0; x < width; ++x) {
+      for (int c = 0; c < 4; ++c) {
+        transformed[c + 4 * (x + width_b * y)] =
+            (c == 3 && comp != 4) ? 255 : data[c + comp * (x + width * y)];
+      }
+    }
+  }
+
+  glGenTextures(1, &texture);
+  glBindTexture(GL_TEXTURE_2D, texture);
+  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width_b, height_b, 0, GL_RGBA,
+               GL_UNSIGNED_BYTE, transformed.data());
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  glBindTexture(GL_TEXTURE_2D, GL_NONE);
 
-  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, (comp==4)?GL_RGBA:GL_RGB, GL_UNSIGNED_BYTE, data);
-#else
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-#endif
+  free(data);
 
-	free(data);
+  textures[filename].id = texture;
+  textures[filename].width = width_b;
+  textures[filename].height = height_b;
 
-	textures[filename].id = texture;
-	textures[filename].width = width;
-	textures[filename].height = height;
+  GL_CHECK_ERROR(__FILE__, __LINE__);
 
-	glCheckError(__FILE__, __LINE__);
-
-	return texture;
+  return textures[filename];
 }
 
-GLuint TextureManager::loadTextureArray(const std::string& filename, int tileW, int tileH)
-{
-	glCheckError(__FILE__, __LINE__);
-	
-	auto it(textures.find(filename));
-	if (it != textures.end())
-		return it->second.id;
-
-	GLuint texture;
-	int width, height, comp;
-
-	unsigned char * data=imageLoad(filename,width,height,comp);
-
-	// calcul du nombre de tiles
-	int nxTile = width/tileW;
-	int nyTile = height/tileH;
-	int nTile = nxTile * nyTile;
-	int tileSize = tileW * tileH;
-
-
-	// changement de l'ordre des pixels dans la texture pour pouvoir utiliser les fonctions opengl
-	unsigned char * dataGL = new unsigned char[4 * nTile * tileSize];
-	//for each tile
-	unsigned char * pixelGL = dataGL;
-	for(int ty=0;ty<nyTile;++ty)
-	for(int tx=0;tx<nxTile;++tx)
-	{
-		// for each pixel in the tile
-		for(int y=0;y<tileW;++y)
-		for(int x=0;x<tileH;++x)
-		{
-			*(pixelGL++) = data[4*( (y+ty*tileH)*width + (x+tx * tileW) ) +0]; // red
-			*(pixelGL++) = data[4*( (y+ty*tileH)*width + (x+tx * tileW) ) +1]; // green
-			*(pixelGL++) = data[4*( (y+ty*tileH)*width + (x+tx * tileW) ) +2]; // blue 
-			*(pixelGL++) = data[4*( (y+ty*tileH)*width + (x+tx * tileW) ) +3]; // alpha
-		}
-	}
-	
-	glGenTextures(1, &texture);
-	glBindTexture(GL_TEXTURE_2D_ARRAY, texture);
-	// XXX review
-	// J'ai remplacé glTexStorage3D par glTexImage3D
-	glTexImage3D(
-			GL_TEXTURE_2D_ARRAY,
-			0, // mipmap level
-			GL_RGBA, // format
-			tileW, // tile width
-			tileH, // tile height
-			nTile, // number of tiles
-			0,	   // border, must be zero
-			GL_RGBA,
-			GL_UNSIGNED_BYTE,
-			NULL
-	);
-	//glTexStorage3D(GL_TEXTURE_2D_ARRAY, 1, GL_RGBA8, tileW, tileH, nTile);
-	glTexSubImage3D(
-			GL_TEXTURE_2D_ARRAY,
-			0, // mipmap level
-			0, // x in tile offset
-			0, // y in tile offset
-			0, // tile offset
-			tileW, // tile width
-			tileH, // tile height
-			nTile, // number of tiles
-			GL_RGBA,
-			GL_UNSIGNED_BYTE,
-			dataGL
-	);
-	
-
-	// texture interpolation
-	glTexParameteri(GL_TEXTURE_2D_ARRAY,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D_ARRAY,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D_ARRAY,GL_TEXTURE_WRAP_S,GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D_ARRAY,GL_TEXTURE_WRAP_T,GL_REPEAT);
-
-	free(data);
-	delete[] dataGL;
-
-	textures[filename].id = texture;
-	textures[filename].width = tileW;
-	textures[filename].height = tileH;
-
-	glCheckError(__FILE__, __LINE__);
-
-	return texture;
+TextureManager::~TextureManager() {
+  for (auto it(textures.begin()); it != textures.end(); ++it) {
+    glDeleteTextures(1, &it->second.id);
+  }
 }
 
-TextureManager::~TextureManager()
-{
-	for (auto it(textures.begin()); it != textures.end(); ++it) {
-		glDeleteTextures(1, &it->second.id);
-	}
-}
-
-void TextureManager::getTextureSize(const std::string& filename, int *width, int *height)
-{
-	loadTexture(filename);
-	auto it(textures.find(filename));
-	*width = it->second.width;
-	*height = it->second.height;
-}
-
-void TextureManager::bind(const std::string& filename, GLuint activetexture) {
+void TextureManager::Bind(GLuint id, GLuint activetexture) {
   glActiveTexture(activetexture);
-  glBindTexture(GL_TEXTURE_2D, loadTexture(filename));
-}
-
-void TextureManager::bind(GLuint tex, GLuint activetexture) {
-  glActiveTexture(activetexture);
-  glBindTexture(GL_TEXTURE_2D, tex);
+  glBindTexture(GL_TEXTURE_2D, id);
 }

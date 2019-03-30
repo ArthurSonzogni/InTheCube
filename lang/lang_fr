@@ -1,0 +1,160 @@
+newGame
+Nouvelle Partie
+confirmDelete1
+Etes-vous certain de
+confirmDelete2
+vouloir supprimer
+confirmDelete3
+le profile: 
+profileExistAlready
+Ce profil existe deja
+enterYourName
+Entrer votre nom
+yes
+oui
+no
+non
+intro11
+En 2150,
+intro12
+des cataclysmes climatiques
+intro13
+dévastent la planete.
+intro14
+L'humanité allait à sa perte.
+intro21
+Un mysterieux chercheur déclara qu'il avait
+intro22
+une solution:
+intro23
+Une étrange machine permettant de créer de
+intro24
+l'énergie autrement disait-t-il.
+intro31
+Cependant, il avait peur qu'elle soit
+intro32
+utilisée à des fins néfastes.
+intro33
+Il voulu tester si l'humanité était digne
+intro34
+de recevoir cette connaissance.
+intro41
+il cacha la machine dans un cube d'un
+intro42
+centimètre d'arête.
+intro43
+C'est pour cela qu'on décida d'y envoyer
+intro44
+une machine cubique encore plus petite
+intro45
+pour aller la chercher.
+intro51
+Votre esprit a été incorporé dans
+intro52
+ce cube.
+intro53
+Bonne chance.
+arbret11
+Voici ce qui pourrait bien être
+arbret12
+l'invention du chercheur
+arbret13
+Elle permetterait de
+arbret14
+sauver le monde
+arbret21
+Mais !!
+arbret22
+C'est un arbre!
+arbret31
+En y regardant d'un peu
+arbret32
+plus près
+arbret41
+Vous trouver un ecriteau
+arbret42
+il est écrit:
+arbret51
+" Voici la machine !
+arbret52
+Malgré la forme,
+arbret53
+Ce n'est pas un arbre
+arbret54
+mais mon invention
+arbret61
+Ce robot végétal est
+arbret62
+capable par ses feuilles
+arbret63
+de puiser de l'energie
+arbret64
+dans les fluctuations 
+arbret65
+quantiques du vide
+arbret71
+Cette machine
+arbret72
+pourrait ainsi
+arbret73
+créer perpétuellement
+arbret74
+de l'énergie
+arbret75
+...
+arbret81
+Cependant, je voudrais
+arbret82
+vous faire courrir
+arbret83
+un dernier test
+arbret91
+Cette machine est éteinte.
+arbret92
+Vous devrez pour l'utiliser
+arbret93
+la rallumer
+arbret101
+Pour cela, une machine
+arbret102
+va vous rapetisser
+arbret103
+de sorte que vous puissiez
+arbret104
+rentrer à l'intérieur
+arbret105
+de l'arbre.
+arbret111
+Des épreuves vous
+arbret112
+y attendent.
+end1
+Félicitation, Vous avez
+end2
+trouvé et activé
+end3
+l'arbre-machine!
+end4
+Elle va être extraite
+end5
+puis étudiée
+end6
+Vous pouvez être fier
+end7
+de vous!
+instruction1
+Information:
+instruction2
+
+instruction3
+Votre partie est 
+instruction4
+automatiquement enregistrée
+instruction5
+à tout instant.
+instruction6
+Pour recommencer
+instruction7
+appuyez sur la touche
+instruction8
+  R

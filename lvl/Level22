@@ -1,0 +1,57 @@
+v 0 0 992 480
+b 0 0 128 480
+b 160 0 352 192
+b 128 448 384 32
+b 512 384 480 96
+b 544 288 32 32
+b 576 256 96 64
+b 640 192 32 32
+h 128 -24
+b 512 0 480 32
+b 960 32 32 192
+b 960 256 32 128
+b 928 192 32 32
+b 928 256 32 32
+mm 702 192 64 32 1 0
+mm 702 256 64 32 1 0
+m 864 352
+b 320 416 32 32
+arrowLauncher 192 160 270
+arrowLauncherDetector 192 192 32 256 2 0
+arrowLauncher 224 160 270
+arrowLauncherDetector 224 192 32 256 2 1
+arrowLauncher 256 160 270
+arrowLauncherDetector 256 192 32 256 2 2
+arrowLauncher 288 160 270
+arrowLauncherDetector 288 192 32 256 2 3
+arrowLauncher 320 160 270
+arrowLauncherDetector 320 192 32 256 2 4
+arrowLauncher 352 160 270
+arrowLauncherDetector 352 192 32 256 2 5
+arrowLauncher 384 160 270
+arrowLauncherDetector 384 192 32 256 2 6
+arrowLauncher 672 0 270
+arrowLauncherDetector 672 0 32 416 2 7
+arrowLauncher 704 0 270
+arrowLauncherDetector 704 0 32 416 2 8
+arrowLauncher 736 0 270
+arrowLauncherDetector 736 0 32 416 2 9
+arrowLauncher 768 0 270
+arrowLauncherDetector 768 0 32 416 2 10
+arrowLauncher 800 0 270
+arrowLauncherDetector 800 0 32 416 2 11
+arrowLauncher 832 0 270
+arrowLauncherDetector 832 0 32 416 2 12
+arrowLauncher 864 0 270
+arrowLauncherDetector 864 0 32 416 2 13
+arrowLauncher 896 0 270
+arrowLauncherDetector 896 0 32 416 2 14
+e 1000 224 32 32
+d1 640 320 3
+d0 640 32 3
+d0 640 96 3
+d0 640 160 3
+d0 640 224 3
+d1 544 320 3
+d1 600 352 0
+d1 576 224 0

@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>OpenGL_CMake_Skeleton_WebAssembly</title>
+    <title>In the cube</title>
     <link rel="stylesheet" type="text/css" href="style.css">
   </head>
   <body>
@@ -55,11 +55,15 @@
 
     <script>
       function onResize() {
-        Module.canvas.width = window.innerWidth;
-        Module.canvas.height = window.innerHeight;
+        let wx = window.innerWidth / 640.0;
+        let wy = window.innerHeight / 480.0;
+        let size = Math.min(wx, wy);
+        size = 1;
+        Module.canvas.width = size * 640;
+        Module.canvas.height = size * 480;
       }
       window.addEventListener("resize", onResize, true);
-      for(let j in [100, 200, 500, 1000, 3000])
+      for(let j in [100, 200, 500, 1000, 3000, 6000])
         window.setTimeout(onResize, 100);
     </script>
   </body>

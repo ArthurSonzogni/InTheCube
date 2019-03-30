@@ -1,4 +1,4 @@
-#include "Input.h"
+#include "Input.hpp"
 
 #include <GLFW/glfw3.h>
 #include <cmath>
@@ -10,11 +10,9 @@
 #include <emscripten/html5.h>
 #endif
 
-using namespace std;
-
 namespace {
-  map<int, pair<int, int>> keyState;
-  map<int, pair<int, int>> mouseState;
+  std::map<int, std::pair<int, int>> keyState;
+  std::map<int, std::pair<int, int>> mouseState;
   double m_mouseX;
   double m_mouseY;
   double m_mouseX_previous;
@@ -22,10 +20,9 @@ namespace {
   float horAngle = 0;
   float verAngle = 0;
   bool mouseIsFixed = false;
-  bool mouseIsFixing = false;
 }
 
-void Input::update(GLFWwindow* window) {
+void Input::Update(GLFWwindow* window) {
 #ifdef __EMSCRIPTEN__
   mouseIsFixed = glfwGetInputMode(window, GLFW_CURSOR) == GLFW_CURSOR_DISABLED;
 
@@ -42,30 +39,22 @@ void Input::update(GLFWwindow* window) {
   int width, height;
   glfwGetWindowSize(window, &width, &height);
 
-  // update key
+  // Update key
   for (auto it = keyState.begin(); it != keyState.end(); ++it) {
     it->second.second = it->second.first;
     it->second.first = glfwGetKey(window, it->first);
   }
 
-  // update mouse
+  // Update mouse
   for (auto it = mouseState.begin(); it != mouseState.end(); ++it) {
     it->second.second = it->second.first;
     it->second.first = glfwGetMouseButton(window, it->first);
   }
 
-//#ifndef __EMSCRIPTEN__
-  //// petit fix
-  //if (mouseIsFixing) {
-    //glfwSetCursorPos(window, width / 2, height / 2);
-    //mouseIsFixing = false;
-  //}
-//#endif
-
   // get mouse position
   glfwGetCursorPos(window, &m_mouseX, &m_mouseY);
 
-  // get mouse position (bis)
+  // get mouse position (bIs)
   horAngle = (float)(m_mouseX_previous - m_mouseX);
   verAngle = (float)(m_mouseY_previous - m_mouseY);
 
@@ -85,64 +74,63 @@ void Input::update(GLFWwindow* window) {
   m_mouseY_previous = m_mouseY;
 }
 
-bool Input::isKeyPressed(int key) {
+bool Input::IsKeyPressed(int key) {
   auto p = keyState[key];
   return ((p.first == GLFW_PRESS) and (p.second == GLFW_RELEASE));
 }
 
-bool Input::isKeyReleased(int key) {
+bool Input::IsKeyReleased(int key) {
   auto p = keyState[key];
   return ((p.first == GLFW_RELEASE) and (p.second == GLFW_PRESS));
 }
 
-bool Input::isKeyHold(int key) {
+bool Input::IsKeyHold(int key) {
   auto p = keyState[key];
   return (p.first == GLFW_PRESS);
 }
 
-bool Input::isMousePressed(int key) {
+bool Input::IsMousePressed(int key) {
   auto p = mouseState[key];
   return ((p.first == GLFW_PRESS) and (p.second == GLFW_RELEASE));
 }
 
-bool Input::isMouseReleased(int key) {
+bool Input::IsMouseReleased(int key) {
   auto p = mouseState[key];
   return ((p.first == GLFW_RELEASE) and (p.second == GLFW_PRESS));
 }
 
-bool Input::isMouseHold(int key) {
+bool Input::IsMouseHold(int key) {
   auto p = mouseState[key];
   return (p.first == GLFW_PRESS);
 }
 
-double Input::mouseX() {
+double Input::MouseX() {
   return m_mouseX;
 }
 
-double Input::mouseY() {
+double Input::MouseY() {
   return m_mouseY;
 }
 
-float Input::getHorAngle() {
+float Input::GetHorAngle() {
   return horAngle;
 }
 
-float Input::getVerAngle() {
+float Input::GetVerAngle() {
   return verAngle;
 }
 
-void Input::fixMouse() {
+void Input::FixMouse() {
 #ifndef __EMSCRIPTEN__
   mouseIsFixed = true;
-  mouseIsFixing = true;
 #endif
 }
 
-void Input::unfixMouse() {
+void Input::UnfixMouse() {
 #ifndef __EMSCRIPTEN__
   mouseIsFixed = false;
 #endif
 }
-bool Input::isMouseFixed() {
+bool Input::IsMouseFixed() {
   return mouseIsFixed;
 }

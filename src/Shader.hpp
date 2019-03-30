@@ -8,12 +8,11 @@
 #ifndef OPENGL_CMAKE_SKELETON_SHADER_HPP
 #define OPENGL_CMAKE_SKELETON_SHADER_HPP
 
-#define GLM_FORCE_RADIANS
-#include <GL/glew.h>
 #include <glm/glm.hpp>
 #include <initializer_list>
 #include <map>
 #include <string>
+#include "OpenGL.hpp"
 
 class Shader;
 class ShaderProgram;
@@ -69,10 +68,7 @@ class ShaderProgram {
   // affect uniform
   void setUniform(const std::string& name, float x, float y, float z);
   void setUniform(const std::string& name, const glm::vec3& v);
-  void setUniform(const std::string& name, const glm::dvec3& v);
   void setUniform(const std::string& name, const glm::vec4& v);
-  void setUniform(const std::string& name, const glm::dvec4& v);
-  void setUniform(const std::string& name, const glm::dmat4& m);
   void setUniform(const std::string& name, const glm::mat4& m);
   void setUniform(const std::string& name, const glm::mat3& m);
   void setUniform(const std::string& name, float val);

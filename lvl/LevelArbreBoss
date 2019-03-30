@@ -1,0 +1,49 @@
+v 0 0 640 480
+h 0 416
+d0 0 0 19
+d1 0 0 23
+nd 0 448 640 32
+nd 160 384 128 32
+nd 96 352 32 32
+nd 0 288 96 32
+nd 160 256 32 32
+nd 96 96 96 32
+nd 256 128 64 32
+nd 256 224 128 32
+nd 352 192 32 32
+nd 416 96 160 32
+nd 448 256 192 32
+nd 448 288 32 128
+arrowLauncher 0 0 0
+arrowLauncher 0 32 0
+arrowLauncher 0 64 0
+arrowLauncher 0 96 0
+arrowLauncher 0 128 0
+arrowLauncher 0 160 0
+arrowLauncher 0 192 0
+arrowLauncher 0 224 0
+arrowLauncher 0 256 0
+arrowLauncher 0 320 0
+arrowLauncher 0 352 0
+arrowLauncher 0 384 0
+arrowLauncher 448 384 180
+arrowLauncher 448 352 180
+arrowLauncher 448 320 180
+arrowLauncher 448 288 180
+arrowLauncher 608 224 180
+arrowLauncher 608 192 180
+arrowLauncher 608 160 180
+arrowLauncher 608 128 180
+arrowLauncher 608 96 180
+arrowLauncher 608 64 180
+arrowLauncher 608 32 180
+arrowLauncher 608 0 180
+special 2
+bouton 224 376 4
+bouton 304 214 4
+bouton 128 84 4
+bouton 512 84 4
+bouton 48 276 4
+bouton 288 118 4
+e 650 288 32 200
+nd -32 0 32 480
