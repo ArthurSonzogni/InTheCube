@@ -4,9 +4,11 @@
 #include <string>
 #include <vector>
 #include "Forme.hpp"
-#include "Sprite.hpp"
+#include <smk/Sprite.hpp>
 
+namespace smk {
 class Screen;
+}  // namespace smk
 
 class TextPopup {
  public:
@@ -15,11 +17,11 @@ class TextPopup {
   int taille;
   Rectangle geometry;
   std::string textString;
-  Sprite spaceSprite;
+  smk::Sprite spaceSprite;
 
   TextPopup(int type);
-  void Draw(Screen& screen);
-  void DrawAux(Screen& screen, int p);
+  void Draw(smk::Screen& screen);
+  void DrawAux(smk::Screen& screen, int p);
 };
 
 #endif /* TEXT_POPUP_HPP */

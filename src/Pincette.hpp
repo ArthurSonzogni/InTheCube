@@ -2,20 +2,22 @@
 #define PINCETTE_HPP
 
 #include "Resource.hpp"
-#include "Sprite.hpp"
+#include <smk/Sprite.hpp>
 
+namespace smk {
 class Screen;
+}  // namespace smk
 
 class Pincette {
  public:
   Pincette();
   void Step();
-  void Draw(Screen& screen);
+  void Draw(smk::Screen& screen);
 
  private:
   int step_ = 0;
-  Sprite pincetteSprite;
-  Sprite heroSprite;
+  smk::Sprite pincetteSprite;
+  smk::Sprite heroSprite;
 };
 
 #endif /* PINCETTE_HPP */

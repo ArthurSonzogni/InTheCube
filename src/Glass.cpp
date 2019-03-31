@@ -1,6 +1,6 @@
 #include "Glass.hpp"
 #include "Resource.hpp"
-#include "Screen.hpp"
+#include <smk/Screen.hpp>
 
 Glass::Glass(int X, int Y) {
   x = X;
@@ -25,6 +25,6 @@ void Glass::UpdateGeometry() {
   sprite.SetScale(width / 31, height / 31);
 }
 
-void Glass::Draw(Screen& screen) {
+void Glass::Draw(smk::Screen& screen) {
   screen.Draw(sprite);
 }

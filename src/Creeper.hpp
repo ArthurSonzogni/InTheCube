@@ -2,20 +2,22 @@
 #define CREEPER_HPP
 
 #include "Forme.hpp"
-#include "Sprite.hpp"
+#include <smk/Sprite.hpp>
 
+namespace smk {
 class Screen;
+} // namespace smk
 
 class Creeper {
  public:
   float x, y, xspeed, yspeed;
   int mode;
-  Sprite sprite;
+  smk::Sprite sprite;
   Rectangle geometry;
   int t;
 
   Creeper(int x, int y);
-  void Draw(Screen& screen);
+  void Draw(smk::Screen& screen);
   void UpdateGeometry();
 };
 

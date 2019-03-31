@@ -1,4 +1,4 @@
-#include "Input.hpp"
+#include <smk/Input.hpp>
 
 #include <GLFW/glfw3.h>
 #include <cmath>
@@ -10,17 +10,19 @@
 #include <emscripten/html5.h>
 #endif
 
+namespace smk {
+
 namespace {
-  std::map<int, std::pair<int, int>> keyState;
-  std::map<int, std::pair<int, int>> mouseState;
-  double m_mouseX;
-  double m_mouseY;
-  double m_mouseX_previous;
-  double m_mouseY_previous;
-  float horAngle = 0;
-  float verAngle = 0;
-  bool mouseIsFixed = false;
-}
+std::map<int, std::pair<int, int>> keyState;
+std::map<int, std::pair<int, int>> mouseState;
+double m_mouseX;
+double m_mouseY;
+double m_mouseX_previous;
+double m_mouseY_previous;
+float horAngle = 0;
+float verAngle = 0;
+bool mouseIsFixed = false;
+}  // namespace
 
 void Input::Update(GLFWwindow* window) {
 #ifdef __EMSCRIPTEN__
@@ -61,8 +63,8 @@ void Input::Update(GLFWwindow* window) {
 #ifndef __EMSCRIPTEN__
   // fix mousePosition
   if (mouseIsFixed) {
-    m_mouseX = width/2;
-    m_mouseY = height/2;
+    m_mouseX = width / 2;
+    m_mouseY = height / 2;
     glfwSetCursorPos(window, m_mouseX, m_mouseY);
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
   } else {
@@ -134,3 +136,5 @@ void Input::UnfixMouse() {
 bool Input::IsMouseFixed() {
   return mouseIsFixed;
 }
+
+}  // namespace smk

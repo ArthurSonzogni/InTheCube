@@ -3,7 +3,7 @@
 
 #include <vector>
 
-#include "Sprite.hpp"
+#include <smk/Sprite.hpp>
 
 #define SPECIAL_ARBRE 0
 #define SPECIAL_ARBRE2 1
@@ -18,7 +18,7 @@ class Special {
   int m;
   Special(int M);
   std::vector<int> var;
-  std::vector<Sprite> sprite;
+  std::vector<smk::Sprite> sprite;
 };
 
 #endif /* SPECIAL_HPP */

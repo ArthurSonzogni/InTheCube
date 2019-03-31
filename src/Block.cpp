@@ -1,6 +1,6 @@
 #include "Block.hpp"
 #include "Resource.hpp"
-#include "Screen.hpp"
+#include <smk/Screen.hpp>
 
 Block::Block(int x, int y, int width, int height) {
   drawable = true;
@@ -32,7 +32,7 @@ Block::Block(int x, int y, int width, int height, bool Drawable) {
   sprite.SetScale(1, 1);
 }
 
-void Block::Draw(Screen& screen) {
+void Block::Draw(smk::Screen& screen) {
   int i = 0;
 
   if (drawable) {

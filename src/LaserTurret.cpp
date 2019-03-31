@@ -2,8 +2,8 @@
 
 #include <cmath>
 #include "Resource.hpp"
-#include "Screen.hpp"
-#include "Shape.hpp"
+#include <smk/Screen.hpp>
+#include <smk/Shape.hpp>
 
 LaserTurret::LaserTurret(int X,
                          int Y,
@@ -30,9 +30,9 @@ LaserTurret::LaserTurret(int X,
     angleMedium = Angle;
 }
 
-void LaserTurret::Draw(Screen& screen) {
-  Shape line =
-      Shape::Line(x, y, xattach, yattach, 3, glm::vec4(0.0, 0.0, 0.0, 0.0));
+void LaserTurret::Draw(smk::Screen& screen) {
+  smk::Shape line =
+      smk::Shape::Line(x, y, xattach, yattach, 3, glm::vec4(0.0, 0.0, 0.0, 0.0));
   screen.Draw(line);
   screen.Draw(sprite);
 }

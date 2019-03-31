@@ -1,9 +1,11 @@
-#ifndef INPUT_QHZPGW1N
-#define INPUT_QHZPGW1N
+#ifndef SMK_INPUT_HPP
+#define SMK_INPUT_HPP
 
 #include <map>
 
 struct GLFWwindow;
+
+namespace smk {
 
 class Input {
  public:
@@ -30,4 +32,6 @@ class Input {
   static bool IsIdle();
 };
 
-#endif /* end of include guard: INPUT_QHZPGW1N */
+}  // namespace smk
+
+#endif /* end of include guard: SMK_INPUT_HPP */

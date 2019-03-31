@@ -2,17 +2,19 @@
 #define FALLING_BLOCK_HPP
 
 #include "Forme.hpp"
-#include "Sprite.hpp"
+#include <smk/Sprite.hpp>
 
+namespace smk {
 class Screen;
+}  // namespace smk
 
 class FallingBlock {
  public:
   FallingBlock(float X, float Y);
   Rectangle geometry;
-  Sprite sprite;
+  smk::Sprite sprite;
   void UpdateGeometry();
-  void Draw(Screen& screen);
+  void Draw(smk::Screen& screen);
   float x, y;
   float yspeed;
   int etape;

@@ -9,7 +9,7 @@
 #ifndef OPENGL_CMAKE_SKELETON_MYAPPLICATION
 #define OPENGL_CMAKE_SKELETON_MYAPPLICATION
 
-#include "Screen.hpp"
+#include <smk/Screen.hpp>
 #include "Shader.hpp"
 #include "Level.hpp"
 

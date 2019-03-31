@@ -2,22 +2,24 @@
 #define ARROW_HPP
 
 #include "Forme.hpp"
-#include "Sprite.hpp"
+#include <smk/Sprite.hpp>
 
+namespace smk {
 class Screen;
+}  // namespace smk
 
 class Arrow {
  public:
   Point geometry;
   float x, y;
   float xspeed, yspeed;
-  Sprite sprite;
+  smk::Sprite sprite;
   bool damage;
   int alpha;
 
   Arrow(float X, float Y, float Xspeed, float Yspeed);
   void Step();
-  void Draw(Screen& screen);
+  void Draw(smk::Screen& screen);
 };
 
 #endif /* ARROW_HPP */

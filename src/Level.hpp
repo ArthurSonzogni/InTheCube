@@ -34,12 +34,12 @@
 #include "Particule.hpp"
 #include "Pic.hpp"
 #include "Pincette.hpp"
-#include "Screen.hpp"
+#include <smk/Screen.hpp>
 #include "Special.hpp"
 #include "StaticMirror.hpp"
 #include "Teleporter.hpp"
 #include "TextPopup.hpp"
-#include "View.hpp"
+#include <smk/View.hpp>
 
 class Level {
  public:
@@ -74,7 +74,7 @@ class Level {
   bool isLose;
   bool isEscape;
 
-  Sprite spriteBackground;
+  smk::Sprite spriteBackground;
   std::vector<Hero> hero_list;
   int heroSelected;
   int nbHero;
@@ -85,14 +85,14 @@ class Level {
   int time;
   int timeDead;
 
-  std::list<Sound> sound_list;
+  std::list<smk::Sound> sound_list;
 
   // View view;
   int viewXMin, viewYMin, viewXMax, viewYMax;
-  View view;
+  smk::View view;
 
-  void Draw(Screen& screen);
-  void Step(Screen& screen);
+  void Draw(smk::Screen& screen);
+  void Step(smk::Screen& screen);
   Level();
   void LoadFromFile(std::string fileName);
   bool CollisionWithAllBlock(Rectangle geom);
@@ -104,8 +104,8 @@ class Level {
   bool PlaceFree(MovableBlock m, float x, float y);
   bool PlaceFree(Glass m, float x, float y);
 
-  void Laser(Screen& screen, int x, int y, int angle, int recursiveMaxLevel = 30);
-  void DrawElectricity(Screen& screen, int x1, int y1, int x2, int y2);
+  void Laser(smk::Screen& screen, int x, int y, int angle, int recursiveMaxLevel = 30);
+  void DrawElectricity(smk::Screen& screen, int x1, int y1, int x2, int y2);
 };
 
 #endif /* __NIVEAU_H__ */

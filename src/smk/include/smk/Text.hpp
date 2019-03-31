@@ -2,9 +2,10 @@
 #define TEXT_H
 
 #include <string>
-#include "Drawable.hpp"
-#include "Texture.hpp"
+#include <smk/Drawable.hpp>
+#include <smk/Texture.hpp>
 
+namespace smk {
 class Font;
 
 class Text : public Drawable {
@@ -15,8 +16,13 @@ class Text : public Drawable {
   void Draw(const glm::mat4& view) const;
 
  public:
+  class Context;
+  friend Context;
+  Context& context() const;
   const Font* font_ = nullptr;
   std::wstring string_;
 };
+
+} // namespace smk
 
 #endif /* end of include guard: TEXT_H */

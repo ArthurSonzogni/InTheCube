@@ -6,11 +6,11 @@
  *      * MIT
  */
 
-#include "GL_CHECK_ERROR.hpp"
+#include <smk/GL_CHECK_ERROR.hpp>
 
 #include <iostream>
 #include <string>
-#include "OpenGL.hpp"
+#include <smk/OpenGL.hpp>
 
 #define USE_GL_CHECK_ERROR
 

@@ -3,9 +3,9 @@
 
 #include <string>
 
+#include <smk/Sound.hpp>
 #include "Music.hpp"
 #include "Resource.hpp"
-#include "Sound.hpp"
 
 class BackgroundMusic {
  public:

@@ -1,20 +1,23 @@
 #ifndef GLASS_HPP
 #define GLASS_HPP
 
+#include <smk/Sprite.hpp>
 #include "Forme.hpp"
-#include "Sprite.hpp"
+
+namespace smk {
 class Screen;
+}  // namespace smk
 
 class Glass {
  public:
   Rectangle geometry;
-  Sprite sprite;
+  smk::Sprite sprite;
   float x, y, xspeed, yspeed;
   float height;
   float width;
   Glass(int x, int y);
   void UpdateGeometry();
-  void Draw(Screen& screen);
+  void Draw(smk::Screen& screen);
 };
 
 #endif /* GLASS_HPP */

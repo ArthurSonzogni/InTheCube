@@ -5,11 +5,14 @@
 #include <glm/glm.hpp>
 #include <string>
 
+struct GLFWwindow;
+
+namespace smk {
+
 class Shape;
 class Sprite;
 class Text;
 class View;
-struct GLFWwindow;
 
 /// Screen class:
 /// * init OpenGL
@@ -67,5 +70,7 @@ class Screen {
   std::string title_;
   glm::mat4 view_;
 };
+
+}  // namespace smk
 
 #endif /* end of include guard: SCREEN_HPP */

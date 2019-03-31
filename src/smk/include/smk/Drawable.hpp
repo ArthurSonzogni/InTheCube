@@ -2,8 +2,13 @@
 #define DRAWABLE_HPP
 
 #include <glm/glm.hpp>
-#include "Blend.hpp"
-#include "OpenGL.hpp"
+#include <smk/OpenGL.hpp>
+
+enum class Blend {
+  Add,
+};
+
+namespace smk {
 
 class Drawable {
  public:
@@ -16,7 +21,7 @@ class Drawable {
   void SetScaleX(float scale_x);
   void SetScaleY(float scale_y);
   void SetColor(const glm::vec4& color);
-  void SetBlendMode(Blend blend);
+  void SetBlendMode(Blend) {}
 
   glm::mat4 GetTransformation(float size_x, float size_y) const;
   glm::vec4 GetColor() const;
@@ -30,7 +35,8 @@ class Drawable {
   float scale_x_ = 1.f;
   float scale_y_ = 1.f;
   glm::vec4 color_ = {1.0, 1.0, 1.0, 1.0};
-  Blend blend_ = Blend::Normal;
 };
+
+} // namespace smk
 
 #endif /* end of include guard: DRAWABLE_HPP */

@@ -11,8 +11,10 @@
 #include <glm/glm.hpp>
 #include <initializer_list>
 #include <map>
+#include <smk/OpenGL.hpp>
 #include <string>
-#include "OpenGL.hpp"
+
+namespace smk {
 
 class Shader;
 class ShaderProgram;
@@ -87,5 +89,7 @@ class ShaderProgram {
 
   void link();
 };
+
+}  // namespace smk
 
 #endif  // OPENGL_CMAKE_SKELETON_SHADER_HPP

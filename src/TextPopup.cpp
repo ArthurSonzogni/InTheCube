@@ -93,7 +93,7 @@ TextPopup::TextPopup(int t) {
 
 int ydecal;
 
-void TextPopup::Draw(Screen& screen) {
+void TextPopup::Draw(smk::Screen& screen) {
   //Clock t;
   //ydecal = 640;
   //int p = 0;
@@ -131,7 +131,7 @@ void TextPopup::Draw(Screen& screen) {
   //}
 }
 
-void TextPopup::DrawAux(Screen& screen, int p) {
+void TextPopup::DrawAux(smk::Screen& screen, int p) {
   //FloatRect rect = screen.GetView().GetRect();
   //// drawing cadre
   //int x1 = 640 / 5 + rect.Left, y1 = 480 / 5 + ydecal + rect.Top,

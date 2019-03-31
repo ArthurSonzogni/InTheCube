@@ -1,8 +1,10 @@
 #ifndef LASER_TURRET_HPP
 #define LASER_TURRET_HPP
 
-#include "Sprite.hpp"
+#include <smk/Sprite.hpp>
+namespace smk {
 class Screen;
+}  // namespace smk
 
 class LaserTurret {
  public:
@@ -11,7 +13,7 @@ class LaserTurret {
   int angleSpeed;
   int angleIncrement;  // used when mode=2
   int angleMedium;     // used when mode=2
-  Sprite sprite;
+  smk::Sprite sprite;
   LaserTurret(int X,
               int Y,
               int Angle,
@@ -19,7 +21,7 @@ class LaserTurret {
               int Yattach,
               int Mode,
               int AngleSpeed);
-  void Draw(Screen& screen);
+  void Draw(smk::Screen& screen);
   void UpdateAngle();
 };
 

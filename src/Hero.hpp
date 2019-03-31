@@ -3,14 +3,16 @@
 
 #include "Collision.hpp"
 #include "Resource.hpp"
-#include "Sprite.hpp"
+#include <smk/Sprite.hpp>
 
+namespace smk {
 class Screen;
+}  // namespace smk
 
 class Hero {
  public:
   Rectangle geometry;
-  Sprite sprite;
+  smk::Sprite sprite;
   float x, y;
   float xspeed, yspeed;
   int life;
@@ -21,7 +23,7 @@ class Hero {
   void SetPosition(float x, float y);
   void UpdateGeometry();
 
-  void Draw(Screen& screen);
+  void Draw(smk::Screen& screen);
 };
 
 #endif /* HERO_HPP */

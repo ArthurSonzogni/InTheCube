@@ -1,5 +1,5 @@
 #include "MovingBlock.hpp"
-#include "Screen.hpp"
+#include <smk/Screen.hpp>
 #include "Resource.hpp"
 
 MovingBlock::MovingBlock(int X,
@@ -33,7 +33,7 @@ MovingBlock::MovingBlock(int X,
   }
 }
 
-void MovingBlock::Draw(Screen& screen) {
+void MovingBlock::Draw(smk::Screen& screen) {
   if (tiled) {
     int x = geometry.left;
     int y = geometry.top;

@@ -2,7 +2,9 @@
 #define SHAPE_HPP
 
 #include "Drawable.hpp"
-#include "Sprite.hpp"
+#include <smk/Sprite.hpp>
+
+namespace smk {
 
 class Shape : public Sprite {
  public:
@@ -23,5 +25,7 @@ class Shape : public Sprite {
                     glm::vec4 borderColor = {0.0, 0.0, 0.0, 1.0});
   static Shape Circle(float x, float y, float radius, glm::vec4 color);
 };
+
+} // namespace smk
 
 #endif /* end of include guard: SHAPE_HPP */

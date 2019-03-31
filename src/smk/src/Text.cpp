@@ -1,14 +1,15 @@
-#include "Text.hpp"
-
-#include "Font.hpp"
-#include "GL_CHECK_ERROR.hpp"
-#include "OpenGL.hpp"
-#include "Shader.hpp"
-#include "glm/gtc/matrix_transform.hpp"
 #include <codecvt>
 #include <iostream>
 #include <locale>
+#include <smk/Font.hpp>
+#include <smk/GL_CHECK_ERROR.hpp>
+#include <smk/OpenGL.hpp>
+#include <smk/Shader.hpp>
+#include <smk/Text.hpp>
 #include <vector>
+#include "glm/gtc/matrix_transform.hpp"
+
+namespace smk {
 
 std::wstring to_wstring(const std::string& s) {
   std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
@@ -33,7 +34,7 @@ void Text::SetFont(const Font& font) {
 #define P "../"
 #endif
 
-class TextContext {
+class Text::Context {
  private:
   Shader vertex_shader;
   Shader fragment_shader;
@@ -41,7 +42,7 @@ class TextContext {
   GLuint vao, vbo;
 
  public:
-  TextContext()
+  Context()
       : vertex_shader(P "./shader/shader.vert", GL_VERTEX_SHADER),
         fragment_shader(P "./shader/font.frag", GL_FRAGMENT_SHADER),
         program({vertex_shader, fragment_shader}) {
@@ -88,44 +89,47 @@ class TextContext {
     glBindVertexArray(vao);
 
     float advance_x = 0.f;
-    float advance_y = -text.font_->size;
+    float advance_y = -text.font_->size();
     program.setUniform("color", text.GetColor());
     for (const auto& it : text.string_) {
       if (it == U'\n') {
         advance_x = 0.f;
-        advance_y -= text.font_->size;
+        advance_y -= text.font_->size();
         continue;
       }
-      auto character = text.font_->characters.find(it);
-      if (character == text.font_->characters.end())
+      auto character = text.font_->GetCharacter(it);
+      if (!character)
         continue;
-      float dx = character->second.bearing.x;
-      float dy = character->second.bearing.y;
+      float dx = character->bearing.x;
+      float dy = character->bearing.y;
       program.setUniform(
           "view",
           view *
               glm::translate(glm::mat4(),
                              glm::vec3(advance_x + dx, advance_y + dy, 0.0)) *
-              text.GetTransformation(character->second.texture.width,
-                                     character->second.texture.height));
+              text.GetTransformation(character->texture.width,
+                                     character->texture.height));
       glActiveTexture(GL_TEXTURE0);
-      glBindTexture(GL_TEXTURE_2D, character->second.texture.id);
+      glBindTexture(GL_TEXTURE_2D, character->texture.id);
       program.setUniform("tex", 0);
 
       glDrawArrays(GL_TRIANGLES, 0, 6);
 
-      advance_x += character->second.advance;
+      advance_x += character->advance;
     }
     GL_CHECK_ERROR(__FILE__, __LINE__);
   }
 };
 
-namespace {
-TextContext* context = nullptr;
-}  // namespace
-
 void Text::Draw(const glm::mat4& view) const {
-  if (!context)
-    context = new TextContext();
-  context->Draw(view, *this);
+  context().Draw(view, *this);
 }
+
+Text::Context& Text::context() const {
+  static Context* internal_context = nullptr;
+  if (!internal_context)
+    internal_context = new Context();
+  return *internal_context;
+}
+
+}  // namespace smk

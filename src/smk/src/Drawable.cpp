@@ -1,5 +1,7 @@
-#include "Drawable.hpp"
 #include <glm/gtx/transform.hpp>
+#include <smk/Drawable.hpp>
+
+namespace smk {
 
 void Drawable::SetRotation(float rotation) {
   rotation_ = rotation;
@@ -37,10 +39,6 @@ void Drawable::Move(float move_x, float move_y) {
   position_y_ += move_y;
 }
 
-void Drawable::SetBlendMode(Blend blend) {
-  blend_ = blend;
-}
-
 glm::mat4 Drawable::GetTransformation(float size_x, float size_y) const {
   glm::mat4 ret = glm::mat4(1.0);
   ret = glm::translate(ret, glm::vec3(position_x_, -position_y_, 0.0));
@@ -58,3 +56,5 @@ void Drawable::SetColor(const glm::vec4& color) {
 glm::vec4 Drawable::GetColor() const {
   return color_;
 }
+
+} // namespace smk

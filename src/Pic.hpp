@@ -1,14 +1,14 @@
 #ifndef PIC_HPP
 #define PIC_HPP
 
-#include "Sprite.hpp"
+#include <smk/Sprite.hpp>
 #include <vector>
 
 class Pic {
  public:
   int x, y, angle;
   int avancement;
-  Sprite sprite;
+  smk::Sprite sprite;
 
   int nbRequis;
   int comparateur;

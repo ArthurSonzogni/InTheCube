@@ -1,15 +1,18 @@
 #ifndef DECORS_HPP
 #define DECORS_HPP
 
-#include "Sprite.hpp"
+#include <smk/Sprite.hpp>
+
+namespace smk {
 class Screen;
+}  // namespace smk
 
 class Decor {
  public:
-  Sprite sprite;
+  smk::Sprite sprite;
 
   Decor(int X, int Y, int IMG);
-  void Draw(Screen& screen);
+  void Draw(smk::Screen& screen);
 };
 
 #endif /* DECORS_HPP */

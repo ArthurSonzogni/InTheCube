@@ -2,9 +2,11 @@
 #define BLOCK_HPP
 
 #include "Forme.hpp"
-#include "Sprite.hpp"
+#include <smk/Sprite.hpp>
 
+namespace smk {
 class Screen;
+}  // namespace smk
 
 class Block {
  public:
@@ -12,11 +14,11 @@ class Block {
   Block(int x, int y, int width, int height, bool Drawable);
   virtual ~Block() = default;
   Rectangle geometry;
-  Sprite sprite;
+  smk::Sprite sprite;
   int xtile, ytile;
   bool tiled;
   bool drawable;
-  virtual void Draw(Screen& screen);
+  virtual void Draw(smk::Screen& screen);
 };
 
 #endif /* BLOCK_HPP */

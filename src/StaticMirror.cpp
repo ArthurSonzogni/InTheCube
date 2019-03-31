@@ -1,7 +1,7 @@
 #include "StaticMirror.hpp"
 #include "Resource.hpp"
-#include "Screen.hpp"
-#include "Shape.hpp"
+#include <smk/Screen.hpp>
+#include <smk/Shape.hpp>
 
 StaticMirror::StaticMirror(int x1,
                            int y1,
@@ -27,9 +27,9 @@ StaticMirror::StaticMirror(int x1,
   sprite.SetScaleX(sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1)) / 32.0);
 }
 
-void StaticMirror::Draw(Screen& screen) {
-  Shape line =
-      Shape::Line(xcenter, ycenter, xattach, yattach, 2, glm::vec4(0, 0, 0, 0));
+void StaticMirror::Draw(smk::Screen& screen) {
+  smk::Shape line =
+      smk::Shape::Line(xcenter, ycenter, xattach, yattach, 2, glm::vec4(0, 0, 0, 0));
   screen.Draw(line);
   screen.Draw(sprite);
 }

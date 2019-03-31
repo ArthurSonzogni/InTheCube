@@ -6,7 +6,7 @@
  *      * MIT
  */
 
-#include "Shader.hpp"
+#include <smk/Shader.hpp>
 
 #include <cstdlib>
 #include <fstream>
@@ -15,16 +15,18 @@
 #include <stdexcept>
 #include <vector>
 
+namespace smk {
+
 using namespace glm;
 
-const std::string shader_header = 
+const std::string shader_header =
 #ifdef __EMSCRIPTEN__
-"#version 300 es\n"
-"precision mediump float;\n"
-"precision mediump int;\n"
-"precision mediump sampler2DArray;\n";
+    "#version 300 es\n"
+    "precision mediump float;\n"
+    "precision mediump int;\n"
+    "precision mediump sampler2DArray;\n";
 #else
-"#version 330\n";
+    "#version 330\n";
 #endif
 
 // file reading
@@ -84,7 +86,8 @@ Shader::Shader(const std::string& filename, GLenum type) {
 
     exit(EXIT_FAILURE);
   } else {
-    std::cout << "[Info] Shader " << filename << " compiled successfully" << std::endl;
+    std::cout << "[Info] Shader " << filename << " compiled successfully"
+              << std::endl;
   }
 }
 
@@ -133,7 +136,8 @@ GLint ShaderProgram::uniform(const std::string& name) {
     // uniform that is not referenced
     GLint r = glGetUniformLocation(handle, name.c_str());
     if (r == GL_INVALID_OPERATION || r < 0)
-      std::cout << "[Error] uniform " << name << " doesn't exist in program" << std::endl;
+      std::cout << "[Error] uniform " << name << " doesn't exist in program"
+                << std::endl;
     // add it anyways
     uniforms[name] = r;
 
@@ -145,7 +149,8 @@ GLint ShaderProgram::uniform(const std::string& name) {
 GLint ShaderProgram::attribute(const std::string& name) {
   GLint attrib = glGetAttribLocation(handle, name.c_str());
   if (attrib == GL_INVALID_OPERATION || attrib < 0)
-    std::cout << "[Error] Attribute " << name << " doesn't exist in program" << std::endl;
+    std::cout << "[Error] Attribute " << name << " doesn't exist in program"
+              << std::endl;
 
   return attrib;
 }
@@ -230,3 +235,5 @@ void ShaderProgram::unuse() const {
 GLuint ShaderProgram::getHandle() const {
   return handle;
 }
+
+}  // namespace smk

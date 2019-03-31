@@ -1,9 +1,9 @@
-#include "Input.hpp"
+#include <smk/Input.hpp>
 #include "Lang.hpp"
 #include "Level.hpp"
-#include "Shape.hpp"
-#include "Text.hpp"
-#include "View.hpp"
+#include <smk/Shape.hpp>
+#include <smk/Text.hpp>
+#include <smk/View.hpp>
 #include <algorithm>
 
 float InRange(float x, float a, float b) {
@@ -347,7 +347,7 @@ void Level::LoadFromFile(std::string fileName) {
 
 glm::vec4 colorNonSelected(200 / 255.f, 200 / 255.f, 100 / 255.f, 1.f);
 
-void Level::Draw(Screen& screen) {
+void Level::Draw(smk::Screen& screen) {
   // set the view
   if (!hero_list.empty()) {
     if (fluidViewEnable) {
@@ -379,7 +379,7 @@ void Level::Draw(Screen& screen) {
     switch (it->m) {
       case SPECIAL_ARBRE2: {
         drawBackGround = false;
-        Sprite spr;
+        smk::Sprite spr;
         spr.SetTexture(img_arbre_texture);
         for (int x = xcenter - 320 - int(xcenter / 2.67) % 340;
              x < xcenter + 320; x += 340) {
@@ -413,7 +413,7 @@ void Level::Draw(Screen& screen) {
     switch (it->m) {
       case SPECIAL_END: {
         int t = it->var[0];
-        Sprite spr;
+        smk::Sprite spr;
         spr.SetTexture(img_arbreDecorsEndBack2);
         spr.SetColor(glm::vec4(1.0, 1.0, 1.0, t / 255.f));
         screen.Draw(spr);
@@ -475,7 +475,7 @@ void Level::Draw(Screen& screen) {
       case SPECIAL_ARBREBOSS: {
         float timesalvo = it->var[0];
         // Draw the sapin
-        Sprite spr;
+        smk::Sprite spr;
         spr.SetTexture(img_sapin);
         spr.SetPosition(520, 303);
         spr.Move(-3 * sin(timesalvo / 100.0 * 3.14), 0);
@@ -511,7 +511,7 @@ void Level::Draw(Screen& screen) {
             case 0:
               pos += (400.0 - pos) / 30.0;
               if ((400 - pos) < 30) {
-                if (Input::IsKeyHold(GLFW_KEY_SPACE)) {
+                if (smk::Input::IsKeyHold(GLFW_KEY_SPACE)) {
                   mode = 1;
                 }
               }
@@ -534,7 +534,7 @@ void Level::Draw(Screen& screen) {
               if (color < 255) {
                 color += 2;
               } else {
-                if (Input::IsKeyHold(GLFW_KEY_SPACE))
+                if (smk::Input::IsKeyHold(GLFW_KEY_SPACE))
                   isWin = true;
                 color = 255;
               }
@@ -544,12 +544,12 @@ void Level::Draw(Screen& screen) {
         }
 
         // focus
-        Shape rect =
-            Shape::Rectangle(0, 0, 6400, 4800, glm::vec4(0, 0, 0, t / 2 / 255));
+        smk::Shape rect =
+            smk::Shape::Rectangle(0, 0, 6400, 4800, glm::vec4(0, 0, 0, t / 2 / 255));
         screen.Draw(rect);
 
         // tree
-        Sprite spr;
+        smk::Sprite spr;
         spr.SetPosition(700, 348);
         spr.SetTexture(img_arbre);
         screen.Draw(spr);
@@ -560,12 +560,12 @@ void Level::Draw(Screen& screen) {
         screen.Draw(spr);
 
         if (pos > 0) {
-          Sprite spr;
+          smk::Sprite spr;
           spr.SetTexture(img_endPanel);
           spr.SetPosition(960 - 640 - 360 + pos, 0 + pos2);
           screen.Draw(spr);
 
-          Text str[7];
+          smk::Text str[7];
           str[0].SetString(tr(L"end1"));
           str[1].SetString(tr(L"end2"));
           str[2].SetString(tr(L"end3"));
@@ -591,7 +591,7 @@ void Level::Draw(Screen& screen) {
             screen.Draw(str[i]);
           }
 
-          Sprite sprCredit;
+          smk::Sprite sprCredit;
           sprCredit.SetTexture(img_credit);
           sprCredit.SetPosition(960 - 640, 0);
           sprCredit.SetColor(glm::vec4(color, color, color, alpha) / 255.f);
@@ -605,7 +605,7 @@ void Level::Draw(Screen& screen) {
   // Button
   for (std::list<Button>::iterator it = button_list.begin();
        it != button_list.end(); ++it) {
-    Sprite spr;
+    smk::Sprite spr;
     spr.SetTexture(img_button[it->nb_pressed]);
     spr.SetCenter(8, 8);
     spr.SetPosition(it->geometry.left + 8, it->geometry.top + 8);
@@ -665,7 +665,7 @@ void Level::Draw(Screen& screen) {
     int x2 = ((*it).x2);
     int y1 = ((*it).y1);
     int y2 = ((*it).y2);
-    Sprite sprite;
+    smk::Sprite sprite;
     sprite.SetTexture(img_electricitySupport);
     sprite.SetPosition(x1 - 8, y1 - 8);
     screen.Draw(sprite);
@@ -720,7 +720,7 @@ void Level::Draw(Screen& screen) {
   }
 
   // drawing life bar
-  Sprite Coeur;
+  smk::Sprite Coeur;
   Coeur.SetTexture(img_coeur);
   if (!hero_list.empty()) {
     int nbCoeur = hero_list[heroSelected].life;
@@ -744,7 +744,7 @@ void Level::Draw(Screen& screen) {
   }
 }
 
-void Level::Step(Screen& screen) {
+void Level::Step(smk::Screen& screen) {
   // flush event;
   // Event ev;
   // while (screen.GetEvent(ev)) {
@@ -761,10 +761,10 @@ void Level::Step(Screen& screen) {
   // isEscape = true;
   //}
   // test if the player will restart the room
-  if (Input::IsKeyPressed(GLFW_KEY_R)) {
+  if (smk::Input::IsKeyPressed(GLFW_KEY_R)) {
     isLose = true;
   }
-  if (Input::IsKeyPressed(GLFW_KEY_T)) {
+  if (smk::Input::IsKeyPressed(GLFW_KEY_T)) {
     isWin = true;
   }
 
@@ -780,7 +780,7 @@ void Level::Step(Screen& screen) {
   // changement de joueur
   static bool spacepressed = false;
   if (!hero_list.empty()) {
-    if (Input::IsKeyHold(GLFW_KEY_SPACE)) {
+    if (smk::Input::IsKeyHold(GLFW_KEY_SPACE)) {
       if (spacepressed == false) {
         spacepressed = true;
         heroSelected = (heroSelected + 1) % nbHero;
@@ -830,7 +830,7 @@ void Level::Step(Screen& screen) {
 
       // test for un jump
       if (i == heroSelected) {
-        if (Input::IsKeyHold(GLFW_KEY_W) || Input::IsKeyHold(GLFW_KEY_UP)) {
+        if (smk::Input::IsKeyHold(GLFW_KEY_W) || smk::Input::IsKeyHold(GLFW_KEY_UP)) {
           (*it).yspeed = -20;
         }
       }
@@ -838,13 +838,13 @@ void Level::Step(Screen& screen) {
 
     if (i == heroSelected) {
       // move on the right
-      if (Input::IsKeyHold(GLFW_KEY_D) || Input::IsKeyHold(GLFW_KEY_RIGHT)) {
+      if (smk::Input::IsKeyHold(GLFW_KEY_D) || smk::Input::IsKeyHold(GLFW_KEY_RIGHT)) {
         (*it).sens = false;
         (*it).xspeed += 2;
       }
 
       // move on the left
-      if (Input::IsKeyHold(GLFW_KEY_A) || Input::IsKeyHold(GLFW_KEY_LEFT)) {
+      if (smk::Input::IsKeyHold(GLFW_KEY_A) || smk::Input::IsKeyHold(GLFW_KEY_LEFT)) {
         (*it).sens = true;
         (*it).xspeed -= 2;
       }
@@ -1260,7 +1260,7 @@ void Level::Step(Screen& screen) {
           (*itHero).life -= 3 * 10000 / int(distance2);
         }
 
-        Sound explosion;
+        smk::Sound explosion;
         // explosion.SetBuffer(SB_explosion);
         sound_list.push_front(explosion);
         (*(sound_list.begin())).Play();
@@ -1274,7 +1274,7 @@ void Level::Step(Screen& screen) {
   // Creeper explosion //
   //////////////////////
 
-  for (std::list<Sound>::iterator it = sound_list.begin();
+  for (std::list<smk::Sound>::iterator it = sound_list.begin();
        it != sound_list.end(); ++it) {
     // if ((*it).GetStatus() == Sound::Stopped) {
     // sound_list.erase(it);
@@ -1512,7 +1512,7 @@ void Level::Step(Screen& screen) {
         int& timeWait = it->var[3];
 
         if (timeBeforeSalvo == 30) {
-          Sound sound;
+          smk::Sound sound;
           // sound.SetBuffer(SB_boss[SalvoId]);
           sound_list.push_front(sound);
           (*(sound_list.begin())).Play();
@@ -1627,7 +1627,7 @@ void Level::Step(Screen& screen) {
         }
         if (t > 0) {
           if (t2 <= 0) {
-            Sound sound;
+            smk::Sound sound;
             // sound.SetBuffer(SB_start);
             sound_list.push_front(sound);
             (*(sound_list.begin())).Play();
@@ -2011,7 +2011,7 @@ bool Level::CollisionWithAllBlock(Line l) {
   return false;
 }
 
-void Level::Laser(Screen& screen,
+void Level::Laser(smk::Screen& screen,
                   int x,
                   int y,
                   int angle,
@@ -2033,8 +2033,8 @@ void Level::Laser(Screen& screen,
     yyy = yy - l * sin(a);
     if (!CollisionWithAllBlock(Line(xx, yy, xxx, yyy))) {
       for (int r = 1; r <= 4; r += 1) {
-        Shape Line =
-            Shape::Line(xx, yy, xxx, yyy, r, glm::vec4(50, 0, 0, 0) / 255.f);
+        smk::Shape Line =
+            smk::Shape::Line(xx, yy, xxx, yyy, r, glm::vec4(50, 0, 0, 0) / 255.f);
         Line.SetBlendMode(Blend::Add);
         screen.Draw(Line);
       }
@@ -2050,7 +2050,7 @@ void Level::Laser(Screen& screen,
   /*
   for(int r=1;r<=4;r+=1)
   {
-          Shape Line=Shape::Line(xx,yy,xxx,yyy,r,Color(50,0,0));
+          smk::Shape Line=smk::Shape::Line(xx,yy,xxx,yyy,r,Color(50,0,0));
           Line.SetBlendMode(Blend::Add);
           screen.Draw(Line);
   }
@@ -2061,7 +2061,7 @@ void Level::Laser(Screen& screen,
   // Draw an halo on the impact of the Laser
   i = rand();
   for (int r = 1; r <= 12 + i % 5; r += 1) {
-    Shape circle = Shape::Circle(xx, yy, r, glm::vec4(10, 0, 0, 0) / 255.f);
+    smk::Shape circle = smk::Shape::Circle(xx, yy, r, glm::vec4(10, 0, 0, 0) / 255.f);
     circle.SetBlendMode(Blend::Add);
     screen.Draw(circle);
   }
@@ -2109,7 +2109,7 @@ void Level::Laser(Screen& screen,
   }
 }
 
-void Level::DrawElectricity(Screen& screen, int x1, int y1, int x2, int y2) {
+void Level::DrawElectricity(smk::Screen& screen, int x1, int y1, int x2, int y2) {
   int x = x1;
   int y = y1;
   int xx, yy;
@@ -2121,15 +2121,15 @@ void Level::DrawElectricity(Screen& screen, int x1, int y1, int x2, int y2) {
     xx = x - 9 * cos(angle);
     yy = y - 9 * sin(angle);
     for (int r = 3; r <= 10; r += 2) {
-      Shape line1 =
-          Shape::Line(x, y, xx, yy, r, glm::vec4(242, 224, 58, 20 - r) / 255.f,
+      smk::Shape line1 =
+          smk::Shape::Line(x, y, xx, yy, r, glm::vec4(242, 224, 58, 20 - r) / 255.f,
                       r, glm::vec4(232, 214, 48, 10 - r) / 255.f);
       line1.SetBlendMode(Blend::Add);
       screen.Draw(line1);
     }
 
-    Shape Line =
-        Shape::Line(x, y, xx, yy, 2, glm::vec4(252, 234, 68, 255) / 255.f);
+    smk::Shape Line =
+        smk::Shape::Line(x, y, xx, yy, 2, glm::vec4(252, 234, 68, 255) / 255.f);
     x = xx;
     y = yy;
 

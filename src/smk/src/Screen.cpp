@@ -6,20 +6,20 @@
  *      * MIT
  */
 
-#include "Screen.hpp"
+#include <smk/Screen.hpp>
 
 #include <glm/gtx/transform.hpp>
 #include <iostream>
 #include <vector>
 #include <thread>
 
-#include "GL_CHECK_ERROR.hpp"
-#include "Input.hpp"
-#include "OpenGL.hpp"
-#include "Shader.hpp"
-#include "Sprite.hpp"
-#include "Text.hpp"
-#include "View.hpp"
+#include <smk/GL_CHECK_ERROR.hpp>
+#include <smk/Input.hpp>
+#include <smk/OpenGL.hpp>
+#include <smk/Shader.hpp>
+#include <smk/Sprite.hpp>
+#include <smk/Text.hpp>
+#include <smk/View.hpp>
 
 #ifdef __EMSCRIPTEN__
 #include <emscripten.h>
@@ -33,6 +33,7 @@
 #define P "../"
 #endif
 
+namespace smk {
 
 std::function<void()>
     registered_loop;
@@ -200,3 +201,5 @@ void Screen::Clear(glm::vec4 color) {
   glClearColor(color.r, color.g, color.b, color.a);
   glClear(GL_COLOR_BUFFER_BIT);
 }
+
+} // namespace smk

@@ -1,5 +1,5 @@
 #include "Pincette.hpp"
-#include "Screen.hpp"
+#include <smk/Screen.hpp>
 
 Pincette::Pincette() {
   step_ = 0;
@@ -37,7 +37,7 @@ void Pincette::Step() {
   step_++;
 }
 
-void Pincette::Draw(Screen& screen) {
+void Pincette::Draw(smk::Screen& screen) {
   screen.Draw(pincetteSprite);
   screen.Draw(heroSprite);
 }

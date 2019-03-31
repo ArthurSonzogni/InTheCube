@@ -1,5 +1,5 @@
 #include "Hero.hpp"
-#include "Screen.hpp"
+#include <smk/Screen.hpp>
 
 Hero::Hero() {
   geometry.left = 0;
@@ -40,7 +40,7 @@ Hero::Hero(float X, float Y) {
   life = 7;
 }
 
-void Hero::Draw(Screen& screen) {
+void Hero::Draw(smk::Screen& screen) {
   if (sens)
     sprite.SetTexture(img_hero_left);
   else

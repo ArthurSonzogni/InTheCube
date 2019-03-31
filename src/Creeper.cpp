@@ -1,7 +1,7 @@
 #include "Creeper.hpp"
 #include "Resource.hpp"
 #include <cstdlib>
-#include "Screen.hpp"
+#include <smk/Screen.hpp>
 
 Creeper::Creeper(int X, int Y) {
   x = X;
@@ -14,7 +14,7 @@ Creeper::Creeper(int X, int Y) {
   geometry = Rectangle(x - 9, x + 9, y - 15, y - 15);
   xspeed = -2;
 }
-void Creeper::Draw(Screen& screen) {
+void Creeper::Draw(smk::Screen& screen) {
   sprite.SetPosition(x, y);
 
   if (mode == 0) {

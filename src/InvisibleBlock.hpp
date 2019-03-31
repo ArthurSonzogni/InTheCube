@@ -3,15 +3,15 @@
 
 #include "Forme.hpp"
 #include "Hero.hpp"
-#include "Screen.hpp"
+#include <smk/Screen.hpp>
 
 class InvisibleBlock {
  public:
   Rectangle geometry;
-  Sprite sprite;
+  smk::Sprite sprite;
 
   InvisibleBlock(int x, int y, int width, int height);
-  void Draw(Screen& screen, const Hero& hero);
+  void Draw(smk::Screen& screen, const Hero& hero);
 };
 
 #endif /* INVISIBLE_BLOCK_HPP */

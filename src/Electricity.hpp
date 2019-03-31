@@ -2,7 +2,7 @@
 #define ELECTRICITY_HP
 
 #include "Resource.hpp"
-#include "Sound.hpp"
+#include <smk/Sound.hpp>
 
 class Electricity {
  public:
@@ -10,7 +10,7 @@ class Electricity {
   float ratio;
   int periode;
   int offset;
-  Sound sound;
+  smk::Sound sound;
   bool isSound;
   Electricity(int X1,
               int Y1,

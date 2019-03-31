@@ -1,4 +1,6 @@
-#include "Shape.hpp"
+#include <smk/Shape.hpp>
+
+namespace smk {
 
 Shape Shape::Rectangle(float x,
                        float y,
@@ -23,3 +25,5 @@ Shape Shape::Line(float x1,
 Shape Shape::Circle(float x, float y, float radius, glm::vec4 color) {
   return Shape();
 }
+
+} // namespace smk

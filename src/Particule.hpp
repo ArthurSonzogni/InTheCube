@@ -2,13 +2,13 @@
 #define PARTICULE_HPP
 
 #include "Hero.hpp"
-#include "Sprite.hpp"
+#include <smk/Sprite.hpp>
 
 class Screen;
 
 class Particule {
  public:
-  Sprite sprite;
+  smk::Sprite sprite;
   bool (*transform)(Particule*);
   float xspeed, yspeed;
   float x, y;
@@ -16,7 +16,7 @@ class Particule {
   int t;
   Particule(bool (*stepF)(Particule*));
   bool Step();
-  void Draw(Screen& screen);
+  void Draw(smk::Screen& screen);
 };
 
 // particules fonctions

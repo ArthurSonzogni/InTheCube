@@ -1,13 +1,13 @@
+#include <smk/Input.hpp>
+#include <smk/Shape.hpp>
+#include <smk/Text.hpp>
 #include "BackgroundMusic.hpp"
-#include "Input.hpp"
 #include "Lang.hpp"
 #include "Level.hpp"
 #include "LevelListLoader.hpp"
 #include "SaveManager.hpp"
-#include "Shape.hpp"
-#include "Text.hpp"
 
-#include "Screen.hpp"
+#include <smk/Screen.hpp>
 
 #ifdef __EMSCRIPTEN__
 #define P "./"
@@ -21,7 +21,7 @@ void popup(std::wstring message);
 bool question(std::wstring message, std::wstring q1, std::wstring q2);
 std::string intToString(int n);
 
-Screen* screen = nullptr;
+smk::Screen* screen = nullptr;
 void Loop();
 
 BackgroundMusic backMusic;
@@ -76,7 +76,7 @@ int frame = 0;
 
 int main(int argc, char const* argv[]) {
   std::locale::global(std::locale("C.UTF-8"));
-  Screen my_screen(640, 480, "InTheCube");
+  smk::Screen my_screen(640, 480, "InTheCube");
   screen = &my_screen;
   start_time = glfwGetTime();
   frame = 0;
@@ -96,11 +96,10 @@ int level_index = 0;
 Level level;
 bool level_loaded = false;
 
-SaveManager savFile(P"sav/gameSav");
-SaveManager langFile(P"sav/language");
+SaveManager savFile(P "sav/gameSav");
+SaveManager langFile(P "sav/language");
 
 void Loop() {
-  
   float new_time = glfwGetTime();
   int new_frame = (new_time - start_time) * 30;
 
@@ -206,12 +205,12 @@ void Remaining() {
   // Start main loop
   unsigned int level_index = savFile.GetLevel(name);
 
-   //introduction
-  //if (level_index == 0) {
-    //intro();
+  // introduction
+  // if (level_index == 0) {
+  // intro();
   //}
 
-  backMusic.ChangeMusic(P"snd/backgroundMusic.ogg", 50);
+  backMusic.ChangeMusic(P "snd/backgroundMusic.ogg", 50);
 
   while (level_index < levelList.size()) {
     // load the Level
@@ -253,12 +252,12 @@ std::wstring StringToWString(const std::string& s) {
 }
 
 void MainScreen::Draw() {
-  View view;
+  smk::View view;
   view.SetCenter(320, 240);
   view.SetSize(640, 480);
   screen->SetView(view);
 
-  Sprite sprLanguage[3];
+  smk::Sprite sprLanguage[3];
   sprLanguage[0].SetTexture(img_frenchFlag);
   sprLanguage[1].SetTexture(img_englishFlag);
   sprLanguage[2].SetTexture(img_deutschFlag);
@@ -266,15 +265,15 @@ void MainScreen::Draw() {
   sprLanguage[1].SetPosition(640, 100);
   sprLanguage[2].SetPosition(640, 200);
 
-  Sprite deleteButton;
-  Sprite newGame;
-  Sprite background;
+  smk::Sprite deleteButton;
+  smk::Sprite newGame;
+  smk::Sprite background;
 
   deleteButton.SetTexture(img_deleteButton);
 
   newGame.SetTexture(img_newGame);
   newGame.SetPosition(320 - 300 / 2, 480 - 64);
-  Text newGameText;
+  smk::Text newGameText;
   newGameText.SetFont(font_arial);
   newGameText.SetString(tr(L"newGame"));
   newGameText.SetPosition(220, 430);
@@ -285,9 +284,9 @@ void MainScreen::Draw() {
   std::string name;
 
   // Clock timeClock;
-  int mouse_x = Input::MouseX();
-  int mouse_y = Input::MouseY();
-  bool mouse_pressed = Input::IsMousePressed(GLFW_MOUSE_BUTTON_1);
+  int mouse_x = smk::Input::MouseX();
+  int mouse_y = smk::Input::MouseY();
+  bool mouse_pressed = smk::Input::IsMousePressed(GLFW_MOUSE_BUTTON_1);
 
   ///// Draw
 
@@ -306,17 +305,17 @@ void MainScreen::Draw() {
     int decale = std::max(5, std::min(std::abs(mouse_y - (50 + i * 40)), 40));
 
     // rectangle
-    Shape rectangle =
-        Shape::Rectangle(30, 30 + i * 40, 400, 70 + i * 40,
-                         glm::vec4(decale + 50, 2 * decale + 100,
-                                   2 * decale + 150, 255 - decale * 4) /
-                             255.f,
-                         3, glm::vec4(0, 0, 0, 0));
+    smk::Shape rectangle =
+        smk::Shape::Rectangle(30, 30 + i * 40, 400, 70 + i * 40,
+                              glm::vec4(decale + 50, 2 * decale + 100,
+                                        2 * decale + 150, 255 - decale * 4) /
+                                  255.f,
+                              3, glm::vec4(0, 0, 0, 0));
     rectangle.Move(decale, 0);
     screen->Draw(rectangle);
 
     // text
-    Text text;
+    smk::Text text;
     text.SetFont(font_arial);
     text.SetString(it.name + "  /  " + intToString(it.level));
     text.SetPosition(40, 30 + i * 40);
@@ -418,8 +417,8 @@ void MainScreen::Draw() {
     //}
 
     if (t > 0) {
-      Shape rect =
-          Shape::Rectangle(0, 0, 640, 480, glm::vec4(0, 0, 0, t / 255.f));
+      smk::Shape rect =
+          smk::Shape::Rectangle(0, 0, 640, 480, glm::vec4(0, 0, 0, t / 255.f));
       screen->Draw(rect);
       t -= 4;
     }
@@ -428,23 +427,23 @@ void MainScreen::Draw() {
 
 std::string getName() {
   // text
-  //Text text;
-  //text.SetFont(font_arial);
-  //text.SetString(tr(L"enterYourName"));
-  //text.SetColor(glm::vec4(100, 100, 100, 255) / 255.f);
-  //text.SetPosition(320, 240);
+  // Text text;
+  // text.SetFont(font_arial);
+  // text.SetString(tr(L"enterYourName"));
+  // text.SetColor(glm::vec4(100, 100, 100, 255) / 255.f);
+  // text.SetPosition(320, 240);
   // FloatRect position = text.GetRect();
   // Text.SetPosition(320 - position.GetWidth() / 2, 240 - 30 / 2);
   std::string text = "";
 
   // cadre
-  Sprite sprCadreInput;
+  smk::Sprite sprCadreInput;
   sprCadreInput.SetTexture(img_cadreInput);
   sprCadreInput.SetPosition(640 / 2 - 320 / 2, 480 / 2 - 64 / 2);
 
   // arriere plan
-  Shape arrierePlan =
-      Shape::Rectangle(0, 0, 640, 480, glm::vec4(0, 0, 0, 0.05), 0);
+  smk::Shape arrierePlan =
+      smk::Shape::Rectangle(0, 0, 640, 480, glm::vec4(0, 0, 0, 0.05), 0);
 
   // event & clock
   // Event event;
@@ -452,7 +451,7 @@ std::string getName() {
   bool continuer = true;
 
   // Image background = screen.Capture();
-  Sprite backSpr;
+  smk::Sprite backSpr;
   // backSpr.SetTexture(background);
 
   // while (continuer) {
@@ -480,7 +479,7 @@ std::string getName() {
   screen->Draw(backSpr);
   screen->Draw(arrierePlan);
   screen->Draw(sprCadreInput);
-  //screen->Draw(Text);
+  // screen->Draw(Text);
   // Sleep(float(1.0 / 30.0 - timeClock.GetElapsedTime()));
   // timeClock.Reset();
   //}
@@ -489,12 +488,13 @@ std::string getName() {
 
 void popup(std::wstring message) {
   // Clock timeClock;
-  Shape arrierePlan =
-      Shape::Rectangle(0, 0, 640, 480, glm::vec4(0, 0, 0, 0.05));
-  Shape rectangle = Shape::Rectangle(640 * 0.2, 480 * 0.2, 640 * 0.8, 480 * 0.8,
-                                     glm::vec4(1.0, 1.0, 1.0, 1.0));
+  smk::Shape arrierePlan =
+      smk::Shape::Rectangle(0, 0, 640, 480, glm::vec4(0, 0, 0, 0.05));
+  smk::Shape rectangle =
+      smk::Shape::Rectangle(640 * 0.2, 480 * 0.2, 640 * 0.8, 480 * 0.8,
+                       glm::vec4(1.0, 1.0, 1.0, 1.0));
 
-  Text text;
+  smk::Text text;
   text.SetFont(font_arial);
   text.SetString(message);
   // text.SetPosition(640 / 2 - text.GetRect().GetWidth() / 2,
@@ -506,7 +506,7 @@ void popup(std::wstring message) {
   //;
 
   // Image background = screen.Capture();
-  Sprite backSpr;
+  smk::Sprite backSpr;
   // backSpr.SetTexture(background);
 
   // while (1) {
@@ -524,7 +524,7 @@ void popup(std::wstring message) {
   screen->Draw(backSpr);
   screen->Draw(arrierePlan);
   screen->Draw(rectangle);
-  //screen->Draw(text);
+  // screen->Draw(text);
 
   // Sleep(float(1.0 / 20.0 - timeClock.GetElapsedTime()));
   // timeClock.Reset();
@@ -543,21 +543,22 @@ std::string intToString(int n) {
 
 bool question(std::wstring message, std::wstring q1, std::wstring q2) {
   // Clock timeClock;
-  Shape arrierePlan =
-      Shape::Rectangle(0, 0, 640, 480, glm::vec4(0, 0, 0, 0.05));
-  Shape rectangle = Shape::Rectangle(640 * 0.2, 480 * 0.2, 640 * 0.8, 480 * 0.8,
-                                     glm::vec4(1.0, 1.0, 1.0, 1.0));
+  smk::Shape arrierePlan =
+      smk::Shape::Rectangle(0, 0, 640, 480, glm::vec4(0, 0, 0, 0.05));
+  smk::Shape rectangle =
+      smk::Shape::Rectangle(640 * 0.2, 480 * 0.2, 640 * 0.8, 480 * 0.8,
+                       glm::vec4(1.0, 1.0, 1.0, 1.0));
 
-  Text text;
+  smk::Text text;
   text.SetFont(font_arial);
   text.SetString(message);
   // text.SetPosition(640 / 2 - text.GetRect().GetWidth() / 2,
   // 480 / 2 - text.GetRect().GetHeight());
   text.SetColor(glm::vec4(0.f, 0.f, 0.f, 0.f));
 
-  Text q1String;
+  smk::Text q1String;
   q1String.SetFont(font_arial);
-  Text q2String;
+  smk::Text q2String;
   q2String.SetFont(font_arial);
   q1String.SetString(q1);
   q2String.SetString(q2);
@@ -592,8 +593,8 @@ bool question(std::wstring message, std::wstring q1, std::wstring q2) {
   (void)mouse_pressed;
 
   // Image background = screen.Capture();
-  Sprite backSpr;
-  //backSpr.SetTexture(background);
+  smk::Sprite backSpr;
+  // backSpr.SetTexture(background);
 
   while (1) {
     mouse_pressed = false;
@@ -641,42 +642,42 @@ bool question(std::wstring message, std::wstring q1, std::wstring q2) {
 
 void intro() {
   // Clock timeClock;
-  glm::vec4 background_color(0.0,0.0,0.0,1.0);
+  glm::vec4 background_color(0.0, 0.0, 0.0, 1.0);
 
-  Text text1;
+  smk::Text text1;
   text1.SetFont(font_arial);
   text1.SetString(tr(L"intro11") + L"\n" + tr(L"intro12") + L"\n" +
                   tr(L"intro13") + L"\n" + tr(L"intro14"));
-  text1.SetColor(glm::vec4(1.0,1.0,1.0,1.0));
+  text1.SetColor(glm::vec4(1.0, 1.0, 1.0, 1.0));
   text1.SetPosition(10, 10);
 
-  Text text2;
+  smk::Text text2;
   text2.SetFont(font_arial);
   text2.SetString(tr(L"intro21") + L"\n" + tr(L"intro22") + L"\n" +
                   tr(L"intro23") + L"\n" + tr(L"intro24"));
-  text2.SetColor(glm::vec4(1.0,1.0,1.0,1.0));
+  text2.SetColor(glm::vec4(1.0, 1.0, 1.0, 1.0));
   text2.SetPosition(640, 10);
 
-  Text text3;
+  smk::Text text3;
   text3.SetFont(font_arial);
   text3.SetString(tr(L"intro31") + L"\n" + tr(L"intro32") + L"\n" +
                   tr(L"intro33") + L"\n" + tr(L"intro34"));
-  text3.SetColor(glm::vec4(1.0,1.0,1.0,1.0));
+  text3.SetColor(glm::vec4(1.0, 1.0, 1.0, 1.0));
   text3.SetPosition(1280, 10);
 
-  Text text4;
+  smk::Text text4;
   text4.SetFont(font_arial);
   text4.SetString(tr(L"intro41") + L"\n" + tr(L"intro42") + L"\n" +
                   tr(L"intro43") + L"\n" + tr(L"intro44") + L"\n" +
                   tr(L"intro45"));
-  text4.SetColor(glm::vec4(1.0,1.0,1.0,1.0));
+  text4.SetColor(glm::vec4(1.0, 1.0, 1.0, 1.0));
   text4.SetPosition(1280, 10);
 
-  Text text5;
+  smk::Text text5;
   text5.SetFont(font_arial);
   text5.SetString(tr(L"intro51") + L"\n" + tr(L"intro52") + L"\n" +
                   tr(L"intro53") + L"\n" + tr(L"intro54"));
-  text5.SetColor(glm::vec4(1.0,1.0,1.0,1.0));
+  text5.SetColor(glm::vec4(1.0, 1.0, 1.0, 1.0));
   text4.SetPosition(1280, 10);
 
   int position = 0;
@@ -745,7 +746,7 @@ void intro() {
 }
 
 void WelcomeScreen::Draw() {
-  View view;
+  smk::View view;
   view.SetCenter(320, 240);
   view.SetSize(640, 480);
   screen->SetView(view);
@@ -754,12 +755,12 @@ void WelcomeScreen::Draw() {
   bool pressed = false;
   // Clock timeClock;
 
-  Sprite spr;
+  smk::Sprite spr;
   spr.SetTexture(img_accueil);
 
-  if (Input::IsMousePressed(GLFW_MOUSE_BUTTON_1) ||
-      Input::IsKeyPressed(GLFW_KEY_SPACE) ||
-      Input::IsKeyPressed(GLFW_KEY_ENTER)) {
+  if (smk::Input::IsMousePressed(GLFW_MOUSE_BUTTON_1) ||
+      smk::Input::IsKeyPressed(GLFW_KEY_SPACE) ||
+      smk::Input::IsKeyPressed(GLFW_KEY_ENTER)) {
     quit_ = true;
   }
 
@@ -804,42 +805,42 @@ void WelcomeScreen::Draw() {
 }
 
 void IntroScreen::Draw() {
-  glm::vec4 background_color(0.0,0.0,0.0,1.0);
+  glm::vec4 background_color(0.0, 0.0, 0.0, 1.0);
 
-  Text text1;
+  smk::Text text1;
   text1.SetFont(font_arial);
   text1.SetString(tr(L"intro11") + L"\n" + tr(L"intro12") + L"\n" +
                   tr(L"intro13") + L"\n" + tr(L"intro14"));
-  text1.SetColor(glm::vec4(1.0,1.0,1.0,1.0));
+  text1.SetColor(glm::vec4(1.0, 1.0, 1.0, 1.0));
 
-  Text text2;
+  smk::Text text2;
   text2.SetFont(font_arial);
   text2.SetString(tr(L"intro21") + L"\n" + tr(L"intro22") + L"\n" +
                   tr(L"intro23") + L"\n" + tr(L"intro24"));
-  text2.SetColor(glm::vec4(1.0,1.0,1.0,1.0));
+  text2.SetColor(glm::vec4(1.0, 1.0, 1.0, 1.0));
 
-  Text text3;
+  smk::Text text3;
   text3.SetFont(font_arial);
   text3.SetString(tr(L"intro31") + L"\n" + tr(L"intro32") + L"\n" +
                   tr(L"intro33") + L"\n" + tr(L"intro34"));
-  text3.SetColor(glm::vec4(1.0,1.0,1.0,1.0));
+  text3.SetColor(glm::vec4(1.0, 1.0, 1.0, 1.0));
 
-  Text text4;
+  smk::Text text4;
   text4.SetFont(font_arial);
   text4.SetString(tr(L"intro41") + L"\n" + tr(L"intro42") + L"\n" +
                   tr(L"intro43") + L"\n" + tr(L"intro44") + L"\n" +
                   tr(L"intro45"));
-  text4.SetColor(glm::vec4(1.0,1.0,1.0,1.0));
+  text4.SetColor(glm::vec4(1.0, 1.0, 1.0, 1.0));
 
-  Text text5;
+  smk::Text text5;
   text5.SetFont(font_arial);
   text5.SetString(tr(L"intro51") + L"\n" + tr(L"intro52") + L"\n" +
                   tr(L"intro53") + L"\n" + tr(L"intro54"));
-  text5.SetColor(glm::vec4(1.0,1.0,1.0,1.0));
+  text5.SetColor(glm::vec4(1.0, 1.0, 1.0, 1.0));
 
-  if (Input::IsKeyPressed(GLFW_KEY_SPACE) ||
-      Input::IsKeyPressed(GLFW_KEY_ENTER) ||
-      Input::IsMousePressed(GLFW_MOUSE_BUTTON_1)) {
+  if (smk::Input::IsKeyPressed(GLFW_KEY_SPACE) ||
+      smk::Input::IsKeyPressed(GLFW_KEY_ENTER) ||
+      smk::Input::IsMousePressed(GLFW_MOUSE_BUTTON_1)) {
     position++;
   }
 
@@ -861,8 +862,7 @@ void IntroScreen::Draw() {
   background_color =
       glm::vec4((Rxpos * r[Qxpos + 1] + (640 - Rxpos) * r[Qxpos]) / 640,
                 (Rxpos * g[Qxpos + 1] + (640 - Rxpos) * g[Qxpos]) / 640,
-                (Rxpos * b[Qxpos + 1] + (640 - Rxpos) * b[Qxpos]) / 640,
-                255) /
+                (Rxpos * b[Qxpos + 1] + (640 - Rxpos) * b[Qxpos]) / 640, 255) /
       255.f;
   screen->Clear(background_color);
 
