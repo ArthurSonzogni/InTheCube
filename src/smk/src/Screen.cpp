@@ -35,14 +35,9 @@
 
 namespace smk {
 
-std::function<void()>
-    registered_loop;
-void loop_iteration() {
-  registered_loop();
-}
-
+Screen::Screen() {}
 Screen::Screen(int width, int height, const std::string& title)
-    : width_(640), height_(480), title_(title) {
+    : width_(640), height_(480) {
   std::cout << "[Info] GLFW initialisation" << std::endl;
 
   // initialize the GLFW library
@@ -63,14 +58,14 @@ Screen::Screen(int width, int height, const std::string& title)
 
   glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
 
-  // create the window
-  window = glfwCreateWindow(width_, height_, title_.c_str(), NULL, NULL);
-  if (!window) {
+  // create the window_
+  window_ = glfwCreateWindow(width_, height_, title.c_str(), NULL, NULL);
+  if (!window_) {
     glfwTerminate();
-    throw std::runtime_error("Couldn't create a window");
+    throw std::runtime_error("Couldn't create a window_");
   }
 
-  glfwMakeContextCurrent(window);
+  glfwMakeContextCurrent(window_);
 
 #ifndef __EMSCRIPTEN__
   glewExperimental = GL_TRUE;
@@ -89,6 +84,9 @@ Screen::Screen(int width, int height, const std::string& title)
   std::cout << "Renderer: " << renderer << std::endl;
   std::cout << "OpenGL version supported " << version << std::endl;
 
+  // Make the window_'s context current
+  glfwMakeContextCurrent(window_);
+
   // opengl configuration
   //glEnable(GL_DEPTH_TEST);  // enable depth-testing
   //glDepthFunc(GL_LESS);  // depth-testing interprets a smaller value as "closer"
@@ -96,108 +94,67 @@ Screen::Screen(int width, int height, const std::string& title)
   // Alph transparency.
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+  View default_view;
+  default_view.SetCenter(320, 480);
+  default_view.SetSize(640, 480);
+  SetView(default_view);
 }
 
-Screen::~Screen() {}
-
-GLFWwindow* Screen::GetWindow() const {
-  return window;
+Screen::Screen(Screen&& screen) {
+  operator=(std::move(screen));
 }
 
-float Screen::GetTime() const {
-  return time;
+void Screen::operator=(Screen&& screen) {
+  std::swap(window_, screen.window_);
+  std::swap(width_, screen.width_);
+  std::swap(height_, screen.height_);
+  std::swap(time_, screen.time_);
 }
 
-void Screen::Run() {
-  // Make the window's context current
-  glfwMakeContextCurrent(window);
+void Screen::PoolEvents() {
+  glfwPollEvents();
+  Input::Update(window_);
+}
 
-  time = glfwGetTime();
+void Screen::Display() {
+  // Swap Front and Back buffers (double buffering)
+  glfwSwapBuffers(window_);
 
-  registered_loop = [&]() {
-  // compute new time and delta time
-#ifndef __EMSCRIPTEN__
-    double sleep_duration = std::max(0.0, 1.0 / 30.0 - glfwGetTime() + time);
-    std::this_thread::sleep_for(
-        std::chrono::milliseconds(int(1000.f * sleep_duration)));
-#endif
-    time = glfwGetTime();
+  // Detect window_ related changes
+  UpdateDimensions();
 
-    // Detect window related changes
-    DetectWindowDimensionChange();
+  time_ = glfwGetTime();
+}
 
-    Input::Update(window);
+Screen::~Screen() {
+  // glfwTerminate(); // Needed? What about multiple windows?
+}
 
-    // execute the frame code
-    loop_();
-
-    // Swap Front and Back buffers (double buffering)
-    glfwSwapBuffers(window);
-
-    // Pool and process events
-    glfwPollEvents();
-  };
-
+void Screen::UpdateDimensions() {
 #ifdef __EMSCRIPTEN__
-  //emscripten_set_main_loop(loop_iteration, 0, 1);
-  //emscripten_set_main_loop(loop_iteration, 30, 1);
-  emscripten_set_main_loop(loop_iteration, 0, 1);
+  emscripten_get_canvas_element_size("canvas", &width_, &height_);
 #else
-  for (;;)
-    loop_iteration();
+  glfwGetWindowSize(window_, &width_, &height_);
 #endif
-  glfwTerminate();
+  glViewport(0, 0, width_, height_);
 }
 
-void Screen::SetLoop(std::function<void()> loop) {
-  loop_ = loop;
-}
-
-void Screen::DetectWindowDimensionChange() {
-  int w, h;
-#ifdef __EMSCRIPTEN__
-  emscripten_get_canvas_element_size("canvas", &w, &h);
-#else
-  glfwGetWindowSize(GetWindow(), &w, &h);
-#endif
-
-  dimensionChanged = (w != width_ or h != height_);
-  if (dimensionChanged) {
-    width_ = w;
-    height_ = h;
-    glViewport(0, 0, width_, height_);
-  }
-}
-
-int Screen::Width() {
-  return width_;
-}
-
-int Screen::Height() {
-  return height_;
-}
-
-float Screen::GetWindowRatio() {
-  return float(width_) / float(height_);
-}
-
-bool Screen::WindowDimensionChanged() {
-  return dimensionChanged;
-}
-
-void Screen::Draw(const Sprite& sprite) { sprite.Draw(view_); }
-void Screen::Draw(const Text& text) { text.Draw(view_); }
+void Screen::Draw(const Sprite& sprite) { sprite.Draw(view_mat_); }
+void Screen::Draw(const Text& text) { text.Draw(view_mat_); }
 
 void Screen::SetView(const View& view) {
-  float tx = view.x_ - view.width_ / 2.f;
-  float ty = view.y_ - view.height_ / 2.f;
-  view_ = glm::mat4(2.0 / 640, 0.0, 0.0, 0.0,                                //
-                    0.0, 2.f / 480, 0.0, 0.0,                                //
-                    0.0, 0.0, 1.0, 0.0,                                      //
-                    -1.0 - 2.0 * tx / 640, 1.0 - 2.0 * ty / 480, 0.0, 1.0);  //
+  view_ = view;
+  float tx = view_.x_ - view_.width_ / 2.f;
+  float ty = view_.y_ - view_.height_ / 2.f;
+  view_mat_ =
+      glm::mat4(2.0 / 640, 0.0, 0.0, 0.0,                                //
+                0.0, -2.f / 480, 0.0, 0.0,                               //
+                0.0, 0.0, 1.0, 0.0,                                      //
+                -1.0 - 2.0 * tx / 640, 1.0 - 2.0 * ty / 480, 0.0, 1.0);  //
 }
 
-void Screen::Clear(glm::vec4 color) {
+void Screen::Clear(const glm::vec4& color) {
   glClearColor(color.r, color.g, color.b, color.a);
   glClear(GL_COLOR_BUFFER_BIT);
 }

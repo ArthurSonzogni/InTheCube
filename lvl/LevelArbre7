@@ -18,12 +18,12 @@ nd 512 313 155 38
 nd 589 188 217 46
 nd 748 128 56 354
 nd 92 74 37 40
-accelerateur 391 203 5 132 0 -3 0.95
-accelerateur 101 26 194 315 0 -3 0.98
-accelerateur 531 312 215 154 0 -3 0.98
-accelerateur 522 229 235 87 -2 -2 0.98
-accelerateur 534 139 44 131 0 -1.5 0.98
-accelerateur 527 93 278 99 1 -2 0.98
+accelerator 391 203 5 132 0 -3 0.95
+accelerator 101 26 194 315 0 -3 0.98
+accelerator 531 312 215 154 0 -3 0.98
+accelerator 522 229 235 87 -2 -2 0.98
+accelerator 534 139 44 131 0 -1.5 0.98
+accelerator 527 93 278 99 1 -2 0.98
 detector 443 265 366 209
 detector 505 46 305 267
 pic 96 92 0 0 1

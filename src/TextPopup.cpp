@@ -1,7 +1,12 @@
 #include "TextPopup.hpp"
+
+#include "Clock.hpp"
 #include "Lang.hpp"
 #include "Resource.hpp"
-#include "Clock.hpp"
+#include "smk/Color.hpp"
+#include <smk/Screen.hpp>
+#include <smk/Shape.hpp>
+#include <smk/Input.hpp>
 
 TextPopup::TextPopup(int t) {
   switch (t) {
@@ -86,65 +91,51 @@ TextPopup::TextPopup(int t) {
       text[1].push_back(tr(L"instruction8"));
     } break;
   }
-  pos = 0;
-  taille = text.size();
   spaceSprite.SetTexture(img_decorSpace);
 }
 
-int ydecal;
+bool TextPopup::Step() {
+  time++;
+  horizontal_shift += (100 - horizontal_shift) / 10.0;
 
-void TextPopup::Draw(smk::Screen& screen) {
-  //Clock t;
-  //ydecal = 640;
-  //int p = 0;
-  //int time = 0;
-  ////Event ev;
-
-  ////while (screen.GetEvent(ev))
-    ////;
-
-  //Image background = screen.Capture();
-  //Sprite backSpr;
-  //backSpr.SetTexture(background);
-  //FloatRect rect = screen.GetView().GetRect();
-  //backSpr.SetPosition(rect.Left, rect.Top);
-
-  //while (1) {
-    //time++;
-    //screen.Draw(backSpr);
-    //drawAux(screen, p);
-    //screen.Display();
-    //Sleep(1.0 / 30.0 - t.GetElapsedTime());
-    //t.Reset();
-    //ydecal += (100 - ydecal) / 10.0;
-    ////while (screen.GetEvent(ev)) {
-      ////if (time > 10 &&
-          ////(((ev.Type == Event::KeyPressed) && (ev.Key.Code == Key::Space)) ||
-           ////(ev.Type == Event::MouseButtonPressed))) {
-        ////p++;
-        ////ydecal = 640;
-        ////time = 0;
-        ////if (p >= taille)
-          ////return;
-      ////}
-    ////}
-  //}
+  if (time > 10) {
+    if (smk::Input::IsMousePressed(GLFW_MOUSE_BUTTON_1) ||
+        smk::Input::IsKeyPressed(GLFW_KEY_SPACE) ||
+        smk::Input::IsKeyPressed(GLFW_KEY_ENTER)) {
+      p++;
+      horizontal_shift = 640;
+      time = 0;
+      if (p >= text.size())
+        return true;
+    }
+  }
+  return false;
 }
 
-void TextPopup::DrawAux(smk::Screen& screen, int p) {
+void TextPopup::Draw(smk::Screen& screen) {
+  if (p >= text.size())
+    return;
   //FloatRect rect = screen.GetView().GetRect();
-  //// drawing cadre
-  //int x1 = 640 / 5 + rect.Left, y1 = 480 / 5 + ydecal + rect.Top,
-      //x2 = 640 * 4 / 5 + rect.Left, y2 = 480 + ydecal + rect.Top, r = 25,
-      //e = 10;
-  //Color c0 = Color(3, 3, 3);
-  //Color c1 = Color(255, 255, 255);
-  //Shape blackRect1 = Shape::Rectangle(x1, y1 - r, x2, y2 + r, c0);
-  //Shape blackRect2 = Shape::Rectangle(x1 - r, y1, x2 + r, y2, c0);
-  //Shape whiteRect1 = Shape::Rectangle(x1, y1 - r + e, x2, y2 + r - e, c1);
-  //Shape whiteRect2 = Shape::Rectangle(x1 - r + e, y1, x2 + r - e, y2, c1);
-  //screen.Draw(blackRect1);
-  //screen.Draw(blackRect2);
+  // drawing cadre
+  float left = screen.GetView().Left();
+  float top = screen.GetView().Top();
+  int x1 = left + 640 / 5;
+  int y1 = top + 480 / 5 + horizontal_shift;
+
+  int x2 = 640 * 4 / 5 + left;
+  int y2 = 480 + horizontal_shift + top;
+
+  int r = 25;
+  int e = 10;
+
+  glm::vec4 c0 = {0.05, 0.05, 0.05, 1.0};
+  glm::vec4 c1 = smk::Color::White;
+  auto blackRect1 = smk::Shape::Rectangle(x1, y1 - r, x2, y2 + r, c0);
+  auto blackRect2 = smk::Shape::Rectangle(x1 - r, y1, x2 + r, y2, c0);
+  auto whiteRect1 = smk::Shape::Rectangle(x1, y1 - r + e, x2, y2 + r - e, c1);
+  auto whiteRect2 = smk::Shape::Rectangle(x1 - r + e, y1, x2 + r - e, y2, c1);
+  screen.Draw(blackRect1);
+  screen.Draw(blackRect2);
   //Shape blackCircle = Shape::Circle(x1, y1, r, c0);
   //Shape whiteCircle = Shape::Circle(x1, y1, r - e, c1);
   //screen.Draw(blackCircle);
@@ -161,20 +152,20 @@ void TextPopup::DrawAux(smk::Screen& screen, int p) {
   //whiteCircle.Move(x1 - x2, 0);
   //screen.Draw(blackCircle);
   //screen.Draw(whiteCircle);
-  //screen.Draw(whiteRect1);
-  //screen.Draw(whiteRect2);
+  screen.Draw(whiteRect1);
+  screen.Draw(whiteRect2);
 
-  //// drawing texte
-  //int x = x1 + 5;
-  //int y = y1 + 5;
-  //textString.SetColor(c0);
-  //for (std::vector<std::wstring>::iterator it = text[p].begin();
-       //it != text[p].end(); ++it) {
-    //textString.SetPosition(x, y);
-    //textString.SetText(*it);
-    //screen.Draw(textString);
-    //y += 40;
-  //}
-  //spaceSprite.SetPosition(x2 - 128, y2 - 135);
-  //screen.Draw(spaceSprite);
+  // drawing texte
+  int x = x1 + 5;
+  int y = y1 + 5;
+  textString.SetColor(c0);
+  textString.SetFont(font_arial);
+  for (auto& t : text[p]) {
+    textString.SetPosition(x, y);
+    textString.SetString(t);
+    screen.Draw(textString);
+    y += 40;
+  }
+  spaceSprite.SetPosition(x2 - 128, y2 - 135);
+  screen.Draw(spaceSprite);
 }

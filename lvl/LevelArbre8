@@ -31,12 +31,12 @@ nd 96 0 192 192
 nd 288 0 128 128
 nd 416 0 224 96
 nd 608 96 32 192
-accelerateur 333 1056 8 128 0 -3 0.90
-accelerateur 524 960 7 160 0 -5 0.95
-accelerateur 491 676 7 246 0 -3 1.0
-accelerateur 339 721 5 226 0 -3 0.90
-accelerateur 82 630 3 222 0 -6 0.98
-accelerateur 82 416 5 149 0 -6 0.98
-accelerateur 300 160 3 212 0 -3 0.90
+accelerator 333 1056 8 128 0 -3 0.90
+accelerator 524 960 7 160 0 -5 0.95
+accelerator 491 676 7 246 0 -3 1.0
+accelerator 339 721 5 226 0 -3 0.90
+accelerator 82 630 3 222 0 -6 0.98
+accelerator 82 416 5 149 0 -6 0.98
+accelerator 300 160 3 212 0 -3 0.90
 nd -32 0 32 2000
 special 6

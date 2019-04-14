@@ -8,6 +8,11 @@ class View {
   void SetCenter(float x, float y);
   void SetSize(float width, float height);
 
+  float Left() const { return x_ - width_ / 2; };
+  float Right() const { return x_ + width_ / 2; };
+  float Top() const { return y_ - height_ / 2; };
+  float Bottom() const { return y_ + height_ / 2; };
+
  public:
   float x_ = 0;
   float y_ = 0;

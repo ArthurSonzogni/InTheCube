@@ -10,3 +10,6 @@
 [submodule "lib/freetype2"]
 	path = lib/freetype2
 	url = https://github.com/aseprite/freetype2
+[submodule "lib/openal"]
+	path = lib/openal
+	url = https://github.com/kcat/openal-soft

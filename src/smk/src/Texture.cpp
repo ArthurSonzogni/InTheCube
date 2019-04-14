@@ -84,5 +84,4 @@ void Texture::Bind(GLuint activetexture) const {
   glBindTexture(GL_TEXTURE_2D, id);
 }
 
-
 } // namespace smk

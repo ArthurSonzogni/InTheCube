@@ -22,7 +22,7 @@ class LaserTurret {
               int Mode,
               int AngleSpeed);
   void Draw(smk::Screen& screen);
-  void UpdateAngle();
+  void Step();
 };
 
 #endif /* LASER_TURRET_HPP */

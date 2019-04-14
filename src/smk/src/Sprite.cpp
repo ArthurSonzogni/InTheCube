@@ -12,6 +12,21 @@
 
 namespace smk {
 
+static Texture white_texture;
+Texture* WhiteTexture() {
+  if (white_texture.id == 0) {
+    white_texture.width = 1;
+    white_texture.height = 1;
+    const uint8_t data[4] = {255, 255, 255, 255};
+    glGenTextures(1, &white_texture.id);
+    glBindTexture(GL_TEXTURE_2D, white_texture.id);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, white_texture.width,
+                 white_texture.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+    glBindTexture(GL_TEXTURE_2D, GL_NONE);
+  }
+  return &white_texture;
+}
+
 class Sprite::Context {
  private:
   Shader vertex_shader;
@@ -25,13 +40,17 @@ class Sprite::Context {
         fragment_shader(P "./shader/shader.frag", GL_FRAGMENT_SHADER),
         program({vertex_shader, fragment_shader}) {
     struct VertexType {
-      glm::vec2 position;
+      glm::vec2 space_position;
+      glm::vec2 texture_position;
     };
 
     std::vector<VertexType> vertices{
-        {glm::vec2(0.f, 0.f)}, {glm::vec2(0.f, 1.f)}, {glm::vec2(1.f, 1.f)},
-
-        {glm::vec2(0.f, 0.f)}, {glm::vec2(1.f, 1.f)}, {glm::vec2(1.f, 0.f)},
+        {glm::vec2(0.f, 0.f), glm::vec2(0.f, 0.f)},
+        {glm::vec2(0.f, 1.f), glm::vec2(0.f, 1.f)},
+        {glm::vec2(1.f, 1.f), glm::vec2(1.f, 1.f)},
+        {glm::vec2(0.f, 0.f), glm::vec2(0.f, 0.f)},
+        {glm::vec2(1.f, 1.f), glm::vec2(1.f, 1.f)},
+        {glm::vec2(1.f, 0.f), glm::vec2(1.f, 0.f)},
     };
 
     // vbo
@@ -49,8 +68,10 @@ class Sprite::Context {
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
     program.use();
-    program.setAttribute("position", 2, sizeof(VertexType),
-                         offsetof(VertexType, position));
+    program.setAttribute("space_position", 2, sizeof(VertexType),
+                         offsetof(VertexType, space_position));
+    program.setAttribute("texture_position", 2, sizeof(VertexType),
+                         offsetof(VertexType, texture_position));
     program.setUniform("tex", 0);
     program.setUniform("color", glm::vec4(1.0, 1.0, 1.0, 1.0));
     program.setUniform("view", glm::mat4(1.0));
@@ -60,17 +81,20 @@ class Sprite::Context {
   }
 
   void Draw(const glm::mat4& view, const Sprite& sprite) {
-    static unsigned int texture = -1;
     static bool is_used = false;
     GL_CHECK_ERROR(__FILE__, __LINE__);
 
     glBindVertexArray(vao);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo);
     program.use();
-    program.setUniform("color", sprite.GetColor());
+    program.setUniform("color", sprite.color());
+    auto* texture = sprite.texture();
+    if (!texture)
+      texture = WhiteTexture();
     program.setUniform(
-        "view", view * sprite.GetTransformation(sprite.texture_->width,
-                                                sprite.texture_->height));
-    sprite.texture_->Bind();
+        "view", view * sprite.GetTransformation(texture->width,
+                                                texture->height));
+    texture->Bind();
     glDrawArrays(GL_TRIANGLES, 0, 6);
   }
 };
@@ -78,10 +102,6 @@ class Sprite::Context {
 namespace {
 Sprite::Context* context = nullptr;
 }  // namespace
-
-void Sprite::SetTexture(const Texture& texture) {
-  texture_ = &texture;
-}
 
 void Sprite::Draw(const glm::mat4& view) const {
   if (!context)

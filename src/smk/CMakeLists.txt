@@ -3,6 +3,7 @@ cmake_minimum_required (VERSION 3.1)
 project(smk)
 
 add_library(smk
+  src/Color.cpp
   src/Drawable.cpp
   src/Font.cpp
   src/GL_CHECK_ERROR.cpp
@@ -41,3 +42,4 @@ endif()
 
 target_link_libraries(smk PUBLIC glm)
 target_link_libraries(smk PRIVATE freetype)
+target_link_libraries(smk PRIVATE OpenAL)

@@ -37,7 +37,7 @@ void LaserTurret::Draw(smk::Screen& screen) {
   screen.Draw(sprite);
 }
 
-void LaserTurret::UpdateAngle() {
+void LaserTurret::Step() {
   switch (mode) {
     case 0:
       break;

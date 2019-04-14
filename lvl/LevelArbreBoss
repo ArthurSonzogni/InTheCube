@@ -39,11 +39,11 @@ arrowLauncher 608 64 180
 arrowLauncher 608 32 180
 arrowLauncher 608 0 180
 special 2
-bouton 224 376 4
-bouton 304 214 4
-bouton 128 84 4
-bouton 512 84 4
-bouton 48 276 4
-bouton 288 118 4
+button 224 376 4
+button 304 214 4
+button 128 84 4
+button 512 84 4
+button 48 276 4
+button 288 118 4
 e 650 288 32 200
 nd -32 0 32 480

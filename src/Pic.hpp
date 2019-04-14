@@ -4,6 +4,10 @@
 #include <smk/Sprite.hpp>
 #include <vector>
 
+namespace smk {
+class Screen;
+}
+
 class Pic {
  public:
   int x, y, angle;
@@ -20,6 +24,8 @@ class Pic {
       int NbRequis,
       int Comparateur,
       std::vector<int> Connexion);
+
+  void Draw(smk::Screen& screen);
 };
 
 #endif /* PIC_HPP */

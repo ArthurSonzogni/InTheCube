@@ -1,10 +1,11 @@
-in vec2 position;
+in vec2 space_position;
+in vec2 texture_position;
 
 uniform mat4 view;
 
 out vec2 f_texture_position;
 
 void main() {
-  f_texture_position = position;
-  gl_Position = view * vec4(position, 0.0, 1.0);
+  f_texture_position = texture_position;
+  gl_Position = view * vec4(space_position, 0.0, 1.0);
 }

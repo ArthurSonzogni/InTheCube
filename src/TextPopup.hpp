@@ -1,10 +1,11 @@
 #ifndef TEXT_POPUP_HPP
 #define TEXT_POPUP_HPP
 
+#include <smk/Sprite.hpp>
+#include <smk/Text.hpp>
 #include <string>
 #include <vector>
 #include "Forme.hpp"
-#include <smk/Sprite.hpp>
 
 namespace smk {
 class Screen;
@@ -12,16 +13,19 @@ class Screen;
 
 class TextPopup {
  public:
-  std::vector<std::vector<std::wstring>> text;
-  int pos;
-  int taille;
+  TextPopup(int type);
+  bool Step();
+  void Draw(smk::Screen& screen);
   Rectangle geometry;
-  std::string textString;
+
+ private:
+  std::vector<std::vector<std::wstring>> text;
+  smk::Text textString;
   smk::Sprite spaceSprite;
 
-  TextPopup(int type);
-  void Draw(smk::Screen& screen);
-  void DrawAux(smk::Screen& screen, int p);
+  int p = 0;
+  int time = 0;
+  int horizontal_shift = 640;
 };
 
 #endif /* TEXT_POPUP_HPP */

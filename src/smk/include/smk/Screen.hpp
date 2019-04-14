@@ -3,6 +3,7 @@
 
 #include <functional>
 #include <glm/glm.hpp>
+#include <smk/View.hpp>
 #include <string>
 
 struct GLFWwindow;
@@ -20,55 +21,60 @@ class View;
 ///   * Width()
 ///   * Height()
 ///   * GetWindowRatio()
-///   * windowDimensionChanged()
 /// * let the user define the "loop" function.
 class Screen {
  public:
+  Screen();
   Screen(int width, int height, const std::string& title);
+
   ~Screen();
 
-  // Get the window id
-  GLFWwindow* GetWindow() const;
+  // Various data about the current window.
+  int height() const { return height_; }
+  int width() const { return width_; }
+  float time() const { return time_; }
+  GLFWwindow* window() const { return window_; }
 
-  float GetTime() const;
+  // 0. Pool events. This updates the Input object.
+  void PoolEvents();
 
-  // application run
-  void Run();
-  void SetLoop(std::function<void()> loop);
+  // 1. Clear the previous frame
+  void Clear(const glm::vec4& color);
 
-  void Clear(glm::vec4 color);
-
-  // Screen informations
-  int Width();
-  int Height();
-  float GetWindowRatio();
-  bool WindowDimensionChanged();
-
-  void Draw(const Shape& shape){};
-  void Draw(const Sprite& sprite);
-  void Draw(const Text& shape);
-  void Display() {}
-
+  // 2. Set the base view transformation.
   void SetView(const View& view);
+  const View& GetView() const { return view_; }
+
+  // 3. Draw.
+  //void Draw(const Shape&)
+  void Draw(const Sprite&);
+  void Draw(const Text&);
+
+  // 4. Notify the current frame is ready. The current and next one are swapped.
+  void Display();
 
  private:
-  Screen& operator=(const Screen&) { return *this; }
-
-  GLFWwindow* window;
+  GLFWwindow* window_ = nullptr;
 
   // Time:
-  float time;
+  float time_ = 0.f;
 
   // Dimensions:
-  int width_;
-  int height_;
+  int width_ = 0;
+  int height_ = 0;
 
-  bool dimensionChanged;
-  void DetectWindowDimensionChange();
+  // View:
+  glm::mat4 view_mat_;
+  smk::View view_;
 
-  std::function<void()> loop_;
-  std::string title_;
-  glm::mat4 view_;
+  void UpdateDimensions();
+  // -------- Movable only class.-----------------------------------------------
+ public:
+  Screen(Screen&&);          // Movable object
+  void operator=(Screen&&);  // Movable object.
+ private:
+  Screen(const Screen&) = delete;          // Non copyable object.
+  void operator=(const Screen&) = delete;  // Non copyable object.
 };
 
 }  // namespace smk

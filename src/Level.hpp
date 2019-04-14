@@ -43,12 +43,14 @@
 
 class Level {
  public:
+  friend Special;
   std::list<Accelerator> accelerator_list;
   std::list<Arrow> arrow_list;
   std::list<Button> button_list;
   std::list<Particule> particule_list;
   std::list<Special> special_list;
   std::list<TextPopup> textpopup_list;
+  std::list<TextPopup> drawn_textpopup_list;
   std::vector<ArrowLauncher> arrowLauncher_list;
   std::vector<ArrowLauncherDetector> arrowLauncherDetector_list;
   std::vector<Block> block_list;
@@ -79,8 +81,6 @@ class Level {
   int heroSelected;
   int nbHero;
 
-  int xcenter;
-  int ycenter;
   bool fluidViewEnable;
   int time;
   int timeDead;
@@ -88,8 +88,10 @@ class Level {
   std::list<smk::Sound> sound_list;
 
   // View view;
-  int viewXMin, viewYMin, viewXMax, viewYMax;
-  smk::View view;
+  float xcenter, ycenter;
+  float viewXMin, viewYMin, viewXMax, viewYMax;
+  smk::View view_;
+  void SetView();
 
   void Draw(smk::Screen& screen);
   void Step(smk::Screen& screen);
