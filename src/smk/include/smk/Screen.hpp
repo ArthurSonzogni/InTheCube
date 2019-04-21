@@ -3,6 +3,7 @@
 
 #include <functional>
 #include <glm/glm.hpp>
+#include <smk/RenderState.hpp>
 #include <smk/View.hpp>
 #include <string>
 
@@ -14,6 +15,7 @@ class Shape;
 class Sprite;
 class Text;
 class View;
+class VertexArray;
 
 /// Screen class:
 /// * init OpenGL
@@ -49,6 +51,7 @@ class Screen {
   //void Draw(const Shape&)
   void Draw(const Sprite&);
   void Draw(const Text&);
+  void Draw(const RenderState&);
 
   // 4. Notify the current frame is ready. The current and next one are swapped.
   void Display();
@@ -75,6 +78,10 @@ class Screen {
  private:
   Screen(const Screen&) = delete;          // Non copyable object.
   void operator=(const Screen&) = delete;  // Non copyable object.
+
+  friend Sprite;
+  VertexArray square_vertex_array_;
+  VertexArray* square_vertex_array() { return &square_vertex_array_; }
 };
 
 }  // namespace smk

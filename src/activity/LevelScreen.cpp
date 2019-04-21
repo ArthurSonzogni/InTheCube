@@ -1,5 +1,7 @@
 #include "activity/LevelScreen.hpp"
 #include <smk/Color.hpp>
+#include <thread>
+#include <chrono>
 
 LevelScreen::LevelScreen(smk::Screen& screen, std::string level_name)
     : Activity(screen) {
@@ -19,6 +21,16 @@ void LevelScreen::Draw() {
     start_time = new_time;
   }
 
+  static float sleep_duration = 1000000 / 60;
+  static float fail_ratio = 0.1;
+  if (frame == new_frame) {
+    sleep_duration *= 1.01;
+    std::cerr << "Bad" << std::endl;
+  } else {
+    sleep_duration *= 0.9999;
+  }
+  std::this_thread::sleep_for(std::chrono::microseconds(int(sleep_duration)));
+
   // Start the BackgroundMusic
   // backMusic.Start();
   bool event_are_dirty = false;
@@ -28,6 +40,7 @@ void LevelScreen::Draw() {
     level_.Step(screen());
   }
 
+  //std::cerr << "Drawing frame " << frame << std::endl;
   level_.Draw(screen());
   screen().Display();
 

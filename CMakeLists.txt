@@ -4,10 +4,21 @@ project(opengl-cmake-skeleton-webassembly)
 
 # The main executable
 add_executable(main
+  src/activity/Activity.hpp
+  src/activity/WelcomeScreen.hpp
+  src/activity/WelcomeScreen.cpp
+  src/activity/IntroScreen.hpp
+  src/activity/IntroScreen.cpp
+  src/activity/MainScreen.hpp
+  src/activity/MainScreen.cpp
+  src/activity/LevelScreen.hpp
+  src/activity/LevelScreen.cpp
   src/Accelerator.cpp
   src/Accelerator.hpp
   src/Arrow.cpp
   src/Arrow.hpp
+  src/Laser.cpp
+  src/Laser.hpp
   src/ArrowLauncher.cpp
   src/ArrowLauncher.hpp
   src/ArrowLauncherDetector.cpp
@@ -76,6 +87,8 @@ add_executable(main
   src/main.cpp
 )
 
+target_include_directories(main PRIVATE ./src)
+
 set_property(TARGET main PROPERTY CXX_STANDARD 14)
 add_definitions(-DGLM_FORCE_RADIANS)
 
@@ -125,5 +138,11 @@ endif()
 add_subdirectory(lib/freetype2 EXCLUDE_FROM_ALL)
 add_subdirectory(lib/glm EXCLUDE_FROM_ALL)
 add_subdirectory(src/smk EXCLUDE_FROM_ALL)
+#add_subdirectory(lib/vorbis EXCLUDE_FROM_ALL)
+#add_subdirectory(lib/flac EXCLUDE_FROM_ALL)
+#add_subdirectory(lib/opus EXCLUDE_FROM_ALL)
+add_subdirectory(lib/openal EXCLUDE_FROM_ALL)
+
+add_subdirectory(lib/sndfile EXCLUDE_FROM_ALL)
 
 target_link_libraries(main PRIVATE smk)

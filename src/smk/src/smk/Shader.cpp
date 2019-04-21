@@ -52,34 +52,35 @@ bool getFileContents(const char* filename, std::vector<char>& buffer) {
   }
 }
 
+Shader::Shader() = default;
 Shader::Shader(const std::string& filename, GLenum type) {
   // file loading
   std::vector<char> fileContent;
   getFileContents(filename.c_str(), fileContent);
 
   // creation
-  handle = glCreateShader(type);
-  if (handle == 0) {
+  handle_ = glCreateShader(type);
+  if (handle_ == 0) {
     std::cerr << "[Error] Impossible to create a new Shader" << std::endl;
     throw std::runtime_error("[Error] Impossible to create a new Shader");
   }
 
   // code source assignation
   const char* shaderText(&fileContent[0]);
-  glShaderSource(handle, 1, (const GLchar**)&shaderText, NULL);
+  glShaderSource(handle_, 1, (const GLchar**)&shaderText, NULL);
 
   // compilation
-  glCompileShader(handle);
+  glCompileShader(handle_);
 
   // compilation check
   GLint compile_status;
-  glGetShaderiv(handle, GL_COMPILE_STATUS, &compile_status);
+  glGetShaderiv(handle_, GL_COMPILE_STATUS, &compile_status);
   if (compile_status != GL_TRUE) {
     GLsizei logsize = 0;
-    glGetShaderiv(handle, GL_INFO_LOG_LENGTH, &logsize);
+    glGetShaderiv(handle_, GL_INFO_LOG_LENGTH, &logsize);
 
     char* log = new char[logsize + 1];
-    glGetShaderInfoLog(handle, logsize, &logsize, log);
+    glGetShaderInfoLog(handle_, logsize, &logsize, log);
 
     std::cout << "[Error] compilation error: " << filename << std::endl;
     std::cout << log << std::endl;
@@ -92,54 +93,58 @@ Shader::Shader(const std::string& filename, GLenum type) {
 }
 
 GLuint Shader::getHandle() const {
-  return handle;
+  return handle_;
 }
 
 Shader::~Shader() {}
 
+Shader::Shader(Shader&& other) {
+  this->operator=(std::move(other));
+}
+
+void Shader::operator=(Shader&& other) {
+  std::swap(handle_, other.handle_);
+}
+
 ShaderProgram::ShaderProgram() {
-  handle = glCreateProgram();
-  if (!handle) {
+  handle_ = glCreateProgram();
+  if (!handle_) {
     std::cerr << "[Error] Impossible to create a new Shader" << std::endl;
     throw std::runtime_error("[Error] Impossible to create a new Shader");
   }
 }
 
-ShaderProgram::ShaderProgram(std::initializer_list<Shader> shaderList)
-    : ShaderProgram() {
-  for (auto& s : shaderList)
-    glAttachShader(handle, s.getHandle());
-
-  link();
+void ShaderProgram::AddShader(const Shader& shader) {
+  glAttachShader(handle_, shader.getHandle());
 }
 
-void ShaderProgram::link() {
-  glLinkProgram(handle);
+void ShaderProgram::Link() {
+  glLinkProgram(handle_);
   GLint result;
-  glGetProgramiv(handle, GL_LINK_STATUS, &result);
+  glGetProgramiv(handle_, GL_LINK_STATUS, &result);
   if (result != GL_TRUE) {
     std::cout << "[Error] linkage error" << std::endl;
 
     GLsizei logsize = 0;
-    glGetProgramiv(handle, GL_INFO_LOG_LENGTH, &logsize);
+    glGetProgramiv(handle_, GL_INFO_LOG_LENGTH, &logsize);
 
     char* log = new char[logsize];
-    glGetProgramInfoLog(handle, logsize, &logsize, log);
+    glGetProgramInfoLog(handle_, logsize, &logsize, log);
 
     std::cout << log << std::endl;
   }
 }
 
 GLint ShaderProgram::uniform(const std::string& name) {
-  auto it = uniforms.find(name);
-  if (it == uniforms.end()) {
-    // uniform that is not referenced
-    GLint r = glGetUniformLocation(handle, name.c_str());
+  auto it = uniforms_.find(name);
+  if (it == uniforms_.end()) {
+    // uniforms_ that is not referenced
+    GLint r = glGetUniformLocation(handle_, name.c_str());
     if (r == GL_INVALID_OPERATION || r < 0)
       std::cout << "[Error] uniform " << name << " doesn't exist in program"
                 << std::endl;
     // add it anyways
-    uniforms[name] = r;
+    uniforms_[name] = r;
 
     return r;
   } else
@@ -147,7 +152,7 @@ GLint ShaderProgram::uniform(const std::string& name) {
 }
 
 GLint ShaderProgram::attribute(const std::string& name) {
-  GLint attrib = glGetAttribLocation(handle, name.c_str());
+  GLint attrib = glGetAttribLocation(handle_, name.c_str());
   if (attrib == GL_INVALID_OPERATION || attrib < 0)
     std::cout << "[Error] Attribute " << name << " doesn't exist in program"
               << std::endl;
@@ -222,18 +227,27 @@ void ShaderProgram::setUniform(const std::string& name, int val) {
 }
 
 ShaderProgram::~ShaderProgram() {
-  // glDeleteProgram(handle);
+  // glDeleteProgram(handle_);
 }
 
 void ShaderProgram::use() const {
-  glUseProgram(handle);
+  glUseProgram(handle_);
 }
 void ShaderProgram::unuse() const {
   glUseProgram(0);
 }
 
 GLuint ShaderProgram::getHandle() const {
-  return handle;
+  return handle_;
+}
+
+ShaderProgram::ShaderProgram(ShaderProgram&& other) {
+  this->operator=(std::move(other));
+}
+
+void ShaderProgram::operator=(ShaderProgram&& other) {
+  std::swap(handle_, other.handle_);
+  std::swap(uniforms_, other.uniforms_);
 }
 
 }  // namespace smk

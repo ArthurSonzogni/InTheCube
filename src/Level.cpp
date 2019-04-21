@@ -365,7 +365,7 @@ void Level::Draw(smk::Screen& screen) {
   // Draw static turrets and throw out Laser
   for (auto& it : laserTurret_list) {
     it.Draw(screen);
-    Laser(screen, it.x, it.y, it.angle, 10);
+    EmitLaser(screen, it.x, it.y, it.angle, 10);
   }
 
   // clang-format off
@@ -437,6 +437,9 @@ void Level::Draw(smk::Screen& screen) {
     }
   }
 
+  for (auto it = laser_.begin(); it != laser_.end(); it = laser_.erase(it))
+    it->Draw(screen);
+  for (auto& it : laser_) it.Draw(screen);
   for (auto& pincette : pincette_list) pincette.Draw(screen);
   for (auto& it : decorFront_list) it.Draw(screen);
 
@@ -450,6 +453,7 @@ void Level::Draw(smk::Screen& screen) {
       screen.Draw(Coeur);
     }
   }
+
 
   // Draw popup
   for (auto it = drawn_textpopup_list.begin(); it != drawn_textpopup_list.end();
@@ -1002,21 +1006,6 @@ void Level::Step(smk::Screen& screen) {
   }
 
   /////////////////////////////////
-  //        Teleporter           //
-  /////////////////////////////////
-  for (std::vector<Hero>::iterator itHero = hero_list.begin();
-       itHero != hero_list.end(); ++itHero) {
-    for (auto& it : teleporter_list) {
-      if (IsCollision((*itHero).geometry, it.geometry)) {
-        // teleport the Hero
-        (*itHero).x += it.xTeleport;
-        (*itHero).y += it.yTeleport;
-        (*itHero).UpdateGeometry();
-      }
-    }
-  }
-
-  /////////////////////////////////
   //        Cloneurs             //
   /////////////////////////////////
 
@@ -1177,6 +1166,22 @@ void Level::Step(smk::Screen& screen) {
   // Draw static turrets and throw out Laser
   for (auto& it : laserTurret_list) {
     it.Step();
+  }
+
+  /////////////////////////////////
+  //        Teleporter           //
+  /////////////////////////////////
+  for (std::vector<Hero>::iterator itHero = hero_list.begin();
+       itHero != hero_list.end(); ++itHero) {
+    for (auto& it : teleporter_list) {
+      if (IsCollision((*itHero).geometry, it.geometry)) {
+        // teleport the Hero
+        (*itHero).x += it.xTeleport;
+        (*itHero).y += it.yTeleport;
+        (*itHero).UpdateGeometry();
+        SetView();
+      }
+    }
   }
 
   // TextPopup.
@@ -1475,10 +1480,10 @@ bool Level::CollisionWithAllBlock(Line l) {
   return false;
 }
 
-void Level::Laser(smk::Screen& screen,
-                  int x,
-                  int y,
-                  int angle,
+void Level::EmitLaser(smk::Screen& screen,
+                  float x,
+                  float y,
+                  float angle,
                   int recursiveMaxLevel) {
   if (recursiveMaxLevel <= 0)
     return;
@@ -1486,15 +1491,13 @@ void Level::Laser(smk::Screen& screen,
   int max = 1000;
   static int i = 0;
   float l = max;
-  int xx = x;
-  int yy = y;
-  int xxx;
-  int yyy;
+  float xx = x + 2*cos(a);
+  float yy = y - 2*sin(a);
 
   // Draw the Laser
   while (l > 0.5) {
-    xxx = xx + l * cos(a);
-    yyy = yy - l * sin(a);
+    float xxx = xx + l * cos(a);
+    float yyy = yy - l * sin(a);
     if (!CollisionWithAllBlock(Line(xx, yy, xxx, yyy))) {
       for (int r = 1; r <= 4; r += 1) {
         smk::Shape Line = smk::Shape::Line(xx, yy, xxx, yyy, r,
@@ -1508,9 +1511,13 @@ void Level::Laser(smk::Screen& screen,
     l /= 2;
   }
 
+
   // we move on more Step
-  xxx = xx + 1 * cos(a);
-  yyy = yy - 1 * sin(a);
+  xx = xx + 1 * cos(a);
+  yy = yy - 1 * sin(a);
+
+  laser_.push_back(Laser{Point(x, y), Point(xx, yy)});
+
   /*
   for(int r=1;r<=4;r+=1)
   {
@@ -1519,8 +1526,6 @@ void Level::Laser(smk::Screen& screen,
           screen.Draw(Line);
   }
   */
-  xx = xxx;
-  yy = yyy;
 
   // Draw an halo on the impact of the Laser
   i = rand();
@@ -1561,10 +1566,11 @@ void Level::Laser(smk::Screen& screen,
         it = glassBlock_list.erase(it);
     }
   }
+
   // checking impact of the Laser with StaticMirror
   for (auto& it : staticMiroir_list) {
     if (IsCollision(Rectangle(xx - 5, xx + 5, yy - 5, yy + 5), it.geometry)) {
-      Laser(screen, xx, yy, 2 * it.angle - angle,
+      EmitLaser(screen, xx, yy, 2 * it.angle - angle,
             recursiveMaxLevel - 1);  // throw reflection
     }
   }

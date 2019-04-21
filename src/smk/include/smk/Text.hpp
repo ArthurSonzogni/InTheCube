@@ -13,7 +13,7 @@ class Text : public Drawable {
   void SetString(const std::wstring&);
   void SetString(const std::string&);
   void SetFont(const Font& font);
-  void Draw(const glm::mat4& view) const;
+  void Draw(Screen& screen, RenderState state) const;
 
  public:
   class Context;

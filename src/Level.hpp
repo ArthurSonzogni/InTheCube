@@ -10,6 +10,8 @@
 #include <vector>
 #include <string>
 
+#include <smk/Screen.hpp>
+#include <smk/View.hpp>
 #include "Accelerator.hpp"
 #include "Arrow.hpp"
 #include "ArrowLauncher.hpp"
@@ -28,18 +30,17 @@
 #include "Glass.hpp"
 #include "Hero.hpp"
 #include "InvisibleBlock.hpp"
+#include "Laser.hpp"
 #include "LaserTurret.hpp"
 #include "MovableBlock.hpp"
 #include "MovingBlock.hpp"
 #include "Particule.hpp"
 #include "Pic.hpp"
 #include "Pincette.hpp"
-#include <smk/Screen.hpp>
 #include "Special.hpp"
 #include "StaticMirror.hpp"
 #include "Teleporter.hpp"
 #include "TextPopup.hpp"
-#include <smk/View.hpp>
 
 class Level {
  public:
@@ -106,8 +107,14 @@ class Level {
   bool PlaceFree(MovableBlock m, float x, float y);
   bool PlaceFree(Glass m, float x, float y);
 
-  void Laser(smk::Screen& screen, int x, int y, int angle, int recursiveMaxLevel = 30);
+  void EmitLaser(smk::Screen& screen,
+                 float x,
+                 float y,
+                 float angle,
+                 int recursiveMaxLevel = 30);
   void DrawElectricity(smk::Screen& screen, int x1, int y1, int x2, int y2);
+
+  std::list<Laser> laser_;
 };
 
 #endif /* __NIVEAU_H__ */

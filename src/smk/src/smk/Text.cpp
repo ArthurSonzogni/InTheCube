@@ -25,11 +25,10 @@ void Text::SetFont(const Font& font) {
   font_ = &font;
 }
 
-void Text::Draw(const glm::mat4& view) const {
-  const glm::mat4& v = view * GetTransformation(1.0, 1.0);
+void Text::Draw(Screen& screen, RenderState state) const {
+  state.color *= color();
+  state.view *= transformation();
   Sprite sprite;
-  sprite.SetColor(color());
-
   float advance_x = 0.f;
   float advance_y = font_->size();
   for (const auto& it : string_) {
@@ -45,7 +44,7 @@ void Text::Draw(const glm::mat4& view) const {
     sprite.SetPosition(advance_x + character->bearing.x,
                        advance_y + character->bearing.y);
     sprite.SetTexture(character->texture);
-    sprite.Draw(v);
+    sprite.Draw(screen, state);
     advance_x += character->advance;
   }
 }

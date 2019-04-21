@@ -22,7 +22,7 @@ class ShaderProgram;
 // Loads a shader from a file into OpenGL.
 class Shader {
  public:
-  // Load Shader from a file
+  Shader(); // Invalid shader.
   Shader(const std::string& filename, GLenum type);
 
   // provide opengl shader identifiant.
@@ -30,9 +30,16 @@ class Shader {
 
   ~Shader();
 
+  // --- Move only resource ----------------------------------------------------
+  Shader(Shader&&);
+  Shader(const Shader&) = delete;
+  void operator=(Shader&&);
+  void operator=(const Shader&) = delete;
+  // ---------------------------------------------------------------------------
+
  private:
   // opengl program identifiant
-  GLuint handle;
+  GLuint handle_ = 0;
 
   friend class ShaderProgram;
 };
@@ -44,8 +51,10 @@ class Shader {
 // using GLM objects.
 class ShaderProgram {
  public:
-  // constructor
-  ShaderProgram(std::initializer_list<Shader> shaderList);
+  ShaderProgram();
+
+  void AddShader(const Shader& shader);
+  void Link();
 
   // bind the program
   void use() const;
@@ -78,16 +87,18 @@ class ShaderProgram {
 
   ~ShaderProgram();
 
- private:
-  ShaderProgram();
+  // --- Move only resource ----------------------------------------------------
+  ShaderProgram(ShaderProgram&&);
+  ShaderProgram(const ShaderProgram&) = delete;
+  void operator=(ShaderProgram&&);
+  void operator=(const ShaderProgram&) = delete;
+  // ---------------------------------------------------------------------------
 
-  std::map<std::string, GLint> uniforms;
-  std::map<std::string, GLint> attributes;
+ private:
+  std::map<std::string, GLint> uniforms_;
 
   // opengl id
-  GLuint handle;
-
-  void link();
+  GLuint handle_ = 0;
 };
 
 }  // namespace smk

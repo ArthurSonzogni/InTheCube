@@ -1,5 +1,6 @@
 #include "Resource.hpp"
 #include <smk/Texture.hpp>
+#include <smk/SoundBuffer.hpp>
 
 #ifdef __EMSCRIPTEN__
 #define P "./"
@@ -90,13 +91,13 @@ smk::Texture img_decorNoisette;
 smk::Texture img_tuyau;
 
 // music
-// SoundBuffer SB_electricity;
-// SoundBuffer SB_backgroundMusic;
-// SoundBuffer SB_explosion;
-// SoundBuffer SB_arrowLauncher;
-// SoundBuffer SB_boss[4];
-// SoundBuffer SB_backgroundMusicAction;
-// SoundBuffer SB_start;
+smk::SoundBuffer SB_electricity;
+smk::SoundBuffer SB_backgroundMusic;
+smk::SoundBuffer SB_explosion;
+smk::SoundBuffer SB_arrowLauncher;
+smk::SoundBuffer SB_boss[4];
+smk::SoundBuffer SB_backgroundMusicAction;
+smk::SoundBuffer SB_start;
 
 void initRessource() {
   font_arial = smk::Font(P "font/arial.ttf", 30);
@@ -181,16 +182,14 @@ void initRessource() {
   img_tuyau = smk::Texture(P "img/img_tuyau.png");
 
   // initialisation of SoundBuffer
-  // SB_electricity = smk::Texture(P"snd/electricity.ogg");
-  // SB_explosion = smk::Texture(P"snd/explosion.ogg");
-  // SB_arrowLauncher = smk::Texture(P"snd/arrowLauncher.ogg");
-  // SB_boss[0] = smk::Texture(P"snd/bossSound1.ogg");
-  // SB_boss[1] = smk::Texture(P"snd/bossSound2.ogg");
-  // SB_boss[2] = smk::Texture(P"snd/bossSound3.ogg");
-  // SB_boss[3] = smk::Texture(P"snd/bossSound4.ogg");
-  // SB_start = smk::Texture(P"snd/start.ogg");
-  // initialisation of the RenderWindow
-  // screen.Create (sf::VideoMode(640,480, 32), "In the Cube");
-  // screen.SetFramerateLimit(30);
-  // screen.UseVerticalSync(true);
+  SB_electricity = smk::SoundBuffer(P "snd/electricity.ogg");
+  SB_explosion = smk::SoundBuffer(P "snd/explosion.ogg");
+  SB_arrowLauncher = smk::SoundBuffer(P "snd/arrowLauncher.ogg");
+  SB_boss[0] = smk::SoundBuffer(P "snd/bossSound1.ogg");
+  SB_boss[1] = smk::SoundBuffer(P "snd/bossSound2.ogg");
+  SB_boss[2] = smk::SoundBuffer(P "snd/bossSound3.ogg");
+  SB_boss[3] = smk::SoundBuffer(P "snd/bossSound4.ogg");
+  SB_start = smk::SoundBuffer(P "snd/start.ogg");
+
+  smk::SoundBuffer("../../SFML/examples/pong/resources/ball.wav").Play();
 }

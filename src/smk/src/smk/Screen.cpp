@@ -13,12 +13,15 @@
 #include <vector>
 #include <thread>
 
+#include <smk/Color.hpp>
 #include <smk/GL_CHECK_ERROR.hpp>
 #include <smk/Input.hpp>
 #include <smk/OpenGL.hpp>
+#include <smk/RenderState.hpp>
 #include <smk/Shader.hpp>
 #include <smk/Sprite.hpp>
 #include <smk/Text.hpp>
+#include <smk/VertexArray.hpp>
 #include <smk/View.hpp>
 
 #ifdef __EMSCRIPTEN__
@@ -84,9 +87,6 @@ Screen::Screen(int width, int height, const std::string& title)
   std::cout << "Renderer: " << renderer << std::endl;
   std::cout << "OpenGL version supported " << version << std::endl;
 
-  // Make the window_'s context current
-  glfwMakeContextCurrent(window_);
-
   // opengl configuration
   //glEnable(GL_DEPTH_TEST);  // enable depth-testing
   //glDepthFunc(GL_LESS);  // depth-testing interprets a smaller value as "closer"
@@ -99,6 +99,15 @@ Screen::Screen(int width, int height, const std::string& title)
   default_view.SetCenter(320, 480);
   default_view.SetSize(640, 480);
   SetView(default_view);
+
+  square_vertex_array_ = VertexArray(std::vector<Vertex>({
+      {glm::vec2(0.f, 0.f), glm::vec2(0.f, 0.f)},
+      {glm::vec2(0.f, 1.f), glm::vec2(0.f, 1.f)},
+      {glm::vec2(1.f, 1.f), glm::vec2(1.f, 1.f)},
+      {glm::vec2(0.f, 0.f), glm::vec2(0.f, 0.f)},
+      {glm::vec2(1.f, 1.f), glm::vec2(1.f, 1.f)},
+      {glm::vec2(1.f, 0.f), glm::vec2(1.f, 0.f)},
+  }));
 }
 
 Screen::Screen(Screen&& screen) {
@@ -110,6 +119,7 @@ void Screen::operator=(Screen&& screen) {
   std::swap(width_, screen.width_);
   std::swap(height_, screen.height_);
   std::swap(time_, screen.time_);
+  std::swap(square_vertex_array_, screen.square_vertex_array_);
 }
 
 void Screen::PoolEvents() {
@@ -119,6 +129,7 @@ void Screen::PoolEvents() {
 
 void Screen::Display() {
   // Swap Front and Back buffers (double buffering)
+
   glfwSwapBuffers(window_);
 
   // Detect window_ related changes
@@ -140,8 +151,71 @@ void Screen::UpdateDimensions() {
   glViewport(0, 0, width_, height_);
 }
 
-void Screen::Draw(const Sprite& sprite) { sprite.Draw(view_mat_); }
-void Screen::Draw(const Text& text) { text.Draw(view_mat_); }
+void Screen::Draw(const Sprite& sprite) {
+  RenderState state;
+  state.view = view_mat_;
+  state.color = smk::Color::White;
+  state.vertex_array = nullptr;
+  state.texture = nullptr;
+  sprite.Draw(*this, state);
+}
+
+void Screen::Draw(const Text& text) {
+  RenderState state;
+  state.view = view_mat_;
+  state.color = smk::Color::White;
+  state.vertex_array = nullptr;
+  state.texture = nullptr;
+  text.Draw(*this, state);
+}
+
+Texture* WhiteTexture();
+
+void Screen::Draw(const RenderState& state) {
+  static Shader* vertex_shader = nullptr;
+  static Shader* fragment_shader = nullptr;
+  static ShaderProgram* program = nullptr;
+  static GLuint vao = 0;
+
+  if (!vertex_shader) {
+    vertex_shader = new Shader(P "./shader/shader.vert", GL_VERTEX_SHADER);
+    fragment_shader = new Shader(P "./shader/shader.frag", GL_FRAGMENT_SHADER);
+    program = new ShaderProgram();
+    program->AddShader(*vertex_shader);
+    program->AddShader(*fragment_shader);
+    program->Link();
+
+    // vao
+    glGenVertexArrays(1, &vao);
+    glBindVertexArray(vao);
+
+    square_vertex_array()->Bind();
+    program->use();
+    program->setAttribute("space_position", 2, sizeof(Vertex),
+                          offsetof(Vertex, space_position));
+    program->setAttribute("texture_position", 2, sizeof(Vertex),
+                          offsetof(Vertex, texture_position));
+    program->setUniform("tex", 0);
+    program->setUniform("color", glm::vec4(1.0, 1.0, 1.0, 1.0));
+    program->setUniform("view", glm::mat4(1.0));
+
+    // vao end
+    glBindVertexArray(0);
+  }
+
+  GL_CHECK_ERROR(__FILE__, __LINE__);
+
+  glBindVertexArray(vao);
+  state.vertex_array->Bind();
+  program->use();
+  program->setUniform("color", state.color);
+  program->setUniform("view", state.view);
+  auto* texture = state.texture;
+  if (!texture)
+    texture = WhiteTexture();
+  texture->Bind();
+  glDrawArrays(GL_TRIANGLES, 0, state.vertex_array->size());
+}
 
 void Screen::SetView(const View& view) {
   view_ = view;

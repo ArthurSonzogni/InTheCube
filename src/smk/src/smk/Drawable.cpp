@@ -40,7 +40,13 @@ void Drawable::Move(float move_x, float move_y) {
   position_y_ += move_y;
 }
 
-glm::mat4 Drawable::GetTransformation(float size_x, float size_y) const {
+glm::mat4 Drawable::transformation() const {
+  float size_x = 1.0;
+  float size_y = 1.0;
+  if (texture_) {
+    size_x = texture_->width;
+    size_y = texture_->height;
+  }
   glm::mat4 ret = glm::mat4(1.0);
   ret = glm::translate(ret, glm::vec3(position_x_, position_y_, 0.0));
   ret = glm::rotate(ret, -rotation_ / 360.f * 2.f * 3.1415f,

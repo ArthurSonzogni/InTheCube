@@ -14,6 +14,7 @@ class Font {
  public:
   Font() = default; // Empty font.
   Font(const std::string& filename, int size);
+
   int size() const { return size_; }
 
   struct Character {
@@ -22,16 +23,17 @@ class Font {
     float advance;       // Offset to advance to next glyph
   };
   Character* GetCharacter(wchar_t) const;
+
+  // --- Move only resource ----------------------------------------------------
+  Font(Font&&) = default;
+  Font(const Font&) = delete;
+  void operator=(Font&&);
+  void operator=(const Font&) = delete;
+  // ---------------------------------------------------------------------------
+
  private:
   std::map<wchar_t, std::unique_ptr<Character>> characters_;
   int size_ = 0;
-
- public:
-  Font(Font&&) = default;  // Movable object
-  void operator=(Font&&);  // Movable object.
- private:
-  Font(const Font&) = delete;            // Non copyable object.
-  void operator=(const Font&) = delete;  // Non copyable object.
 };
 
 }  // namespace smk

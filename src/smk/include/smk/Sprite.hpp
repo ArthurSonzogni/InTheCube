@@ -3,16 +3,14 @@
 
 #include "Drawable.hpp"
 #include <smk/Texture.hpp>
+#include <smk/RenderState.hpp>
+#include <smk/Screen.hpp>
 
 namespace smk {
 
 class Sprite : public Drawable {
  public:
-  void Draw(const glm::mat4& view) const;
-
- public:
-  class Context;
-  friend Context;
+  void Draw(Screen& screen, RenderState state) const;
 };
 
 }  // namespace smk

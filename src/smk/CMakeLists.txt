@@ -3,21 +3,44 @@ cmake_minimum_required (VERSION 3.1)
 project(smk)
 
 add_library(smk
-  src/Color.cpp
-  src/Drawable.cpp
-  src/Font.cpp
-  src/GL_CHECK_ERROR.cpp
-  src/Input.cpp
-  src/Screen.cpp
-  src/Shader.cpp
-  src/Shape.cpp
-  src/Sound.cpp
-  src/Sprite.cpp
-  src/StbImage.cpp
-  src/StbImage.hpp
-  src/Text.cpp
-  src/Texture.cpp
-  src/View.cpp
+  include/smk/Audio.hpp
+  include/smk/Color.hpp
+  include/smk/Drawable.hpp
+  include/smk/Font.hpp
+  include/smk/GL_CHECK_ERROR.hpp
+  include/smk/Input.hpp
+  include/smk/OpenGL.hpp
+  include/smk/Screen.hpp
+  include/smk/Shader.hpp
+  include/smk/Shape.hpp
+  include/smk/Sound.hpp
+  include/smk/SoundBuffer.hpp
+  include/smk/Sprite.hpp
+  include/smk/Text.hpp
+  include/smk/Texture.hpp
+  include/smk/Vertex.hpp
+  include/smk/VertexArray.hpp
+  include/smk/View.hpp
+  src/smk/Audio.cpp
+  src/smk/Color.cpp
+  src/smk/Drawable.cpp
+  src/smk/Font.cpp
+  src/smk/GL_CHECK_ERROR.cpp
+  src/smk/Input.cpp
+  src/smk/RenderState.cpp
+  include/smk/RenderState.hpp
+  src/smk/Screen.cpp
+  src/smk/Shader.cpp
+  src/smk/Shape.cpp
+  src/smk/Sound.cpp
+  src/smk/SoundBuffer.cpp
+  src/smk/Sprite.cpp
+  src/smk/StbImage.cpp
+  src/smk/StbImage.hpp
+  src/smk/Text.cpp
+  src/smk/Texture.cpp
+  src/smk/VertexArray.cpp
+  src/smk/View.cpp
 )
 
 target_include_directories(smk
@@ -25,7 +48,7 @@ target_include_directories(smk
     $<INSTALL_INTERFACE:include>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   PRIVATE
-    src
+    src/smk
 )
 
 set_property(TARGET smk PROPERTY CXX_STANDARD 14)
@@ -43,3 +66,4 @@ endif()
 target_link_libraries(smk PUBLIC glm)
 target_link_libraries(smk PRIVATE freetype)
 target_link_libraries(smk PRIVATE OpenAL)
+target_link_libraries(smk PRIVATE sndfile)
