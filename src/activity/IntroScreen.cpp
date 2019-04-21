@@ -19,9 +19,9 @@ void IntroScreen::Draw() {
   screen().PoolEvents();
   // Input
   {
-    if (smk::Input::IsKeyPressed(GLFW_KEY_SPACE) ||
-        smk::Input::IsKeyPressed(GLFW_KEY_ENTER) ||
-        smk::Input::IsMousePressed(GLFW_MOUSE_BUTTON_1)) {
+    if (screen().input().IsKeyPressed(GLFW_KEY_SPACE) ||
+        screen().input().IsKeyPressed(GLFW_KEY_ENTER) ||
+        screen().input().IsMousePressed(GLFW_MOUSE_BUTTON_1)) {
       position++;
     }
   }

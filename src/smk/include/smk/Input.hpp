@@ -2,6 +2,7 @@
 #define SMK_INPUT_HPP
 
 #include <map>
+#include <glm/glm.hpp>
 
 struct GLFWwindow;
 
@@ -10,26 +11,23 @@ namespace smk {
 class Input {
  public:
   // update state
-  static void Update(GLFWwindow* window);
+  void Update(GLFWwindow* window);
+
   // keyboard
-  static bool IsKeyPressed(int key);
-  static bool IsKeyReleased(int key);
-  static bool IsKeyHold(int key);
+  bool IsKeyHold(int key);
+  bool IsKeyPressed(int key);
+  bool IsKeyReleased(int key);
+
   // mouse
-  static bool IsMousePressed(int key);
-  static bool IsMouseReleased(int key);
-  static bool IsMouseHold(int key);
-  static double MouseX();
-  static double MouseY();
+  bool IsMouseHold(int key);
+  bool IsMousePressed(int key);
+  bool IsMouseReleased(int key);
+  glm::vec2 mouse() { return mouse_; }
 
-  static void FixMouse();
-  static void UnfixMouse();
-  static bool IsMouseFixed();
-
-  static float GetHorAngle();
-  static float GetVerAngle();
-
-  static bool IsIdle();
+ private:
+  std::map<int, std::pair<int, int>> key_state_;
+  std::map<int, std::pair<int, int>> mouse_state_;
+  glm::vec2 mouse_;
 };
 
 }  // namespace smk

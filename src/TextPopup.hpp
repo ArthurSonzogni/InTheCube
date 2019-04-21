@@ -14,7 +14,7 @@ class Screen;
 class TextPopup {
  public:
   TextPopup(int type);
-  bool Step();
+  bool Step(smk::Screen& screen);
   void Draw(smk::Screen& screen);
   Rectangle geometry;
 

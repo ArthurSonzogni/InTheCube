@@ -96,7 +96,12 @@ GLuint Shader::getHandle() const {
   return handle_;
 }
 
-Shader::~Shader() {}
+Shader::~Shader() {
+  if (!handle_)
+    return;
+  glDeleteShader(handle_);
+  handle_ = 0;
+}
 
 Shader::Shader(Shader&& other) {
   this->operator=(std::move(other));
@@ -106,15 +111,14 @@ void Shader::operator=(Shader&& other) {
   std::swap(handle_, other.handle_);
 }
 
-ShaderProgram::ShaderProgram() {
-  handle_ = glCreateProgram();
-  if (!handle_) {
-    std::cerr << "[Error] Impossible to create a new Shader" << std::endl;
-    throw std::runtime_error("[Error] Impossible to create a new Shader");
-  }
-}
-
+ShaderProgram::ShaderProgram() = default;
 void ShaderProgram::AddShader(const Shader& shader) {
+  if (!handle_) {
+    handle_ = glCreateProgram();
+    if (!handle_)
+      std::cerr << "[Error] Impossible to create a new Shader" << std::endl;
+    std::cerr << "Created a handle" << std::endl;
+  }
   glAttachShader(handle_, shader.getHandle());
 }
 
@@ -133,6 +137,7 @@ void ShaderProgram::Link() {
 
     std::cout << log << std::endl;
   }
+  std::cerr << "Link success" << std::endl;
 }
 
 GLint ShaderProgram::uniform(const std::string& name) {
@@ -140,9 +145,12 @@ GLint ShaderProgram::uniform(const std::string& name) {
   if (it == uniforms_.end()) {
     // uniforms_ that is not referenced
     GLint r = glGetUniformLocation(handle_, name.c_str());
-    if (r == GL_INVALID_OPERATION || r < 0)
-      std::cout << "[Error] uniform " << name << " doesn't exist in program"
+    std::cerr << "new uniform " << name << std::endl;
+
+    if (r == GL_INVALID_OPERATION || r < 0) {
+      std::cerr << "[Error] uniform " << name << " doesn't exist in program"
                 << std::endl;
+    }
     // add it anyways
     uniforms_[name] = r;
 
@@ -154,7 +162,7 @@ GLint ShaderProgram::uniform(const std::string& name) {
 GLint ShaderProgram::attribute(const std::string& name) {
   GLint attrib = glGetAttribLocation(handle_, name.c_str());
   if (attrib == GL_INVALID_OPERATION || attrib < 0)
-    std::cout << "[Error] Attribute " << name << " doesn't exist in program"
+    std::cerr << "[Error] Attribute " << name << " doesn't exist in program"
               << std::endl;
 
   return attrib;
@@ -227,7 +235,10 @@ void ShaderProgram::setUniform(const std::string& name, int val) {
 }
 
 ShaderProgram::~ShaderProgram() {
-  // glDeleteProgram(handle_);
+  if (!handle_)
+    return;
+  glDeleteProgram(handle_);
+  handle_ = 0;
 }
 
 void ShaderProgram::use() const {

@@ -2,10 +2,15 @@
 #define SCREEN_HPP
 
 #include <functional>
-#include <glm/glm.hpp>
-#include <smk/RenderState.hpp>
-#include <smk/View.hpp>
 #include <string>
+
+#include <glm/glm.hpp>
+
+#include <smk/Input.hpp>
+#include <smk/RenderState.hpp>
+#include <smk/Shader.hpp>
+#include <smk/VertexArray.hpp>
+#include <smk/View.hpp>
 
 struct GLFWwindow;
 
@@ -17,13 +22,6 @@ class Text;
 class View;
 class VertexArray;
 
-/// Screen class:
-/// * init OpenGL
-/// * provide:
-///   * Width()
-///   * Height()
-///   * GetWindowRatio()
-/// * let the user define the "loop" function.
 class Screen {
  public:
   Screen();
@@ -36,6 +34,7 @@ class Screen {
   int width() const { return width_; }
   float time() const { return time_; }
   GLFWwindow* window() const { return window_; }
+  Input& input() { return input_; }
 
   // 0. Pool events. This updates the Input object.
   void PoolEvents();
@@ -82,6 +81,13 @@ class Screen {
   friend Sprite;
   VertexArray square_vertex_array_;
   VertexArray* square_vertex_array() { return &square_vertex_array_; }
+
+  Shader vertex_shader;
+  Shader fragment_shader;
+  ShaderProgram program;
+  GLuint vao = 0;
+
+  Input input_;
 };
 
 }  // namespace smk

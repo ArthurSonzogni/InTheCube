@@ -17,11 +17,8 @@
 #include <smk/GL_CHECK_ERROR.hpp>
 #include <smk/Input.hpp>
 #include <smk/OpenGL.hpp>
-#include <smk/RenderState.hpp>
-#include <smk/Shader.hpp>
 #include <smk/Sprite.hpp>
 #include <smk/Text.hpp>
-#include <smk/VertexArray.hpp>
 #include <smk/View.hpp>
 
 #ifdef __EMSCRIPTEN__
@@ -108,23 +105,52 @@ Screen::Screen(int width, int height, const std::string& title)
       {glm::vec2(1.f, 1.f), glm::vec2(1.f, 1.f)},
       {glm::vec2(1.f, 0.f), glm::vec2(1.f, 0.f)},
   }));
+
+  vertex_shader = Shader(P "./shader/shader.vert", GL_VERTEX_SHADER);
+  fragment_shader = Shader(P "./shader/shader.frag", GL_FRAGMENT_SHADER);
+  program.AddShader(vertex_shader);
+  program.AddShader(fragment_shader);
+  program.Link();
+
+  // vao
+  glGenVertexArrays(1, &vao);
+  glBindVertexArray(vao);
+  {
+    square_vertex_array()->Bind();
+    program.use();
+    program.setAttribute("space_position", 2, sizeof(Vertex),
+                         offsetof(Vertex, space_position));
+    program.setAttribute("texture_position", 2, sizeof(Vertex),
+                         offsetof(Vertex, texture_position));
+    program.setUniform("tex", 0);
+    program.setUniform("color", glm::vec4(1.0, 1.0, 1.0, 1.0));
+    program.setUniform("view", glm::mat4(1.0));
+  }
+  glBindVertexArray(0);
 }
 
 Screen::Screen(Screen&& screen) {
   operator=(std::move(screen));
 }
 
-void Screen::operator=(Screen&& screen) {
-  std::swap(window_, screen.window_);
-  std::swap(width_, screen.width_);
-  std::swap(height_, screen.height_);
-  std::swap(time_, screen.time_);
-  std::swap(square_vertex_array_, screen.square_vertex_array_);
+void Screen::operator=(Screen&& other) {
+  std::swap(fragment_shader, other.fragment_shader);
+  std::swap(height_, other.height_);
+  std::swap(program, other.program);
+  std::swap(square_vertex_array_, other.square_vertex_array_);
+  std::swap(time_, other.time_);
+  std::swap(time_, other.time_);
+  std::swap(vao, other.vao);
+  std::swap(vertex_shader, other.vertex_shader);
+  std::swap(view_, other.view_);
+  std::swap(view_mat_, other.view_mat_);
+  std::swap(width_, other.width_);
+  std::swap(window_, other.window_);
 }
 
 void Screen::PoolEvents() {
   glfwPollEvents();
-  Input::Update(window_);
+  input_.Update(window_);
 }
 
 void Screen::Display() {
@@ -172,44 +198,11 @@ void Screen::Draw(const Text& text) {
 Texture* WhiteTexture();
 
 void Screen::Draw(const RenderState& state) {
-  static Shader* vertex_shader = nullptr;
-  static Shader* fragment_shader = nullptr;
-  static ShaderProgram* program = nullptr;
-  static GLuint vao = 0;
-
-  if (!vertex_shader) {
-    vertex_shader = new Shader(P "./shader/shader.vert", GL_VERTEX_SHADER);
-    fragment_shader = new Shader(P "./shader/shader.frag", GL_FRAGMENT_SHADER);
-    program = new ShaderProgram();
-    program->AddShader(*vertex_shader);
-    program->AddShader(*fragment_shader);
-    program->Link();
-
-    // vao
-    glGenVertexArrays(1, &vao);
-    glBindVertexArray(vao);
-
-    square_vertex_array()->Bind();
-    program->use();
-    program->setAttribute("space_position", 2, sizeof(Vertex),
-                          offsetof(Vertex, space_position));
-    program->setAttribute("texture_position", 2, sizeof(Vertex),
-                          offsetof(Vertex, texture_position));
-    program->setUniform("tex", 0);
-    program->setUniform("color", glm::vec4(1.0, 1.0, 1.0, 1.0));
-    program->setUniform("view", glm::mat4(1.0));
-
-    // vao end
-    glBindVertexArray(0);
-  }
-
-  GL_CHECK_ERROR(__FILE__, __LINE__);
-
   glBindVertexArray(vao);
   state.vertex_array->Bind();
-  program->use();
-  program->setUniform("color", state.color);
-  program->setUniform("view", state.view);
+  program.use();
+  program.setUniform("color", state.color);
+  program.setUniform("view", state.view);
   auto* texture = state.texture;
   if (!texture)
     texture = WhiteTexture();

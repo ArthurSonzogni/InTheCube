@@ -315,7 +315,7 @@ void Special::DrawForeground(smk::Screen& screen, bool& isWin) {
           case 0:
             pos += (400.0 - pos) / 30.0;
             if ((400 - pos) < 30) {
-              if (smk::Input::IsKeyHold(GLFW_KEY_SPACE)) {
+              if (screen.input().IsKeyHold(GLFW_KEY_SPACE)) {
                 mode = 1;
               }
             }
@@ -338,7 +338,7 @@ void Special::DrawForeground(smk::Screen& screen, bool& isWin) {
             if (color < 255) {
               color += 2;
             } else {
-              if (smk::Input::IsKeyHold(GLFW_KEY_SPACE))
+              if (screen.input().IsKeyHold(GLFW_KEY_SPACE))
                 isWin = true;
               color = 255;
             }

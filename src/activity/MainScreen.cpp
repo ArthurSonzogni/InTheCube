@@ -64,9 +64,8 @@ void MainScreen::Draw() {
   std::string name;
 
   // Clock timeClock;
-  int mouse_x = smk::Input::MouseX();
-  int mouse_y = smk::Input::MouseY();
-  bool mouse_pressed = smk::Input::IsMousePressed(GLFW_MOUSE_BUTTON_1);
+  glm::vec2 mouse = screen().input().mouse();
+  bool mouse_pressed = screen().input().IsMousePressed(GLFW_MOUSE_BUTTON_1);
 
   ///// Draw
 
@@ -82,7 +81,7 @@ void MainScreen::Draw() {
   int i = 0;
   for (auto& it : save_file_.saveList) {
     (void)it;
-    int decale = std::max(5, std::min(std::abs(mouse_y - (50 + i * 40)), 40));
+    float decale = std::max(5.f, std::min(std::abs(mouse.y - (50 + i * 40)), 40.f));
 
     // rectangle
     smk::Shape rectangle =
@@ -110,19 +109,19 @@ void MainScreen::Draw() {
     // deleteButton
     deleteButton.SetPosition(1, 30 + i * 40);
     float delete_button_alpha =
-        8000.0 / (std::abs(mouse_x) + std::abs(mouse_y - 40 - i * 40));
+        8000.0 / (std::abs(mouse.x) + std::abs(mouse.y - 40 - i * 40));
     delete_button_alpha = std::max(100.f, std::min(255.f, delete_button_alpha));
     deleteButton.SetColor(
         glm::vec4(1.0, 1.0, 1.0, delete_button_alpha / 255.f));
     screen().Draw(deleteButton);
 
     if (mouse_pressed) {
-      if (mouse_y > 30 + i * 40 && mouse_y < 70 + i * 40) {
-        if (mouse_x > 30 + decale && mouse_x < 400 + decale) {
+      if (mouse.y > 30 + i * 40 && mouse.y < 70 + i * 40) {
+        if (mouse.x > 30 + decale && mouse.x < 400 + decale) {
           on_name_selected(it.name);
         } else {
-          if (mouse_x >= 0 && mouse_x <= 24 && mouse_y >= 30 + i * 40 &&
-              mouse_y <= 24 + 30 + i * 40) {
+          if (mouse.x >= 0 && mouse.x <= 24 && mouse.y >= 30 + i * 40 &&
+              mouse.y <= 24 + 30 + i * 40) {
             // if (Question(tr(L"confirmDelete1") + L"\n" +
             // tr(L"confirmDelete2") + L"\n" + tr(L"confirmDelete3") +
             // StringToWString(it.name),
@@ -140,8 +139,8 @@ void MainScreen::Draw() {
   }
 
   // button new game
-  if (mouse_y < 480 && mouse_y > 480 - 64 && mouse_x > 640 / 2 - 300 / 2 &&
-      mouse_x < 640 / 2 + 300 / 2) {
+  if (mouse.y < 480 && mouse.y > 480 - 64 && mouse.x > 640 / 2 - 300 / 2 &&
+      mouse.x < 640 / 2 + 300 / 2) {
     newGame.SetColor(glm::vec4(1.0, 1.0, 1.0, 1.0));
     if (mouse_pressed) {
       screen().Draw(newGame);
@@ -161,10 +160,10 @@ void MainScreen::Draw() {
 
   // bouton language
   for (int i = 0; i < 3; i++) {
-    bool selected = mouse_x >= 640 - 128 &&   //
-                    mouse_x <= 640 &&         //
-                    mouse_y > 100 * i &&      //
-                    mouse_y <= 100 * i + 64;  //
+    bool selected = mouse.x >= 640 - 128 &&   //
+                    mouse.x <= 640 &&         //
+                    mouse.y > 100 * i &&      //
+                    mouse.y <= 100 * i + 64;  //
 
     float target = selected ? 640 - 128 : 640 - 100;
     languageXPos[i] += (target - languageXPos[i]) * 30 *  dt;
@@ -181,7 +180,7 @@ void MainScreen::Draw() {
     screen().Draw(sprLanguage[i]);
 
     // escape button
-    if (smk::Input::IsKeyPressed(GLFW_KEY_ESCAPE))
+    if (screen().input().IsKeyPressed(GLFW_KEY_ESCAPE))
       on_quit();
 
     //if (t > 0) {
@@ -347,8 +346,8 @@ bool MainScreen::Question(std::wstring message, std::wstring q1, std::wstring q2
   // while (screen.GetEvent(event))
   //;
 
-  // int mouse_x = 0;
-  // int mouse_y = 0;
+  // int mouse.x = 0;
+  // int mouse.y = 0;
   bool mouse_pressed = false;
   (void)mouse_pressed;
 
@@ -366,8 +365,8 @@ bool MainScreen::Question(std::wstring message, std::wstring q1, std::wstring q2
     //}
 
     // if (event.Type == Event::MouseMoved) {
-    // mouse_x = event.MouseMove.X;
-    // mouse_y = event.MouseMove.Y;
+    // mouse.x = event.MouseMove.X;
+    // mouse.y = event.MouseMove.Y;
     //}
     //}
 
@@ -381,13 +380,13 @@ bool MainScreen::Question(std::wstring message, std::wstring q1, std::wstring q2
     q1String.SetColor(gray);
     q2String.SetColor(gray);
 
-    // if (mouse_y >= top && mouse_y <= bottom) {
-    // if (mouse_x >= leftq1 && mouse_x <= rightq2) {
-    // if (mouse_x <= rightq1) {
+    // if (mouse.y >= top && mouse.y <= bottom) {
+    // if (mouse.x >= leftq1 && mouse.x <= rightq2) {
+    // if (mouse.x <= rightq1) {
     // q1String.SetColor(black);
     // if (mouse_pressed)
     // return true;
-    //} else if (mouse_x >= leftq2) {
+    //} else if (mouse.x >= leftq2) {
     // q2String.SetColor(black);
     // if (mouse_pressed)
     // return false;

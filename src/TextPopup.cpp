@@ -94,14 +94,14 @@ TextPopup::TextPopup(int t) {
   spaceSprite.SetTexture(img_decorSpace);
 }
 
-bool TextPopup::Step() {
+bool TextPopup::Step(smk::Screen& screen) {
   time++;
   horizontal_shift += (100 - horizontal_shift) / 10.0;
 
   if (time > 10) {
-    if (smk::Input::IsMousePressed(GLFW_MOUSE_BUTTON_1) ||
-        smk::Input::IsKeyPressed(GLFW_KEY_SPACE) ||
-        smk::Input::IsKeyPressed(GLFW_KEY_ENTER)) {
+    if (screen.input().IsMousePressed(GLFW_MOUSE_BUTTON_1) ||
+        screen.input().IsKeyPressed(GLFW_KEY_SPACE) ||
+        screen.input().IsKeyPressed(GLFW_KEY_ENTER)) {
       p++;
       horizontal_shift = 640;
       time = 0;

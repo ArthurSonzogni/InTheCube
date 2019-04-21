@@ -16,9 +16,9 @@ void WelcomeScreen::Draw() {
   view.SetSize(640, 480);
   screen().SetView(view);
 
-  if (smk::Input::IsMousePressed(GLFW_MOUSE_BUTTON_1) ||
-      smk::Input::IsKeyPressed(GLFW_KEY_SPACE) ||
-      smk::Input::IsKeyPressed(GLFW_KEY_ENTER)) {
+  if (screen().input().IsMousePressed(GLFW_MOUSE_BUTTON_1) ||
+      screen().input().IsKeyPressed(GLFW_KEY_SPACE) ||
+      screen().input().IsKeyPressed(GLFW_KEY_ENTER)) {
     on_quit();
   }
 

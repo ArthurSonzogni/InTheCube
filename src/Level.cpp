@@ -482,16 +482,17 @@ void Level::Step(smk::Screen& screen) {
   // isEscape = true;
   //}
   // test if the player will restart the room
-  if (smk::Input::IsKeyPressed(GLFW_KEY_R)) {
+  if (screen.input().IsKeyPressed(GLFW_KEY_R)) {
     isLose = true;
   }
-  if (smk::Input::IsKeyPressed(GLFW_KEY_T)) {
+  if (screen.input().IsKeyPressed(GLFW_KEY_T)) {
     isWin = true;
   }
 
   // Drawn popup
-  for (auto it = drawn_textpopup_list.begin(); it != drawn_textpopup_list.end(); ++it) {
-    if (it->Step())
+  for (auto it = drawn_textpopup_list.begin(); it != drawn_textpopup_list.end();
+       ++it) {
+    if (it->Step(screen))
       drawn_textpopup_list.erase(it);
     return;
   }
@@ -508,7 +509,7 @@ void Level::Step(smk::Screen& screen) {
   // changement de joueur
   static bool spacepressed = false;
   if (!hero_list.empty()) {
-    if (smk::Input::IsKeyHold(GLFW_KEY_SPACE)) {
+    if (screen.input().IsKeyHold(GLFW_KEY_SPACE)) {
       if (spacepressed == false) {
         spacepressed = true;
         heroSelected = (heroSelected + 1) % nbHero;
@@ -558,8 +559,8 @@ void Level::Step(smk::Screen& screen) {
 
       // test for un jump
       if (i == heroSelected) {
-        if (smk::Input::IsKeyHold(GLFW_KEY_W) ||
-            smk::Input::IsKeyHold(GLFW_KEY_UP)) {
+        if (screen.input().IsKeyHold(GLFW_KEY_W) ||
+            screen.input().IsKeyHold(GLFW_KEY_UP)) {
           hero.yspeed = -20;
         }
       }
@@ -567,15 +568,15 @@ void Level::Step(smk::Screen& screen) {
 
     if (i == heroSelected) {
       // move on the right
-      if (smk::Input::IsKeyHold(GLFW_KEY_D) ||
-          smk::Input::IsKeyHold(GLFW_KEY_RIGHT)) {
+      if (screen.input().IsKeyHold(GLFW_KEY_D) ||
+          screen.input().IsKeyHold(GLFW_KEY_RIGHT)) {
         hero.sens = false;
         hero.xspeed += 2;
       }
 
       // move on the left
-      if (smk::Input::IsKeyHold(GLFW_KEY_A) ||
-          smk::Input::IsKeyHold(GLFW_KEY_LEFT)) {
+      if (screen.input().IsKeyHold(GLFW_KEY_A) ||
+          screen.input().IsKeyHold(GLFW_KEY_LEFT)) {
         hero.sens = true;
         hero.xspeed -= 2;
       }
