@@ -13,15 +13,3 @@
 [submodule "lib/openal"]
 	path = lib/openal
 	url = https://github.com/kcat/openal-soft
-[submodule "build/lib/sndfile"]
-	path = lib/sndfile
-	url = https://github.com/erikd/libsndfile
-[submodule "lib/vorbis"]
-	path = lib/vorbis
-	url = https://github.com/xiph/vorbis
-[submodule "lib/opus"]
-	path = lib/opus
-	url = https://github.com/xiph/opus
-[submodule "lib/flac"]
-	path = lib/flac
-	url = https://github.com/janbar/flac-cmake
