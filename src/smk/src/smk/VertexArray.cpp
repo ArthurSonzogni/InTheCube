@@ -5,24 +5,38 @@ namespace smk {
 VertexArray::VertexArray() = default;
 VertexArray::VertexArray(const std::vector<Vertex>& array) {
   size_ = array.size();
-  glGenBuffers(1, &handle_);
-  Bind();
+
+  glGenVertexArrays(1, &vao_);
+  glBindVertexArray(vao_);
+
+  glGenBuffers(1, &vbo_);
+  glBindBuffer(GL_ARRAY_BUFFER, vbo_);
+
   glBufferData(GL_ARRAY_BUFFER, array.size() * sizeof(Vertex), array.data(),
                GL_STATIC_DRAW);
-  UnBind();
+  glEnableVertexAttribArray(0);
+  glVertexAttribPointer(0, sizeof(Vertex::space_position) / sizeof(GL_FLOAT),
+                        GL_FLOAT, false, sizeof(Vertex),
+                        (void*)offsetof(Vertex, space_position));
+  glEnableVertexAttribArray(1);
+  glVertexAttribPointer(1, sizeof(Vertex::texture_position) / sizeof(GL_FLOAT),
+                        GL_FLOAT, false, sizeof(Vertex),
+                        (void*)offsetof(Vertex, texture_position));
 }
 
 VertexArray::~VertexArray() {
-  if (handle_)
-    glDeleteBuffers(1, &handle_);
+  if (vbo_)
+    glDeleteBuffers(1, &vbo_);
+  if (vao_)
+    glDeleteVertexArrays(1, &vao_);
 }
 
 void VertexArray::Bind() const {
-  glBindBuffer(GL_ARRAY_BUFFER, handle_);
+  glBindVertexArray(vao_);
 }
 
 void VertexArray::UnBind() const {
-  glBindBuffer(GL_ARRAY_BUFFER, 0);
+  glBindVertexArray(0);
 }
 
 VertexArray::VertexArray(VertexArray&& other) {
@@ -30,7 +44,8 @@ VertexArray::VertexArray(VertexArray&& other) {
 }
 
 void VertexArray::operator=(VertexArray&& other) {
-  std::swap(handle_, other.handle_);
+  std::swap(vbo_, other.vbo_);
+  std::swap(vao_, other.vao_);
   std::swap(size_, other.size_);
 }
 

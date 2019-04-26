@@ -18,17 +18,19 @@ add_library(smk
   include/smk/Sprite.hpp
   include/smk/Text.hpp
   include/smk/Texture.hpp
+  include/smk/BlendMode.hpp
+  include/smk/RenderState.hpp
   include/smk/Vertex.hpp
   include/smk/VertexArray.hpp
   include/smk/View.hpp
   src/smk/Audio.cpp
+  src/smk/BlendMode.cpp
   src/smk/Color.cpp
   src/smk/Drawable.cpp
   src/smk/Font.cpp
   src/smk/GL_CHECK_ERROR.cpp
   src/smk/Input.cpp
   src/smk/RenderState.cpp
-  include/smk/RenderState.hpp
   src/smk/Screen.cpp
   src/smk/Shader.cpp
   src/smk/Shape.cpp
@@ -51,6 +53,14 @@ target_include_directories(smk
     src/
 )
 
+target_compile_options(main
+ PRIVATE
+  -Wall
+  -Werror
+  -pedantic-errors
+  -Wextra
+)
+
 set_property(TARGET smk PROPERTY CXX_STANDARD 14)
 add_definitions(-DGLM_FORCE_RADIANS)
 
@@ -66,4 +76,12 @@ endif()
 target_link_libraries(smk PUBLIC glm)
 target_link_libraries(smk PRIVATE freetype)
 target_link_libraries(smk PRIVATE OpenAL)
-target_link_libraries(smk PRIVATE sndfile)
+target_link_libraries(smk PRIVATE libnyquist)
+
+get_property(includes
+        TARGET libnyquist
+        PROPERTY INCLUDE_DIRECTORIES
+        )
+foreach(a ${includes})
+  message(STATUS ${a})
+endforeach()

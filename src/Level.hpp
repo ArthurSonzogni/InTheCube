@@ -12,6 +12,7 @@
 
 #include <smk/Screen.hpp>
 #include <smk/View.hpp>
+#include <smk/Sound.hpp>
 #include "Accelerator.hpp"
 #include "Arrow.hpp"
 #include "ArrowLauncher.hpp"
@@ -44,6 +45,24 @@
 
 class Level {
  public:
+  Level();
+  ~Level();
+
+  // 1. Populate the level with objects.
+  void LoadFromFile(std::string fileName);
+
+  // 2. Advance in the simulation. 30 times per secondes.
+  void Step(smk::Screen& screen);
+
+  // 3. Draw the current state of the level.
+  void Draw(smk::Screen& screen);
+
+  bool isPrevious = false;
+  bool isWin = false;
+  bool isLose = false;
+  bool isEscape = false;
+
+ private:
   friend Special;
   std::list<Accelerator> accelerator_list;
   std::list<Arrow> arrow_list;
@@ -73,9 +92,6 @@ class Level {
   std::vector<Teleporter> teleporter_list;
 
   FinishBlock enddingBlock;
-  bool isWin;
-  bool isLose;
-  bool isEscape;
 
   smk::Sprite spriteBackground;
   std::vector<Hero> hero_list;
@@ -94,10 +110,6 @@ class Level {
   smk::View view_;
   void SetView();
 
-  void Draw(smk::Screen& screen);
-  void Step(smk::Screen& screen);
-  Level();
-  void LoadFromFile(std::string fileName);
   bool CollisionWithAllBlock(Rectangle geom);
   bool CollisionWithAllBlock(Line l);
   bool CollisionWithAllBlock(Point p);
@@ -112,9 +124,10 @@ class Level {
                  float y,
                  float angle,
                  int recursiveMaxLevel = 30);
-  void DrawElectricity(smk::Screen& screen, int x1, int y1, int x2, int y2);
-
   std::list<Laser> laser_;
+
+  static smk::Sound back_music_;
+  static int back_music_users_;
 };
 
 #endif /* __NIVEAU_H__ */

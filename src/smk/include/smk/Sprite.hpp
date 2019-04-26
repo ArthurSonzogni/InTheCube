@@ -10,7 +10,8 @@ namespace smk {
 
 class Sprite : public Drawable {
  public:
-  void Draw(Screen& screen, RenderState state) const;
+  ~Sprite() override = default;
+  void Draw(Screen& screen, RenderState state) const override;
 };
 
 }  // namespace smk

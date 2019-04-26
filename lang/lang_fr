@@ -9,7 +9,7 @@ le profile:
 profileExistAlready
 Ce profil existe deja
 enterYourName
-Entrer votre nom
+Entrez votre nom
 yes
 oui
 no
@@ -105,7 +105,7 @@ arbret75
 arbret81
 Cependant, je voudrais
 arbret82
-vous faire courrir
+vous faire courir
 arbret83
 un dernier test
 arbret91
@@ -158,3 +158,5 @@ instruction7
 appuyez sur la touche
 instruction8
   R
+okay
+D'accord

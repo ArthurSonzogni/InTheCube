@@ -13,18 +13,6 @@
 namespace smk {
 
 void Input::Update(GLFWwindow* window) {
-#ifdef __EMSCRIPTEN__
-  mouseIsFixed = glfwGetInputMode(window, GLFW_CURSOR) == GLFW_CURSOR_DISABLED;
-
-  static bool initialized = false;
-  if (!initialized) {
-    initialized = true;
-
-    glfwMakeContextCurrent(window);
-    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-  }
-#endif
-
   // get screen dimension
   int width, height;
   glfwGetWindowSize(window, &width, &height);

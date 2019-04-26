@@ -4,6 +4,7 @@
 #include <glm/glm.hpp>
 #include <smk/Texture.hpp>
 #include <smk/VertexArray.hpp>
+#include <smk/BlendMode.hpp>
 
 namespace smk {
 
@@ -12,6 +13,7 @@ struct RenderState {
   const VertexArray* vertex_array = nullptr;
   glm::mat4 view;
   glm::vec4 color;
+  BlendMode blend_mode = BlendMode::Transparent;
 };
 
 } // namespace smk

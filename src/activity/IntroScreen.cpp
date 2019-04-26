@@ -7,12 +7,16 @@
 #include "Lang.hpp"
 #include <glm/gtx/compatibility.hpp>
 #include <smk/Color.hpp>
+#include "BackgroundMusic.hpp"
+
+extern BackgroundMusic background_music;
 
 void IntroScreen::OnEnter() {
   previous_time = screen().time();
   x = 0;
   dx = 0;
   position = 1;
+  background_music.SetSound(SB_intro);
 }
 
 void IntroScreen::Draw() {

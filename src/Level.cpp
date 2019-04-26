@@ -4,7 +4,10 @@
 #include <smk/Shape.hpp>
 #include <smk/Text.hpp>
 #include <smk/View.hpp>
+#include "BackgroundMusic.hpp"
 #include "Lang.hpp"
+
+extern BackgroundMusic background_music;
 
 float InRange(float x, float a, float b) {
   if (x < a)
@@ -52,6 +55,9 @@ Level::Level() {
   fluidViewEnable = true;
   time = 0;
   timeDead = 0;
+}
+
+Level::~Level() {
 }
 
 void Level::LoadFromFile(std::string fileName) {
@@ -331,16 +337,34 @@ void Level::LoadFromFile(std::string fileName) {
   // definition du background;
   spriteBackground.SetTexture(img_background);
 
-  // end of Level variables
-  isWin = false;
-  isEscape = false;
-  isLose = false;
+  int separator_position = 0;
+  {
+    int i = 0;
+    for(auto& it : fileName) {
+      ++i;
+      if (it == '/' || it == '\\')
+        separator_position = i;
+    }
+  }
+  fileName = fileName.substr(separator_position, -1);
+  std::cerr << "filename = " << fileName << std::endl;
+
+  if (fileName == "IntroductionPincette")
+    background_music.SetSound(smk::SoundBuffer());
+  else if (fileName == "LevelArbreBoss")
+    background_music.SetSound(SB_backgroundMusicAction);
+  else if (fileName == "LevelEnd")
+    background_music.SetSound(SB_end);
+  else if (fileName == "LevelEnd2")
+    background_music.SetSound(SB_end);
+  else
+    background_music.SetSound(SB_backgroundMusic);
 
   // The initial view position.
   auto geometry = hero_list[heroSelected].geometry;
   {
     xcenter = geometry.left;
-    ycenter = geometry.left;
+    ycenter = geometry.top;
     SetView();
   }
 }
@@ -386,56 +410,9 @@ void Level::Draw(smk::Screen& screen) {
   for (auto& it : arrowLauncher_list) it.Draw(screen);
   for (auto& it : cloneur_list) it.Draw(screen);
   for (auto& it : particule_list) it.Draw(screen);
+  for (auto& it : electricity_list) it.Draw(screen);
   // clang-format on
 
-
-  // Draw Electricity
-  for (auto& it : electricity_list) {
-    int x1 = (it.x1);
-    int x2 = (it.x2);
-    int y1 = (it.y1);
-    int y2 = (it.y2);
-    smk::Sprite sprite;
-    sprite.SetTexture(img_electricitySupport);
-    sprite.SetPosition(x1 - 8, y1 - 8);
-    screen.Draw(sprite);
-    sprite.SetPosition(x2 - 8, y2 - 8);
-    screen.Draw(sprite);
-
-    /*
-    if (time==100)
-    {
-            cout<<time<<std::endl;
-            cout<<it.offset<<std::endl;
-            cout<<it.periode<<std::endl;
-            cout<<it.ratio<<std::endl;
-            cout<<std::endl;
-    }*/
-
-    if (((time + it.offset) % (it.periode)) < it.ratio * it.periode) {
-      if (!it.isSound) {
-        it.sound.Play();
-        it.isSound = true;
-      }
-      // collision with an Hero
-
-      int i = 0;
-      for (auto& it : hero_list) {
-        if (IsCollision(it.geometry.increase(10, 10), Line(x1, y1, x2, y2))) {
-          it.life -= 4;
-        }
-        i++;
-      }
-      DrawElectricity(screen, x1, y1, x2, y2);
-      DrawElectricity(screen, x1, y1, x2, y2);
-      DrawElectricity(screen, x1, y1, x2, y2);
-    } else {
-      if (it.isSound) {
-        it.sound.Stop();
-        it.isSound = false;
-      }
-    }
-  }
 
   for (auto it = laser_.begin(); it != laser_.end(); it = laser_.erase(it))
     it->Draw(screen);
@@ -487,6 +464,9 @@ void Level::Step(smk::Screen& screen) {
   }
   if (screen.input().IsKeyPressed(GLFW_KEY_T)) {
     isWin = true;
+  }
+  if (screen.input().IsKeyPressed(GLFW_KEY_Y)) {
+    isPrevious = true;
   }
 
   // Drawn popup
@@ -985,25 +965,14 @@ void Level::Step(smk::Screen& screen) {
         }
 
         smk::Sound explosion;
-        // explosion.SetBuffer(SB_explosion);
-        sound_list.push_front(explosion);
-        (*(sound_list.begin())).Play();
+        explosion.SetBuffer(SB_explosion);
+        explosion.Play();
+        sound_list.push_front(std::move(explosion));
         creeper = creeper_list.erase(creeper);
         continue;
       }
     }
     ++creeper;
-  }
-
-  //////////////////////
-  // Creeper explosion //
-  //////////////////////
-
-  for (auto& it : sound_list) {
-    // if (it.GetStatus() == Sound::Stopped) {
-    // sound_list.erase(it);
-    // it = sound_list.begin();
-    //}
   }
 
   /////////////////////////////////
@@ -1181,6 +1150,19 @@ void Level::Step(smk::Screen& screen) {
         (*itHero).y += it.yTeleport;
         (*itHero).UpdateGeometry();
         SetView();
+      }
+    }
+  }
+  for (auto& it : electricity_list) {
+    it.Step(time);
+
+    if (it.is_active()) {
+      // collision with an Hero
+      for (auto& hero : hero_list) {
+        if (IsCollision(hero.geometry.increase(10, 10),
+                        Line(it.x1, it.y1, it.x2, it.y2))) {
+          hero.life -= 4;
+        }
       }
     }
   }
@@ -1501,10 +1483,10 @@ void Level::EmitLaser(smk::Screen& screen,
     float yyy = yy - l * sin(a);
     if (!CollisionWithAllBlock(Line(xx, yy, xxx, yyy))) {
       for (int r = 1; r <= 4; r += 1) {
-        smk::Shape Line = smk::Shape::Line(xx, yy, xxx, yyy, r,
-                                           glm::vec4(50, 0, 0, 0) / 255.f);
-        Line.SetBlendMode(Blend::Add);
-        screen.Draw(Line);
+        smk::Shape line = smk::Shape::Line({xx, yy}, {xxx, yyy}, r);
+        line.SetColor(glm::vec4(0.2, 0, 0, 0));
+        line.SetBlendMode(smk::BlendMode::Add);
+        screen.Draw(line);
       }
       xx = xxx;
       yy = yyy;
@@ -1517,7 +1499,7 @@ void Level::EmitLaser(smk::Screen& screen,
   xx = xx + 1 * cos(a);
   yy = yy - 1 * sin(a);
 
-  laser_.push_back(Laser{Point(x, y), Point(xx, yy)});
+  laser_.push_back(Laser{glm::vec2(x, y), glm::vec2(xx, yy)});
 
   /*
   for(int r=1;r<=4;r+=1)
@@ -1527,15 +1509,6 @@ void Level::EmitLaser(smk::Screen& screen,
           screen.Draw(Line);
   }
   */
-
-  // Draw an halo on the impact of the Laser
-  i = rand();
-  for (int r = 1; r <= 12 + i % 5; r += 1) {
-    smk::Shape circle =
-        smk::Shape::Circle(xx, yy, r, glm::vec4(10, 0, 0, 0) / 255.f);
-    circle.SetBlendMode(Blend::Add);
-    screen.Draw(circle);
-  }
 
   // checking impact of the Laser with the Hero
   i = 0;
@@ -1577,44 +1550,12 @@ void Level::EmitLaser(smk::Screen& screen,
   }
 }
 
-void Level::DrawElectricity(smk::Screen& screen,
-                            int x1,
-                            int y1,
-                            int x2,
-                            int y2) {
-  int x = x1;
-  int y = y1;
-  int xx, yy;
-  int xfinal = x2;
-  int yfinal = y2;
-  while (abs(x - xfinal) + abs(y - yfinal) > 5) {
-    float angle = atan2(yfinal - y, xfinal - x);
-    angle += float(rand() % 10 - 20) * 0.2;
-    xx = x - 9 * cos(angle);
-    yy = y - 9 * sin(angle);
-    for (int r = 3; r <= 10; r += 2) {
-      smk::Shape line1 = smk::Shape::Line(
-          x, y, xx, yy, r, glm::vec4(242, 224, 58, 20 - r) / 255.f, r,
-          glm::vec4(232, 214, 48, 10 - r) / 255.f);
-      line1.SetBlendMode(Blend::Add);
-      screen.Draw(line1);
-    }
-
-    smk::Shape Line =
-        smk::Shape::Line(x, y, xx, yy, 2, glm::vec4(252, 234, 68, 255) / 255.f);
-    x = xx;
-    y = yy;
-
-    screen.Draw(Line);
-  }
-}
-
 void Level::SetView() {
   if (!hero_list.empty()) {
     auto geometry = hero_list[heroSelected].geometry;
     if (fluidViewEnable) {
-      xcenter = (xcenter + 0.1 * geometry.left) / 1.1;
-      ycenter = (ycenter + 0.1 * geometry.top) / 1.1;
+      xcenter += 0.1 * (geometry.left - xcenter);
+      ycenter += 0.1 * (geometry.top - ycenter);
     } else {
       xcenter = geometry.left;
       ycenter = geometry.left;
@@ -1623,8 +1564,6 @@ void Level::SetView() {
     xcenter = std::min(viewXMax - 320, xcenter);
     ycenter = std::max(viewYMin + 240, ycenter);
     ycenter = std::min(viewYMax - 240, ycenter);
-    static float previous = 0;
-    previous = xcenter;
     view_.SetCenter(xcenter, ycenter);
   }
   view_.SetSize(640, 480);

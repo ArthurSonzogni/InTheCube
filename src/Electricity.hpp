@@ -1,8 +1,9 @@
 #ifndef ELECTRICITY_HP
 #define ELECTRICITY_HP
 
-#include "Resource.hpp"
+#include <smk/Screen.hpp>
 #include <smk/Sound.hpp>
+#include "Resource.hpp"
 
 class Electricity {
  public:
@@ -11,7 +12,6 @@ class Electricity {
   int periode;
   int offset;
   smk::Sound sound;
-  bool isSound;
   Electricity(int X1,
               int Y1,
               int X2,
@@ -19,6 +19,11 @@ class Electricity {
               float Ratio,
               int Periode,
               int Offset);
+  void Step(int time);
+  void Draw(smk::Screen&);
+  bool is_active() { return is_active_; }
+ private:
+  bool is_active_ = false;
 };
 
 #endif /* ELECTRICITY_HP */

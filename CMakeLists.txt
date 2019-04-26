@@ -11,8 +11,10 @@ add_executable(main
   src/activity/IntroScreen.cpp
   src/activity/MainScreen.hpp
   src/activity/MainScreen.cpp
-  src/activity/LevelScreen.hpp
   src/activity/LevelScreen.cpp
+  src/activity/LevelScreen.hpp
+  src/activity/ResourceLoadingScreen.cpp
+  src/activity/ResourceLoadingScreen.hpp
   src/Accelerator.cpp
   src/Accelerator.hpp
   src/Arrow.cpp
@@ -89,6 +91,14 @@ add_executable(main
 
 target_include_directories(main PRIVATE ./src)
 
+target_compile_options(main
+ PRIVATE
+  -Wall
+  -Werror
+  -pedantic-errors
+  -Wextra
+)
+
 set_property(TARGET main PROPERTY CXX_STANDARD 14)
 add_definitions(-DGLM_FORCE_RADIANS)
 
@@ -99,7 +109,8 @@ if(CMAKE_CXX_COMPILER MATCHES "/em\\+\\+(-[a-zA-Z0-9.])?$")
   string(APPEND CMAKE_CXX_FLAGS " -s DEMANGLE_SUPPORT=1")
   string(APPEND CMAKE_CXX_FLAGS " -s DISABLE_EXCEPTION_CATCHING=2")
   string(APPEND CMAKE_CXX_FLAGS " -s WASM=1")
-  string(APPEND CMAKE_CXX_FLAGS " -s ALLOW_MEMORY_GROWTH=1")
+  string(APPEND CMAKE_CXX_FLAGS " -s TOTAL_MEMORY=134217728")
+  string(APPEND CMAKE_CXX_FLAGS " -s BINARYEN_TRAP_MODE='allow'")
 
   # Release flags
   string(APPEND CMAKE_CXX_FLAGS " --closure 1")
@@ -122,27 +133,26 @@ if(CMAKE_CXX_COMPILER MATCHES "/em\\+\\+(-[a-zA-Z0-9.])?$")
   # Allow some files to be fetched.
   file(GLOB shader_files "./shader/*")
   file(GLOB img_files "./img/*")
-  file(GLOB save_files "./sav/*")
   file(GLOB lvl_files "./lvl/*")
   file(GLOB lang_files "./lang/*")
   file(GLOB font_files "./font/*")
-  foreach(file ${shader_files} ${img_files} ${save_files} ${lvl_files} ${lang_files} ${font_files})
+  file(GLOB snd_files "./snd/*")
+  foreach(file ${shader_files} ${img_files} ${lvl_files} ${lang_files} ${font_files} ${snd_files})
     file(RELATIVE_PATH relative_file ${CMAKE_SOURCE_DIR} ${file})
     string(APPEND CMAKE_CXX_FLAGS " --preload-file ${file}@/${relative_file}")
   endforeach()
 else()
   add_subdirectory(lib/glew EXCLUDE_FROM_ALL)
   add_subdirectory(lib/glfw EXCLUDE_FROM_ALL)
+
+  add_subdirectory(lib/openal EXCLUDE_FROM_ALL)
 endif()
 
 add_subdirectory(lib/freetype2 EXCLUDE_FROM_ALL)
 add_subdirectory(lib/glm EXCLUDE_FROM_ALL)
-add_subdirectory(src/smk EXCLUDE_FROM_ALL)
-#add_subdirectory(lib/vorbis EXCLUDE_FROM_ALL)
-#add_subdirectory(lib/flac EXCLUDE_FROM_ALL)
-#add_subdirectory(lib/opus EXCLUDE_FROM_ALL)
-add_subdirectory(lib/openal EXCLUDE_FROM_ALL)
+add_definitions(-DCELT_DECODER_C -DCELT_ENCODER_C)
 
-add_subdirectory(lib/sndfile EXCLUDE_FROM_ALL)
+add_subdirectory(lib/libnyquist EXCLUDE_FROM_ALL)
+add_subdirectory(src/smk EXCLUDE_FROM_ALL)
 
 target_link_libraries(main PRIVATE smk)

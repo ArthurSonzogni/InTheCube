@@ -14,7 +14,7 @@ extern glm::vec4 Yellow;
 extern glm::vec4 Magenta;
 extern glm::vec4 Cyan;
 extern glm::vec4 Transparent;
-};  // namespace Color
-};  // namespace smk
+}  // namespace Color
+}  // namespace smk
 
 #endif /* end of include guard: COLOR_H */

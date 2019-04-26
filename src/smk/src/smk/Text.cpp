@@ -27,7 +27,7 @@ void Text::SetFont(const Font& font) {
 
 void Text::Draw(Screen& screen, RenderState state) const {
   state.color *= color();
-  state.view *= transformation();
+  state.view *= Transformation();
   Sprite sprite;
   float advance_x = 0.f;
   float advance_y = font_->size();
@@ -47,6 +47,28 @@ void Text::Draw(Screen& screen, RenderState state) const {
     sprite.Draw(screen, state);
     advance_x += character->advance;
   }
+}
+
+glm::vec2 Text::ComputeDimensions() const {
+  glm::vec2 dimension(0.f, 0.f);
+  float advance_x = 0.f;
+  float advance_y = font_->size();
+  dimension.y += font_->size();
+  for (const auto& it : string_) {
+    if (it == U'\n') {
+      advance_x = 0.f;
+      advance_y += font_->size();
+      dimension.y += font_->size();
+      continue;
+    }
+    auto character = font_->GetCharacter(it);
+    if (!character)
+      continue;
+    advance_x += character->advance;
+
+    dimension.x = std::max(dimension.x, advance_x);
+  }
+  return dimension;
 }
 
 }  // namespace smk

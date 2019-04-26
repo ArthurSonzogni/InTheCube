@@ -6,6 +6,8 @@
 class Activity {
  public:
   Activity(smk::Screen& screen) : screen_(screen) {}
+  virtual ~Activity() = default;
+
   virtual void Draw() = 0;
 
   virtual void OnEnter() {}

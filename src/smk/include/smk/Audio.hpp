@@ -6,8 +6,15 @@ namespace smk {
 // Initialize OpenAL.
 class Audio {
  public:
-  Audio();
-  ~Audio();
+  Audio() { IncreaseRef();}
+  ~Audio() { DecreaseRef(); }
+
+  Audio(const Audio&) { IncreaseRef(); }
+  Audio(Audio&&) { IncreaseRef(); }
+
+ private:
+  void IncreaseRef();
+  void DecreaseRef();
 };
 
 }  // namespace smk

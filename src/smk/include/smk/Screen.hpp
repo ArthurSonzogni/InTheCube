@@ -16,11 +16,10 @@ struct GLFWwindow;
 
 namespace smk {
 
-class Shape;
-class Sprite;
-class Text;
+class Drawable;
 class View;
 class VertexArray;
+class Sprite;
 
 class Screen {
  public:
@@ -47,19 +46,22 @@ class Screen {
   const View& GetView() const { return view_; }
 
   // 3. Draw.
-  //void Draw(const Shape&)
-  void Draw(const Sprite&);
-  void Draw(const Text&);
+  void Draw(const Drawable&);
   void Draw(const RenderState&);
 
   // 4. Notify the current frame is ready. The current and next one are swapped.
   void Display();
+
+  // 5. Wait until the end of the frame to maintain a targetted frame per
+  // seconds. (optional).
+  void LimitFrameRate(float fps);
 
  private:
   GLFWwindow* window_ = nullptr;
 
   // Time:
   float time_ = 0.f;
+  float time_last_sleep_ = 0.f;
 
   // Dimensions:
   int width_ = 0;
@@ -85,9 +87,10 @@ class Screen {
   Shader vertex_shader;
   Shader fragment_shader;
   ShaderProgram program;
-  GLuint vao = 0;
 
   Input input_;
+
+  RenderState cached_render_state_;
 };
 
 }  // namespace smk

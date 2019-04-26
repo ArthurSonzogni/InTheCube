@@ -22,7 +22,7 @@ Particule essai() {
   p.sprite.SetPosition(200, 200);
   p.xspeed = rand() % 11 - 5;
   p.yspeed = rand() % 11 - 5;
-  p.sprite.SetBlendMode(Blend::Add);
+  p.sprite.SetBlendMode(smk::BlendMode::Add);
   p.t = 0;
   p.alpha = 255;
   return p;
@@ -50,7 +50,7 @@ Particule fireParticule(int x, int y) {
   p.sprite.SetPosition(x, y);
   p.xspeed = rand() % 6 - 2;
   p.yspeed = rand() % 6 - 2;
-  p.sprite.SetBlendMode(Blend::Add);
+  p.sprite.SetBlendMode(smk::BlendMode::Add);
   p.t = 0;
   p.alpha = 255;
   return p;
@@ -85,7 +85,7 @@ Particule particuleLaserOnHero(int x, int y, int xstart, int ystart) {
 
   p.xspeed += rand() % 4 - 1;
   p.yspeed += rand() % 4 - 1;
-  p.sprite.SetBlendMode(Blend::Add);
+  p.sprite.SetBlendMode(smk::BlendMode::Add);
   p.t = 0;
   p.alpha = 255;
   return p;
@@ -113,7 +113,7 @@ Particule particuleLaserOnGlass(int x, int y, int xstart, int ystart) {
 
   p.xspeed += rand() % 3 - 1;
   p.yspeed += rand() % 3 - 1;
-  p.sprite.SetBlendMode(Blend::Add);
+  p.sprite.SetBlendMode(smk::BlendMode::Add);
   p.t = 0;
   p.alpha = 200;
   p.Step();
@@ -140,7 +140,7 @@ Particule particuleCloneur(int x, int y) {
   p.xspeed = 0;
   p.yspeed = -2;
 
-  p.sprite.SetBlendMode(Blend::Add);
+  p.sprite.SetBlendMode(smk::BlendMode::Add);
   p.t = 0;
   p.alpha = 200;
   p.Step();
@@ -167,7 +167,7 @@ Particule particuleCreeperExplosion(int x, int y) {
   p.yspeed = float((rand() % 10 - 5));
   ;
 
-  p.sprite.SetBlendMode(Blend::Add);
+  p.sprite.SetBlendMode(smk::BlendMode::Add);
   p.t = 0;
   p.alpha = 200;
   p.Step();
@@ -289,7 +289,7 @@ Particule accParticule(int x, int y, float xspeed, int t) {
   p.sprite.SetPosition(x, y);
   p.xspeed = xspeed;
   p.yspeed = 0.0;
-  p.sprite.SetBlendMode(Blend::Add);
+  p.sprite.SetBlendMode(smk::BlendMode::Add);
   p.x = x;
   p.y = y;
   p.t = t;

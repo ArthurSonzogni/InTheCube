@@ -31,8 +31,9 @@ Texture* WhiteTexture() {
 void Sprite::Draw(Screen& screen, RenderState state) const {
   state.color *= color();
   state.texture = texture();
-  state.view *= transformation();
+  state.view *= Transformation();
   state.vertex_array = screen.square_vertex_array();
+  state.blend_mode = blend_mode();
   screen.Draw(state);
 }
 

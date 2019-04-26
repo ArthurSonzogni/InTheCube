@@ -6,6 +6,8 @@
 class WelcomeScreen : public Activity {
  public:
   WelcomeScreen(smk::Screen& screen) : Activity(screen) {}
+  ~WelcomeScreen() override = default;
+
   void Draw() override;
   void OnEnter() override;
 

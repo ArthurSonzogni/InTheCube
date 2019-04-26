@@ -31,14 +31,14 @@ void GetDevices(std::vector<std::string>& Devices) {
 
 }  // namespace
 
-Audio::Audio() {
+void Audio::IncreaseRef() {
   if (users++)
     return;
 
   std::vector<std::string> devices;
   GetDevices(devices);
-  for(auto& it : devices)
-    std::cerr << "devices = " << it << std::endl;
+  for (auto& it : devices)
+    std::cerr << "Audio devices found: " << it << std::endl;
 
   audioDevice = alcOpenDevice(devices[0].c_str());
   if (!audioDevice) {
@@ -61,7 +61,7 @@ Audio::Audio() {
   }
 }
 
-Audio::~Audio() {
+void Audio::DecreaseRef() {
   if (--users)
     return;
 

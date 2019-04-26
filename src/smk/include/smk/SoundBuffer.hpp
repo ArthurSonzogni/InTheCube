@@ -1,12 +1,13 @@
 #ifndef SMK_SOUND_BUFFER_HPP
 #define SMK_SOUND_BUFFER_HPP
 
-#include <smk/Audio.hpp>
-#include <string>
 #include <AL/al.h>
 #include <AL/alc.h>
+#include <smk/Audio.hpp>
+#include <string>
 
 namespace smk {
+class Sound;
 class SoundBuffer : public Audio {
  public:
   SoundBuffer();  // Empty sound buffer
@@ -14,7 +15,7 @@ class SoundBuffer : public Audio {
 
   ~SoundBuffer();
 
-  void Play(); 
+  void Play();
 
   // --- Move only resource ----------------------------------------------------
   SoundBuffer(SoundBuffer&&);
@@ -23,8 +24,7 @@ class SoundBuffer : public Audio {
   void operator=(const SoundBuffer&) = delete;
   // ---------------------------------------------------------------------------
 
- private:
-  ALuint buffer_;
+  ALuint buffer = 0;
 };
 }  // namespace smk
 

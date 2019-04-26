@@ -23,7 +23,7 @@ Block::Block(int x, int y, int width, int height) {
   }
 }
 
-Block::Block(int x, int y, int width, int height, bool Drawable) {
+Block::Block(int x, int y, int width, int height, bool) {
   drawable = false;
   geometry.left = x;
   geometry.top = y;

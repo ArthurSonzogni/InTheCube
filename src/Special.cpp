@@ -72,8 +72,8 @@ void Special::Step(Level& level) {
       if (mode == 0) {
         if ((768 - x) * (768 - x) + (416 - y) * (416 - y) < 40 * 40) {
           time++;
-          if (time > 100) {
-            //TextPopup(2).Draw(screen);
+          if (time > 60) {
+            level.drawn_textpopup_list.push_back(TextPopup(2));
             mode = 1;
             time = 0;
           }
@@ -119,8 +119,8 @@ void Special::Step(Level& level) {
 
       if (timeBeforeSalvo == 30) {
         smk::Sound sound;
-        // sound.SetBuffer(SB_boss[SalvoId]);
-        level.sound_list.push_front(sound);
+        sound.SetBuffer(SB_boss[SalvoId]);
+        level.sound_list.push_front(std::move(sound));
         (*(level.sound_list.begin())).Play();
       }
 
@@ -232,9 +232,9 @@ void Special::Step(Level& level) {
       if (t > 0) {
         if (t2 <= 0) {
           smk::Sound sound;
-          // sound.SetBuffer(SB_start);
-          level.sound_list.push_front(sound);
-          (*(level.sound_list.begin())).Play();
+          sound.SetBuffer(SB_start);
+          sound.Play();
+          level.sound_list.push_front(std::move(sound));
           t2 = t3;
           t3 = 4 + (t3 - 4) * 0.9;
         } else {
@@ -348,8 +348,9 @@ void Special::DrawForeground(smk::Screen& screen, bool& isWin) {
       }
 
       // focus
-      smk::Shape rect = smk::Shape::Rectangle(0, 0, 6400, 4800,
-                                              glm::vec4(0, 0, 0, t / 2 / 255));
+      smk::Shape rect = smk::Shape::Square();
+      rect.SetScale(6400,4800);
+      rect.SetColor({0, 0, 0, t / 2 / 255});
       screen.Draw(rect);
 
       // tree
@@ -359,7 +360,7 @@ void Special::DrawForeground(smk::Screen& screen, bool& isWin) {
       screen.Draw(spr);
 
       spr.SetTexture(img_arbre_white);
-      spr.SetBlendMode(Blend::Add);
+      spr.SetBlendMode(smk::BlendMode::Add);
       spr.SetColor(glm::vec4(1.0, 1.0, 1.0, t / 255));
       screen.Draw(spr);
 

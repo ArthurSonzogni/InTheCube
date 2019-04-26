@@ -27,7 +27,8 @@ class VertexArray {
   int size() const { return size_;} 
 
  private:
-  GLuint handle_ = 0;
+  GLuint vbo_ = 0;
+  GLuint vao_ = 0;
   int size_ = 0;
 };
 

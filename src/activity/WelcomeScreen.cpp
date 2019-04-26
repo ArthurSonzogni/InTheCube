@@ -4,9 +4,13 @@
 #include <smk/Sprite.hpp>
 #include <smk/View.hpp>
 #include <smk/Input.hpp>
+#include "BackgroundMusic.hpp"
+
+extern BackgroundMusic background_music;
 
 void WelcomeScreen::OnEnter() {
   time_start = screen().time();
+  background_music.SetSound(SB_intro);
 }
 
 void WelcomeScreen::Draw() {
@@ -30,6 +34,7 @@ void WelcomeScreen::Draw() {
   sprite.SetTexture(img_accueil);
   sprite.SetColor(glm::vec4(t, t, t, 1.0));
 
+  screen().Clear(glm::vec4(0.0, 0.0, 0.0, 0.0));
   screen().Draw(sprite);
   screen().Display();
 }

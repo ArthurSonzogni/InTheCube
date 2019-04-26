@@ -4,6 +4,9 @@
 #include <smk/Font.hpp>
 #include <smk/OpenGL.hpp>
 #include <smk/Texture.hpp>
+#include <smk/SoundBuffer.hpp> 
+#include <variant>
+#include <list>
 
 extern smk::Font font_arial;
 extern smk::Texture img_block;
@@ -77,18 +80,30 @@ extern smk::Texture img_particule_fire;
 extern smk::Texture img_particule_pixel;
 extern smk::Texture img_particule_line;
 extern smk::Texture img_particule_p;
-// screen
-// extern RenderWindow screen;
 
 // list of sounds
-// extern SoundBuffer SB_electricity;
-// extern SoundBuffer SB_backgroundMusic;
-// extern SoundBuffer SB_explosion;
-// extern SoundBuffer SB_arrowLauncher;
-// extern SoundBuffer SB_boss[4];
-// extern SoundBuffer SB_backgroundMusicAction;
-// extern SoundBuffer SB_start;
+extern smk::SoundBuffer SB_electricity;
+extern smk::SoundBuffer SB_backgroundMusic;
+extern smk::SoundBuffer SB_backgroundMusicAction;
+extern smk::SoundBuffer SB_explosion;
+extern smk::SoundBuffer SB_arrowLauncher;
+extern smk::SoundBuffer SB_boss[4];
+extern smk::SoundBuffer SB_start;
+extern smk::SoundBuffer SB_intro;
+extern smk::SoundBuffer SB_end;
 
-void initRessource();
+class ResourceInitializer {
+ public:
+  ResourceInitializer();
+
+  struct Resource {
+    smk::Font* font = nullptr;
+    smk::Texture* texture = nullptr;
+    smk::SoundBuffer* soundbuffer = nullptr;
+    std::string* path = nullptr;
+    void Load();
+  };
+  std::list<Resource> resources;
+};
 
 #endif  // RESOURCE_HPP

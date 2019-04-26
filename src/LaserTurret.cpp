@@ -4,6 +4,7 @@
 #include "Resource.hpp"
 #include <smk/Screen.hpp>
 #include <smk/Shape.hpp>
+#include <smk/Color.hpp>
 
 LaserTurret::LaserTurret(int X,
                          int Y,
@@ -32,7 +33,8 @@ LaserTurret::LaserTurret(int X,
 
 void LaserTurret::Draw(smk::Screen& screen) {
   smk::Shape line =
-      smk::Shape::Line(x, y, xattach, yattach, 3, glm::vec4(0.0, 0.0, 0.0, 0.0));
+      smk::Shape::Line(glm::vec2(x, y), glm::vec2(xattach, yattach), 1);
+  line.SetColor(smk::Color::Black);
   screen.Draw(line);
   screen.Draw(sprite);
 }

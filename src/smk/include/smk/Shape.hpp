@@ -2,28 +2,28 @@
 #define SHAPE_HPP
 
 #include "Drawable.hpp"
-#include <smk/Sprite.hpp>
+#include <smk/Drawable.hpp>
 
 namespace smk {
 
-class Shape : public Sprite {
+class Shape : public Drawable {
  public:
-  static Shape Rectangle(float left,
-                         float top,
-                         float right,
-                         float bottom,
-                         glm::vec4 color,
-                         float thickness = 0,
-                         glm::vec4 borderColor = {0.0, 0.0, 0.0, 1.0});
-  static Shape Line(float x1,
-                    float y1,
-                    float x2,
-                    float y2,
-                    float thick,
-                    glm::vec4 color,
-                    float thickness = 0,
-                    glm::vec4 borderColor = {0.0, 0.0, 0.0, 1.0});
-  static Shape Circle(float x, float y, float radius, glm::vec4 color);
+  Shape();  // Invalid shape.
+  Shape(VertexArray vertex_array);
+  ~Shape() override = default;
+  Shape(const Shape&) = delete;
+  Shape(Shape&&);
+  void operator=(const Shape&) = delete;
+  void operator=(Shape&&);
+
+  static Shape Line(glm::vec2 a, glm::vec2 b, float thickness);
+  static Shape Square();
+  static Shape Circle(int subdivisions);
+
+  void Draw(Screen&, RenderState) const override;
+
+ private:
+  VertexArray vertex_array_;
 };
 
 } // namespace smk

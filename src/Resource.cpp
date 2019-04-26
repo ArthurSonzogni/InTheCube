@@ -1,6 +1,6 @@
 #include "Resource.hpp"
-#include <smk/Texture.hpp>
 #include <smk/SoundBuffer.hpp>
+#include <smk/Texture.hpp>
 
 #ifdef __EMSCRIPTEN__
 #define P "./"
@@ -92,104 +92,124 @@ smk::Texture img_tuyau;
 
 // music
 smk::SoundBuffer SB_electricity;
-smk::SoundBuffer SB_backgroundMusic;
 smk::SoundBuffer SB_explosion;
 smk::SoundBuffer SB_arrowLauncher;
 smk::SoundBuffer SB_boss[4];
+smk::SoundBuffer SB_backgroundMusic;
 smk::SoundBuffer SB_backgroundMusicAction;
 smk::SoundBuffer SB_start;
+smk::SoundBuffer SB_end;
+smk::SoundBuffer SB_intro;
 
-void initRessource() {
-  font_arial = smk::Font(P "font/arial.ttf", 30);
+std::map<smk::Font*, std::string> font_resources{
+    {&font_arial, "font/arial.ttf"},
+};
 
-  img_block = smk::Texture(P "img/img_block.jpg");
-  img_block1 = smk::Texture(P "img/img_block1.png");
-  img_block2 = smk::Texture(P "img/img_block2.png");
-  img_block3 = smk::Texture(P "img/img_block3.png");
-  img_block4 = smk::Texture(P "img/img_block4.png");
-  img_hero_left = smk::Texture(P "img/img_hero_left.png");
-  img_hero_right = smk::Texture(P "img/img_hero_right.png");
-  img_background = smk::Texture(P "img/img_background.jpg");
-  img_turret = smk::Texture(P "img/img_turret.png");
-  img_glass = smk::Texture(P "img/img_glass.png");
-  img_electricitySupport = smk::Texture(P "img/electricitySupport.png");
-  img_particule_smoothRound =
-      smk::Texture(P "img/img_particule_smoothRound.png");
-  img_particule_etincelles =
-      smk::Texture(P "img/img_particule_etincelles.png");
-  img_particule_fire = smk::Texture(P "img/img_particule_fire.png");
-  img_cloneur = smk::Texture(P "img/img_cloneur.png");
-  img_particule_bubble = smk::Texture(P "img/img_particule_bubble.png");
-  img_particule_explosion = smk::Texture(P "img/img_particule_explosion.png");
-  img_particule_pixel = smk::Texture(P "img/img_particule_pixel.png");
-  img_particule_line = smk::Texture(P "img/img_particule_line.png");
-  img_particule_arrow = smk::Texture(P "img/img_particule_arrow.png");
-  img_particule_p = smk::Texture(P "img/img_particule_p.png");
-  img_miroir = smk::Texture(P "img/img_miroir.png");
-  img_coeur = smk::Texture(P "img/img_coeur.png");
-  img_creeper = smk::Texture(P "img/img_creeper.png");
-  img_arrow = smk::Texture(P "img/img_arrow.png");
-  img_arrowLauncher = smk::Texture(P "img/img_arrowLauncher.png");
-  img_pic = smk::Texture(P "img/img_pic.png");
-  img_oeil = smk::Texture(P "img/img_oeil.png");
-  img_arbre = smk::Texture(P "img/img_arbre.png");
-  img_arbre_white = smk::Texture(P "img/img_arbre_white.png");
-  img_pincette = smk::Texture(P "img/img_pincette.png");
-  img_ouvertureEffect = smk::Texture(P "img/img_ouvertureEffect.png");
-  img_arbre_texture = smk::Texture(P "img/img_arbre_texture.png");
-  img_trou = smk::Texture(P "img/img_trou.png");
-  img_couchetrou = smk::Texture(P "img/img_couchetrou.png");
-  img_endPanel = smk::Texture(P "img/img_endPanel.png");
-  img_arbreDecorsFront = smk::Texture(P "img/decors/arbreDecorsFront.png");
-  img_arbreDecorsBack = smk::Texture(P "img/decors/arbreDecorsBack.png");
-  img_arbreDecors2Front = smk::Texture(P "img/decors/arbreDecors2Front.png");
-  img_arbreDecors2Back = smk::Texture(P "img/decors/arbreDecors2Back.png");
-  img_arbreDecors3Front = smk::Texture(P "img/decors/arbreDecors3Front.png");
-  img_arbreDecors4Back = smk::Texture(P "img/decors/arbreDecors4Back.png");
-  img_arbreDecors4Front = smk::Texture(P "img/decors/arbreDecors4Front.png");
-  img_arbreDecors5Front = smk::Texture(P "img/decors/arbreDecors5Front.png");
-  img_arbreDecors6Front = smk::Texture(P "img/decors/arbreDecors6Front.png");
-  img_arbreDecorsBossFront =
-      smk::Texture(P "img/decors/arbreDecorsBossFront.png");
-  img_arbreDecorsEndFront = smk::Texture(P "img/decors/endFront.png");
-  img_arbreDecorsEndBack1 = smk::Texture(P "img/decors/endBack.png");
-  img_arbreDecorsEndBack2 = smk::Texture(P "img/decors/endBack2.png");
-  img_sapin = smk::Texture(P "img/img_sapin.png");
-  img_sapin_bras = smk::Texture(P "img/img_sapin_bras.png");
-  img_button[0] = smk::Texture(P "img/img_button1.png");
-  img_button[1] = smk::Texture(P "img/img_button2.png");
-  img_button[2] = smk::Texture(P "img/img_button3.png");
-  img_button[3] = smk::Texture(P "img/img_button4.png");
-  img_credit = smk::Texture(P "img/img_credit.png");
-  img_accueil = smk::Texture(P "img/img_accueil.png");
-  img_cadreInput = smk::Texture(P "img/cadreInput.png");
-  img_deleteButton = smk::Texture(P "img/deleteButton.png");
-  img_newGame = smk::Texture(P "img/newGame.png");
-  img_frenchFlag = smk::Texture(P "img/img_frenchFlag.png");
-  img_englishFlag = smk::Texture(P "img/img_englishFlag.png");
-  img_deutschFlag = smk::Texture(P "img/img_deutschFlag.png");
-  img_decorLampe = smk::Texture(P "img/img_lampe.png");
-  img_decorSpace = smk::Texture(P "img/img_space.png");
-  img_decorDirectionnelles =
-      smk::Texture(P "img/img_toucheDirectionnelles.png");
-  img_decorPilier = smk::Texture(P "img/img_decorPilier.png");
-  img_decorPlateforme6432 = smk::Texture(P "img/img_decorPlateforme6432.png");
-  img_decorPlateforme9632 = smk::Texture(P "img/img_decorPlateforme9632.png");
-  img_decorGlass = smk::Texture(P "img/img_decorGlass.png");
-  img_decorSupport = smk::Texture(P "img/img_decorSupport.png");
-  img_pipe = smk::Texture(P "img/img_pipe.png");
-  img_decorNoisette = smk::Texture(P "img/img_decorNoisette.png");
-  img_tuyau = smk::Texture(P "img/img_tuyau.png");
+std::map<smk::Texture*, std::string> image_resources{
+    {&img_block, "img/img_block.jpg"},
+    {&img_block1, "img/img_block1.png"},
+    {&img_block2, "img/img_block2.png"},
+    {&img_block3, "img/img_block3.png"},
+    {&img_block4, "img/img_block4.png"},
+    {&img_hero_left, "img/img_hero_left.png"},
+    {&img_hero_right, "img/img_hero_right.png"},
+    {&img_background, "img/img_background.jpg"},
+    {&img_turret, "img/img_turret.png"},
+    {&img_glass, "img/img_glass.png"},
+    {&img_electricitySupport, "img/electricitySupport.png"},
+    {&img_particule_smoothRound, "img/img_particule_smoothRound.png"},
+    {&img_particule_etincelles, "img/img_particule_etincelles.png"},
+    {&img_particule_fire, "img/img_particule_fire.png"},
+    {&img_cloneur, "img/img_cloneur.png"},
+    {&img_particule_bubble, "img/img_particule_bubble.png"},
+    {&img_particule_explosion, "img/img_particule_explosion.png"},
+    {&img_particule_pixel, "img/img_particule_pixel.png"},
+    {&img_particule_line, "img/img_particule_line.png"},
+    {&img_particule_arrow, "img/img_particule_arrow.png"},
+    {&img_particule_p, "img/img_particule_p.png"},
+    {&img_miroir, "img/img_miroir.png"},
+    {&img_coeur, "img/img_coeur.png"},
+    {&img_creeper, "img/img_creeper.png"},
+    {&img_arrow, "img/img_arrow.png"},
+    {&img_arrowLauncher, "img/img_arrowLauncher.png"},
+    {&img_pic, "img/img_pic.png"},
+    {&img_oeil, "img/img_oeil.png"},
+    {&img_arbre, "img/img_arbre.png"},
+    {&img_arbre_white, "img/img_arbre_white.png"},
+    {&img_pincette, "img/img_pincette.png"},
+    {&img_ouvertureEffect, "img/img_ouvertureEffect.png"},
+    {&img_arbre_texture, "img/img_arbre_texture.png"},
+    {&img_trou, "img/img_trou.png"},
+    {&img_couchetrou, "img/img_couchetrou.png"},
+    {&img_endPanel, "img/img_endPanel.png"},
+    {&img_arbreDecorsFront, "img/decors/arbreDecorsFront.png"},
+    {&img_arbreDecorsBack, "img/decors/arbreDecorsBack.png"},
+    {&img_arbreDecors2Front, "img/decors/arbreDecors2Front.png"},
+    {&img_arbreDecors2Back, "img/decors/arbreDecors2Back.png"},
+    {&img_arbreDecors3Front, "img/decors/arbreDecors3Front.png"},
+    {&img_arbreDecors4Back, "img/decors/arbreDecors4Back.png"},
+    {&img_arbreDecors4Front, "img/decors/arbreDecors4Front.png"},
+    {&img_arbreDecors5Front, "img/decors/arbreDecors5Front.png"},
+    {&img_arbreDecors6Front, "img/decors/arbreDecors6Front.png"},
+    {&img_arbreDecorsBossFront, "img/decors/arbreDecorsBossFront.png"},
+    {&img_arbreDecorsEndFront, "img/decors/endFront.png"},
+    {&img_arbreDecorsEndBack1, "img/decors/endBack.png"},
+    {&img_arbreDecorsEndBack2, "img/decors/endBack2.png"},
+    {&img_sapin, "img/img_sapin.png"},
+    {&img_sapin_bras, "img/img_sapin_bras.png"},
+    {&img_button[0], "img/img_button1.png"},
+    {&img_button[1], "img/img_button2.png"},
+    {&img_button[2], "img/img_button3.png"},
+    {&img_button[3], "img/img_button4.png"},
+    {&img_credit, "img/img_credit.png"},
+    {&img_accueil, "img/img_accueil.png"},
+    {&img_cadreInput, "img/cadreInput.png"},
+    {&img_deleteButton, "img/deleteButton.png"},
+    {&img_newGame, "img/newGame.png"},
+    {&img_frenchFlag, "img/img_frenchFlag.png"},
+    {&img_englishFlag, "img/img_englishFlag.png"},
+    {&img_deutschFlag, "img/img_deutschFlag.png"},
+    {&img_decorLampe, "img/img_lampe.png"},
+    {&img_decorSpace, "img/img_space.png"},
+    {&img_decorDirectionnelles, "img/img_toucheDirectionnelles.png"},
+    {&img_decorPilier, "img/img_decorPilier.png"},
+    {&img_decorPlateforme6432, "img/img_decorPlateforme6432.png"},
+    {&img_decorPlateforme9632, "img/img_decorPlateforme9632.png"},
+    {&img_decorGlass, "img/img_decorGlass.png"},
+    {&img_decorSupport, "img/img_decorSupport.png"},
+    {&img_pipe, "img/img_pipe.png"},
+    {&img_decorNoisette, "img/img_decorNoisette.png"},
+    {&img_tuyau, "img/img_tuyau.png"},
+};
 
-  // initialisation of SoundBuffer
-  SB_electricity = smk::SoundBuffer(P "snd/electricity.ogg");
-  SB_explosion = smk::SoundBuffer(P "snd/explosion.ogg");
-  SB_arrowLauncher = smk::SoundBuffer(P "snd/arrowLauncher.ogg");
-  SB_boss[0] = smk::SoundBuffer(P "snd/bossSound1.ogg");
-  SB_boss[1] = smk::SoundBuffer(P "snd/bossSound2.ogg");
-  SB_boss[2] = smk::SoundBuffer(P "snd/bossSound3.ogg");
-  SB_boss[3] = smk::SoundBuffer(P "snd/bossSound4.ogg");
-  SB_start = smk::SoundBuffer(P "snd/start.ogg");
+std::map<smk::SoundBuffer*, std::string> sound_resources{
+    {&SB_electricity, "snd/electricity.ogg"},
+    {&SB_backgroundMusic, "snd/backgroundMusic.ogg"},
+    {&SB_backgroundMusicAction, "snd/actionMusic.ogg"},
+    {&SB_explosion, "snd/explosion.ogg"},
+    {&SB_arrowLauncher, "snd/arrowLauncher.ogg"},
+    {&SB_boss[0], "snd/bossSound1.ogg"},
+    {&SB_boss[1], "snd/bossSound2.ogg"},
+    {&SB_boss[2], "snd/bossSound3.ogg"},
+    {&SB_boss[3], "snd/bossSound4.ogg"},
+    {&SB_start, "snd/start.ogg"},
+    {&SB_end, "snd/end.ogg"},
+    {&SB_intro, "snd/intro.ogg"},
+};
 
-  smk::SoundBuffer("../../SFML/examples/pong/resources/ball.wav").Play();
+ResourceInitializer::ResourceInitializer() {
+  for (auto& it : font_resources)
+    resources.emplace_back(Resource{it.first, nullptr, nullptr, &it.second});
+  for (auto& it : image_resources)
+    resources.emplace_back(Resource{nullptr, it.first, nullptr, &it.second});
+  for (auto& it : sound_resources)
+    resources.emplace_back(Resource{nullptr, nullptr, it.first, &it.second});
+}
+
+void ResourceInitializer::Resource::Load() {
+  // clang-format off
+  if (font) *font = smk::Font(P + *path, 30);
+  if (texture) *texture = smk::Texture(P + *path);
+  if (soundbuffer) *soundbuffer = smk::SoundBuffer(P + *path);
+  // clang-format on
 }

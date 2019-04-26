@@ -15,10 +15,9 @@ class Text : public Drawable {
   void SetFont(const Font& font);
   void Draw(Screen& screen, RenderState state) const;
 
+  glm::vec2 ComputeDimensions() const;
+
  public:
-  class Context;
-  friend Context;
-  Context& context() const;
   const Font* font_ = nullptr;
   std::wstring string_;
 };

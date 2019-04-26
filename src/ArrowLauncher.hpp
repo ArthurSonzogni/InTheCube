@@ -6,7 +6,7 @@
 
 namespace smk {
 class Screen;
-};  // namespace smk
+}  // namespace smk
 
 class ArrowLauncher {
  public:

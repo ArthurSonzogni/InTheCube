@@ -4,20 +4,21 @@
 #include <string>
 
 #include <smk/Sound.hpp>
+#include <smk/SoundBuffer.hpp>
 #include "Music.hpp"
 #include "Resource.hpp"
 
 class BackgroundMusic {
  public:
-  Music sound[2];
-  int t;
-  int tt;
-  int current, next;
-  BackgroundMusic();
   void Start();
-  void SetLevel(std::string level);
+  void SetSound(const smk::SoundBuffer& buffer);
   void Step();
-  void ChangeMusic(std::string soundFile, int ttt);
+
+ private:
+  smk::Sound foreground_sound_;
+  smk::Sound background_sound_;
+
+  float time_ = 1.f;
 };
 
 #endif /* BACKGROUND_MUSIC_HPP */

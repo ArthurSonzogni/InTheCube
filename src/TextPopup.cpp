@@ -105,7 +105,7 @@ bool TextPopup::Step(smk::Screen& screen) {
       p++;
       horizontal_shift = 640;
       time = 0;
-      if (p >= text.size())
+      if (p >= (int)text.size())
         return true;
     }
   }
@@ -113,7 +113,7 @@ bool TextPopup::Step(smk::Screen& screen) {
 }
 
 void TextPopup::Draw(smk::Screen& screen) {
-  if (p >= text.size())
+  if (p >= (int)text.size())
     return;
   //FloatRect rect = screen.GetView().GetRect();
   // drawing cadre
@@ -130,30 +130,40 @@ void TextPopup::Draw(smk::Screen& screen) {
 
   glm::vec4 c0 = {0.05, 0.05, 0.05, 1.0};
   glm::vec4 c1 = smk::Color::White;
-  auto blackRect1 = smk::Shape::Rectangle(x1, y1 - r, x2, y2 + r, c0);
-  auto blackRect2 = smk::Shape::Rectangle(x1 - r, y1, x2 + r, y2, c0);
-  auto whiteRect1 = smk::Shape::Rectangle(x1, y1 - r + e, x2, y2 + r - e, c1);
-  auto whiteRect2 = smk::Shape::Rectangle(x1 - r + e, y1, x2 + r - e, y2, c1);
-  screen.Draw(blackRect1);
-  screen.Draw(blackRect2);
-  //Shape blackCircle = Shape::Circle(x1, y1, r, c0);
-  //Shape whiteCircle = Shape::Circle(x1, y1, r - e, c1);
-  //screen.Draw(blackCircle);
-  //screen.Draw(whiteCircle);
-  //blackCircle.Move(x2 - x1, 0);
-  //whiteCircle.Move(x2 - x1, 0);
-  //screen.Draw(blackCircle);
-  //screen.Draw(whiteCircle);
-  //blackCircle.Move(0, y2 - y1);
-  //whiteCircle.Move(0, y2 - y1);
-  //screen.Draw(blackCircle);
-  //screen.Draw(whiteCircle);
-  //blackCircle.Move(x1 - x2, 0);
-  //whiteCircle.Move(x1 - x2, 0);
-  //screen.Draw(blackCircle);
-  //screen.Draw(whiteCircle);
-  screen.Draw(whiteRect1);
-  screen.Draw(whiteRect2);
+
+  auto circle = smk::Shape::Circle(12);
+  for (glm::vec2 position : {glm::vec2(x1, y1), glm::vec2(x2, y1)}) {
+    circle.SetPosition(position);
+
+    circle.SetScale(r,r);
+    circle.SetColor(c0);
+    screen.Draw(circle);
+
+    circle.SetScale(r - e, r - e);
+    circle.SetColor(c1);
+    screen.Draw(circle);
+  }
+
+  auto rect = smk::Shape::Square();
+  rect.SetPosition(x1, y1-r);
+  rect.SetScale(x2-x1, y2-y1+2*r);
+  rect.SetColor(c0);
+  screen.Draw(rect);
+
+  rect.SetPosition(x1-r, y1);
+  rect.SetScale(x2-x1+2*r, y2-y1);
+  screen.Draw(rect);
+
+  rect.SetColor(c1);
+
+  rect.SetPosition(x1, y1-r+e);
+  rect.SetScale(x2-x1, y2-y1+2*r-2*e);
+  rect.SetColor(c1);
+  screen.Draw(rect);
+
+  rect.SetPosition(x1-r+e, y1);
+  rect.SetScale(x2-x1+2*r-2*e, y2-y1);
+  screen.Draw(rect);
 
   // drawing texte
   int x = x1 + 5;

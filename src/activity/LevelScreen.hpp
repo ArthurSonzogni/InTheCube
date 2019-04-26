@@ -9,10 +9,12 @@
 class LevelScreen : public Activity {
  public:
   LevelScreen(smk::Screen& screen, std::string level);
+  ~LevelScreen() override = default;
 
   void Draw() override;
 
   std::function<void()> on_restart = []{};
+  std::function<void()> on_previous = [] {};
   std::function<void()> on_win = []{};
   std::function<void()> on_quit = []{};
  private:

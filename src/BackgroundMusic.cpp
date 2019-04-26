@@ -1,42 +1,29 @@
+#include <iostream>
 #include "BackgroundMusic.hpp"
-
-BackgroundMusic::BackgroundMusic() {
-  current = 0;
-  next = 1;
-  t = 100;
-  //sound[0].openFromFile("snd/intro.ogg");
-  //sound[1].setLoop(true);
-  tt = 100;
-}
-
-void BackgroundMusic::Start() {
-  //sound[current].play();
-  //sound[next].stop();
-}
+#include "Resource.hpp"
 
 void BackgroundMusic::Step() {
-  //if (t < tt) {
-    //t += 1;
-    //sound[current].setVolume(t * 100 / tt);
-    //sound[next].setVolume(100 - t * 100 / tt);
-    //if (t >= tt) {
-      //sound[next].stop();
-    //}
-  //}
+  if (time_ >= 1.f)
+    return;
+  time_ += 0.01f;
+
+  if (time_ >= 1.f) {
+    foreground_sound_.SetVolume(1.f);
+    background_sound_.Stop();
+  } else {
+    foreground_sound_.SetVolume(time_);
+    background_sound_.SetVolume(1.f - time_);
+  }
 }
 
-void BackgroundMusic::SetLevel(std::string level) {
-  //if (level == "lvl/LevelArbreBoss")
-    //changeMusic("snd/actionMusic.ogg", 100);
-  //else if (level == "lvl/LevelEnd")
-    //changeMusic("snd/end.ogg", 100);
-}
-
-void BackgroundMusic::ChangeMusic(std::string soundFile, int ttt) {
-  //sound[next].openFromFile(soundFile);
-  //sound[next].setLoop(true);
-  //sound[next].play();
-  //std::swap(current, next);
-  //t = 0;
-  //tt = ttt;
+void BackgroundMusic::SetSound(const smk::SoundBuffer& buffer) {
+  if (&buffer == foreground_sound_.buffer())
+    return;
+  background_sound_ = std::move(foreground_sound_);
+  foreground_sound_ = smk::Sound();
+  foreground_sound_.SetBuffer(buffer);
+  foreground_sound_.SetLoop(true);
+  foreground_sound_.SetVolume(0.f);
+  foreground_sound_.Play();
+  time_ = 0.f;
 }

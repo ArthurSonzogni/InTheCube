@@ -1,5 +1,5 @@
-in vec2 space_position;
-in vec2 texture_position;
+layout(location = 0) in vec2 space_position;
+layout(location = 1) in vec2 texture_position;
 
 uniform mat4 view;
 
