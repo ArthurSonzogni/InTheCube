@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <title>In the cube</title>
     <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="icon" type="image/png" href="./favicon.png">
   </head>
   <body>
 
@@ -16,23 +17,6 @@
     </div>
     <script>
       var canvas = document.getElementById('canvas');
-      var output = document.getElementById('output');
-
-      // clear the output.
-      output.value = '';
-
-      function print(text) {
-        if (arguments.length > 1)
-          text = Array.prototype.slice.call(arguments).join(' ');
-        output.value += text + "\n";
-        output.scrollTop = output.scrollHeight; // focus on bottom
-      };
-
-      function printErr(text) {
-        if (arguments.length > 1)
-          text = Array.prototype.slice.call(arguments).join(' ');
-        console.error(text);
-      };
 
       // Alert the user if we have lost the WebGL context.
       canvas.addEventListener("webglcontextlost", function(e) {
@@ -43,25 +27,23 @@
       window.Module = {
         preRun: [],
         postRun: [],
-        print: print,
-        printErr: print,
         canvas: canvas
       };
     </script>
 
-    <script>
-      function onResize() {
-        let wx = window.innerWidth / 640.0;
-        let wy = window.innerHeight / 480.0;
-        let size = Math.min(wx, wy);
-        size = 1;
-        Module.canvas.width = size * 640;
-        Module.canvas.height = size * 480;
-      }
-      window.addEventListener("resize", onResize, true);
-      for(let j in [100, 200, 500, 1000, 3000, 6000])
-        window.setTimeout(onResize, 100);
-    </script>
+    <!--<script>-->
+      <!--function onResize() {-->
+        <!--let wx = window.innerWidth / 640.0;-->
+        <!--let wy = window.innerHeight / 480.0;-->
+        <!--let size = Math.min(wx, wy);-->
+        <!--size = 1;-->
+        <!--Module.canvas.width = size * 640;-->
+        <!--Module.canvas.height = size * 480;-->
+      <!--}-->
+      <!--window.addEventListener("resize", onResize, true);-->
+      <!--for(let j in [100, 200, 500, 1000, 3000, 6000])-->
+        <!--window.setTimeout(onResize, 100);-->
+    <!--</script>-->
 
     <script async src="main.js"></script>
   </body>

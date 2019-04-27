@@ -440,34 +440,26 @@ void Level::Draw(smk::Screen& screen) {
 }
 
 void Level::Step(smk::Screen& screen) {
-  // set the view
   SetView();
-
-  // flush event;
-  // Event ev;
-  // while (screen.GetEvent(ev)) {
-  // if (ev.Type == sf::Event::Closed)
-  // isEscape = true;
-  //}
 
   /////////////////////////////////
   //        extra key            //
   /////////////////////////////////
 
   // test if the player will end the game
-  // if (screen.GetInput().IsKeyDown(Key::Escape)) {
-  // isEscape = true;
-  //}
+  if (screen.input().IsKeyReleased(GLFW_KEY_ESCAPE)) {
+    isEscape = true;
+  }
   // test if the player will restart the room
   if (screen.input().IsKeyPressed(GLFW_KEY_R)) {
     isLose = true;
   }
-  if (screen.input().IsKeyPressed(GLFW_KEY_T)) {
-    isWin = true;
-  }
-  if (screen.input().IsKeyPressed(GLFW_KEY_Y)) {
-    isPrevious = true;
-  }
+  //if (screen.input().IsKeyPressed(GLFW_KEY_T)) {
+    //isWin = true;
+  //}
+  //if (screen.input().IsKeyPressed(GLFW_KEY_Y)) {
+    //isPrevious = true;
+  //}
 
   // Drawn popup
   for (auto it = drawn_textpopup_list.begin(); it != drawn_textpopup_list.end();
@@ -508,6 +500,11 @@ void Level::Step(smk::Screen& screen) {
 
   for(auto it = hero_list.begin(); it != hero_list.end(); ++it){
     auto& hero = *it;
+
+    if (hero.in_laser) {
+      hero.life--;
+      hero.in_laser = false;
+    }
     // an Hero is dead?
     if (hero.life <= 0) {
       // throw Particule (ghost))
@@ -1518,7 +1515,7 @@ void Level::EmitLaser(smk::Screen& screen,
       particule_list.push_front(particuleLaserOnHero(xx, yy, x, y));
       particule_list.push_front(particuleLaserOnHero(xx, yy, x, y));
       particule_list.push_front(particuleLaserOnHero(xx, yy, x, y));
-      it.life--;
+      it.in_laser = true;
     }
     i++;
   }
@@ -1532,8 +1529,6 @@ void Level::EmitLaser(smk::Screen& screen,
       particule_list.push_front(particuleLaserOnGlass(xx, yy, x, y));
 
       glass.height -= 0.2;
-      // glass.width-=0.2;
-      // glass.x+=0.1;
       glass.y += 0.2;
       glass.UpdateGeometry();
       if (glass.height <= 3)

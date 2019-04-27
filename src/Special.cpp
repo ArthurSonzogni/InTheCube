@@ -361,7 +361,7 @@ void Special::DrawForeground(smk::Screen& screen, bool& isWin) {
 
       spr.SetTexture(img_arbre_white);
       spr.SetBlendMode(smk::BlendMode::Add);
-      spr.SetColor(glm::vec4(1.0, 1.0, 1.0, t / 255));
+      spr.SetColor(glm::vec4(1.0, 1.0, 1.0, t / 255.f));
       screen.Draw(spr);
 
       if (pos > 0) {

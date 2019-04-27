@@ -22,8 +22,6 @@ void SaveManager::Load(std::string savFile) {
 #endif
 
   std::ifstream file(fileName.c_str());
-  std::cerr << "ifstream fileName " << fileName << " " << bool(file)
-            << std::endl;
   if (!file)
     return;
   std::string ligne;
@@ -47,7 +45,6 @@ void SaveManager::Sync() {
   }
 #ifdef __EMSCRIPTEN__
   EM_ASM(FS.syncfs(false, function(err){console.log(err)});, 0);
-  std::cerr << "Sync" << std::endl;
 #endif
 }
 

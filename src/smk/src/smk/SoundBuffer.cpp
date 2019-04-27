@@ -10,15 +10,6 @@ SoundBuffer::SoundBuffer(const std::string filename) {
   nqr::AudioData fileData;
   nqr::NyquistIO loader;
   loader.Load(&fileData, filename);
-  std::cerr << "sampleRate = " << fileData.sampleRate << std::endl;
-  std::cerr << "channelCount = " << fileData.channelCount << std::endl;
-  //// Open the file using sndfile.
-  // SF_INFO file_infos;
-  // SNDFILE* file = sf_open(filename.c_str(), SFM_READ, &file_infos);
-  // if (!file) {
-  // std::cerr << "SoundBuffer: failed to read " << filename << std::endl;
-  // return;
-  //}
 
   ALsizei size =
       static_cast<ALsizei>(fileData.channelCount * fileData.frameSize);

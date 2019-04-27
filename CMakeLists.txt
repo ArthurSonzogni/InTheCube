@@ -130,6 +130,12 @@ if(CMAKE_CXX_COMPILER MATCHES "/em\\+\\+(-[a-zA-Z0-9.])?$")
     ${CMAKE_CURRENT_BINARY_DIR}/style.css
   )
 
+  configure_file(
+    ${CMAKE_CURRENT_SOURCE_DIR}/img/img_hero.png
+    ${CMAKE_CURRENT_BINARY_DIR}/favicon.png
+    COPYONLY
+  )
+
   # Allow some files to be fetched.
   file(GLOB shader_files "./shader/*")
   file(GLOB img_files "./img/*")

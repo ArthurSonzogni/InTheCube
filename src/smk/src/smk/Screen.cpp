@@ -57,6 +57,7 @@ Screen::Screen(int width, int height, const std::string& title)
 #endif
 
   glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
+  glfwWindowHint(GLFW_SAMPLES, 4);
 
   // create the window_
   window_ = glfwCreateWindow(width_, height_, title.c_str(), NULL, NULL);
@@ -91,6 +92,9 @@ Screen::Screen(int width, int height, const std::string& title)
   // Alph transparency.
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+  // Multisampling
+  //glEnable(GL_MULTISAMPLE);  
 
   View default_view;
   default_view.SetCenter(320, 480);

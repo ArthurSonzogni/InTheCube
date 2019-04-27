@@ -134,8 +134,6 @@ class Main {
 
   SaveManager savFile;
   SaveManager langFile;
-
-  float time = 0.f;
 };
 
 void MainLoop() {
