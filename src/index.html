@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
+    @google-analytics@
     <meta charset="utf-8">
     <title>In the cube</title>
     <link rel="stylesheet" type="text/css" href="style.css">
@@ -8,13 +9,21 @@
   </head>
   <body>
 
+    <div id="loading_page" class="vbox">
+      <div class="flex"></div>
+      <div class="hbox">
+        <div class="flex"></div>
+        <div id="loading"></div>
+        <div class="flex"></div>
+      </div>
+      <div class="flex"></div>
+    </div>
+
+
     <canvas id="canvas" oncontextmenu="event.preventDefault()">
         Chargement... 
     </canvas>
 
-    <div id="footer">
-      <textarea class="emscripten" id="output" rows=10> </textarea>
-    </div>
     <script>
       var canvas = document.getElementById('canvas');
 
@@ -27,8 +36,12 @@
       window.Module = {
         preRun: [],
         postRun: [],
-        canvas: canvas
+        canvas: canvas,
+        onRuntimeInitialized: function() {
+          document.querySelector("#loading_page").remove();
+        },
       };
+
     </script>
 
     <!--<script>-->

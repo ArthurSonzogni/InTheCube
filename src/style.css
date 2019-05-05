@@ -1,8 +1,9 @@
 html {
   background-color:black;
+  color:white;
 }
 
-html, body, #canvas {
+html, body {
   margin: 0px;
   border: 0;
   width: 100%;
@@ -20,25 +21,45 @@ html, body, #canvas {
   display: block;
 }
 
-#footer {
-  position:absolute;
-  bottom: 0px;
-  width:100%;
+#loading_page {
+  position:fixed;
+  top:0;
+  left:0;
+  width: 100%;
+  height: 100%;
+  z-index:1;
 }
 
-textarea {
-  box-shadow 10px 10px 10px black;
-  background-color:black;
-  color:white;
-  opacity:0.1;
-  transition:0.2s opacity ease-in-out;
-
-  display:block;
-  margin-left:auto;
-  margin-right:auto;
-  width:80%;
+.hbox {
+  display:flex;
+  flex-direction:row;
 }
 
-textarea:hover {
-  opacity:1.0;
+.vbox {
+  display:flex;
+  flex-direction:column;
 }
+
+.flex {
+  flex:1;
+}
+
+#loading {
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+  border: 3px solid rgba(255,255,255,.3);
+  border-radius: 50%;
+  border-top-color: #fff;
+  animation: spin 1s ease-in-out infinite;
+  -webkit-animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to { -webkit-transform: rotate(360deg); }
+}
+@-webkit-keyframes spin {
+  to { -webkit-transform: rotate(360deg); }
+}
+
+Resources 1×0.5×0.25× Rerun

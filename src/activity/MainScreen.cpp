@@ -123,7 +123,9 @@ void MainScreen::Draw() {
   int i = 0;
   for (auto& it : save_file_.saveList) {
     (void)it;
-    float decale = std::max(5.f, std::min(std::abs(mouse.y - (50 + i * 40)), 40.f));
+    float decale = std::abs(mouse.y - (50 + i * 40));
+    decale = std::max(decale, -30-370 + mouse.x);
+    decale = std::max(5.f, std::min(decale, 40.f));
 
     // rectangle
     smk::Shape rectangle = smk::Shape::Square();

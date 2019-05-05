@@ -15,6 +15,8 @@ class Glass {
   float x, y, xspeed, yspeed;
   float height;
   float width;
+  bool in_laser = false;
+
   Glass(int x, int y);
   void UpdateGeometry();
   void Draw(smk::Screen& screen);

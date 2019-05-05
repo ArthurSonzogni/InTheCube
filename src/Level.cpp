@@ -505,6 +505,7 @@ void Level::Step(smk::Screen& screen) {
       hero.life--;
       hero.in_laser = false;
     }
+
     // an Hero is dead?
     if (hero.life <= 0) {
       // throw Particule (ghost))
@@ -1135,6 +1136,18 @@ void Level::Step(smk::Screen& screen) {
     it.Step();
   }
 
+  for (auto it = glassBlock_list.begin(); it != glassBlock_list.end(); ++it) {
+    auto& glass = *it;
+    if (!glass.in_laser)
+      continue;
+    glass.in_laser = false;
+    glass.height -= 0.2;
+    glass.y += 0.2;
+    glass.UpdateGeometry();
+    if (glass.height <= 3)
+      it = glassBlock_list.erase(it);
+  }
+
   /////////////////////////////////
   //        Teleporter           //
   /////////////////////////////////
@@ -1528,11 +1541,7 @@ void Level::EmitLaser(smk::Screen& screen,
       particule_list.push_front(particuleLaserOnGlass(xx, yy, x, y));
       particule_list.push_front(particuleLaserOnGlass(xx, yy, x, y));
 
-      glass.height -= 0.2;
-      glass.y += 0.2;
-      glass.UpdateGeometry();
-      if (glass.height <= 3)
-        it = glassBlock_list.erase(it);
+      glass.in_laser = true;
     }
   }
 

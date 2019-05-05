@@ -104,8 +104,6 @@ add_definitions(-DGLM_FORCE_RADIANS)
 
 # Detect emscripten is used.
 if(CMAKE_CXX_COMPILER MATCHES "/em\\+\\+(-[a-zA-Z0-9.])?$") 
-  set_target_properties(main PROPERTIES OUTPUT_NAME "main.js")
-
   string(APPEND CMAKE_CXX_FLAGS " -s DEMANGLE_SUPPORT=1")
   string(APPEND CMAKE_CXX_FLAGS " -s DISABLE_EXCEPTION_CATCHING=2")
   string(APPEND CMAKE_CXX_FLAGS " -s WASM=1")
@@ -118,6 +116,11 @@ if(CMAKE_CXX_COMPILER MATCHES "/em\\+\\+(-[a-zA-Z0-9.])?$")
   string(APPEND CMAKE_CXX_FLAGS " --llvm-lto 3")
   string(APPEND CMAKE_CXX_FLAGS " --llvm-opts 3")
   string(APPEND CMAKE_CXX_FLAGS " -O3")
+
+  option(ADD_GOOGLE_ANALYTICS "Add google analytics script" ON)
+  if (ADD_GOOGLE_ANALYTICS)
+    file(READ ${CMAKE_CURRENT_SOURCE_DIR}/src/google-analytics.html google-analytics)
+  endif(ADD_GOOGLE_ANALYTICS)
 
   # Copy the index.html file.
   configure_file(
