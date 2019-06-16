@@ -1,11 +1,14 @@
 #include "Level.hpp"
 #include <algorithm>
+#include <random>
 #include <smk/Input.hpp>
 #include <smk/Shape.hpp>
 #include <smk/Text.hpp>
 #include <smk/View.hpp>
 #include "BackgroundMusic.hpp"
 #include "Lang.hpp"
+
+auto rng = std::default_random_engine{};
 
 extern BackgroundMusic background_music;
 
@@ -101,7 +104,7 @@ void Level::LoadFromFile(std::string fileName) {
       int x, y;
       FromString<int>(x, split[1], std::dec);
       FromString<int>(y, split[2], std::dec);
-      fallBlock_list.push_back(FallingBlock(x, y));
+      fallBlock_list.emplace_back(x, y);
     }
     // MovableBlock
     else if (split[0] == "m") {
@@ -347,7 +350,6 @@ void Level::LoadFromFile(std::string fileName) {
     }
   }
   fileName = fileName.substr(separator_position, -1);
-  std::cerr << "filename = " << fileName << std::endl;
 
   if (fileName == "IntroductionPincette")
     background_music.SetSound(smk::SoundBuffer());
@@ -440,6 +442,8 @@ void Level::Draw(smk::Screen& screen) {
 }
 
 void Level::Step(smk::Screen& screen) {
+  std::shuffle(std::begin(fallBlock_list), std::end(fallBlock_list), rng);
+
   SetView();
 
   /////////////////////////////////
@@ -1262,8 +1266,8 @@ bool Level::CollisionWithAllBlock(Point p) {
   return false;
 }
 
-bool Level::PlaceFree(Hero h, float x, float y) {
-  Rectangle shifted = h.geometry.shift(x, y);
+bool Level::PlaceFree(const Hero& h, float x, float y) {
+  Rectangle shifted = h.geometry.shift(x,y);
   for (auto& it : hero_list) {
     if (IsCollision(shifted, it.geometry)) {
       if (!(h.geometry == it.geometry))
@@ -1297,8 +1301,9 @@ bool Level::PlaceFree(Hero h, float x, float y) {
   return true;
 }
 
-bool Level::PlaceFree(MovingBlock m, float x, float y) {
-  Rectangle geom = m.geometry.shift(x, y);
+bool Level::PlaceFree(const MovingBlock& m, float x, float y) {
+  Rectangle geom = m.geometry;
+  geom.shift(x, y);
   for (auto& it : block_list) {
     if (IsCollision(geom, it.geometry))
       return false;
@@ -1332,7 +1337,7 @@ bool Level::PlaceFree(MovingBlock m, float x, float y) {
   return true;
 }
 
-bool Level::PlaceFree(FallingBlock m, float x, float y) {
+bool Level::PlaceFree(const FallingBlock& m, float x, float y) {
   Rectangle geom = m.geometry.shift(x, y);
   for (auto& it : block_list) {
     if (IsCollision(geom, it.geometry))
@@ -1367,7 +1372,7 @@ bool Level::PlaceFree(FallingBlock m, float x, float y) {
   return true;
 }
 
-bool Level::PlaceFree(MovableBlock m, float x, float y) {
+bool Level::PlaceFree(const MovableBlock& m, float x, float y) {
   Rectangle geom = m.geometry.shift(x, y);
   for (auto& it : block_list) {
     if (IsCollision(geom, it.geometry))
@@ -1402,7 +1407,7 @@ bool Level::PlaceFree(MovableBlock m, float x, float y) {
   return true;
 }
 
-bool Level::PlaceFree(Glass m, float x, float y) {
+bool Level::PlaceFree(const Glass& m, float x, float y) {
   Rectangle geom = m.geometry.shift(x, y);
   for (auto& it : block_list) {
     if (IsCollision(geom, it.geometry))
@@ -1493,7 +1498,7 @@ void Level::EmitLaser(smk::Screen& screen,
     float yyy = yy - l * sin(a);
     if (!CollisionWithAllBlock(Line(xx, yy, xxx, yyy))) {
       for (int r = 1; r <= 4; r += 1) {
-        smk::Shape line = smk::Shape::Line({xx, yy}, {xxx, yyy}, r);
+        auto line = smk::Shape::Line({xx, yy}, {xxx, yyy}, r);
         line.SetColor(glm::vec4(0.2, 0, 0, 0));
         line.SetBlendMode(smk::BlendMode::Add);
         screen.Draw(line);
@@ -1514,7 +1519,7 @@ void Level::EmitLaser(smk::Screen& screen,
   /*
   for(int r=1;r<=4;r+=1)
   {
-          smk::Shape Line=smk::Shape::Line(xx,yy,xxx,yyy,r,Color(50,0,0));
+          auto Line=smk::Shape::Line(xx,yy,xxx,yyy,r,Color(50,0,0));
           Line.SetBlendMode(Blend::Add);
           screen.Draw(Line);
   }

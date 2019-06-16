@@ -131,17 +131,15 @@ void TextPopup::Draw(smk::Screen& screen) {
   glm::vec4 c0 = {0.05, 0.05, 0.05, 1.0};
   glm::vec4 c1 = smk::Color::White;
 
-  auto circle = smk::Shape::Circle(12);
+  auto circle_1 = smk::Shape::Circle(r);
+  auto circle_2 = smk::Shape::Circle(r-e);
+  circle_1.SetColor(c0);
+  circle_2.SetColor(c1);
   for (glm::vec2 position : {glm::vec2(x1, y1), glm::vec2(x2, y1)}) {
-    circle.SetPosition(position);
-
-    circle.SetScale(r,r);
-    circle.SetColor(c0);
-    screen.Draw(circle);
-
-    circle.SetScale(r - e, r - e);
-    circle.SetColor(c1);
-    screen.Draw(circle);
+    circle_1.SetPosition(position);
+    circle_2.SetPosition(position);
+    screen.Draw(circle_1);
+    screen.Draw(circle_2);
   }
 
   auto rect = smk::Shape::Square();

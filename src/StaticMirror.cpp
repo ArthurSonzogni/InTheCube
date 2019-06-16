@@ -29,7 +29,7 @@ StaticMirror::StaticMirror(int x1,
 }
 
 void StaticMirror::Draw(smk::Screen& screen) {
-  smk::Shape line = smk::Shape::Line({xcenter, ycenter}, {xattach, yattach}, 2);
+  auto line = smk::Shape::Line({xcenter, ycenter}, {xattach, yattach}, 2);
   line.SetColor(smk::Color::Black);
   screen.Draw(line);
   screen.Draw(sprite);

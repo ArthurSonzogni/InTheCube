@@ -128,7 +128,7 @@ void MainScreen::Draw() {
     decale = std::max(5.f, std::min(decale, 40.f));
 
     // rectangle
-    smk::Shape rectangle = smk::Shape::Square();
+    auto rectangle = smk::Shape::Square();
     rectangle.SetPosition(30, 30 + i * 40);
     rectangle.SetScale(370, 40);
     rectangle.SetColor(glm::vec4(decale + 50, 2 * decale + 100,
@@ -257,7 +257,7 @@ bool MainScreen::GetString::Draw(smk::Screen& screen) {
 
   // Black shadow.
   {
-    smk::Shape black_shadow = smk::Shape::Square();
+    auto black_shadow = smk::Shape::Square();
     black_shadow.SetPosition(0,0);
     black_shadow.SetScale(640,480);
     black_shadow.SetColor(glm::vec4(0, 0, 0, 0.5 * alpha));
@@ -329,7 +329,7 @@ bool MainScreen::Question::Draw(smk::Screen& screen) {
 
   // Black shadow.
   {
-    smk::Shape black_shadow = smk::Shape::Square();
+    auto black_shadow = smk::Shape::Square();
     black_shadow.SetPosition(0,0);
     black_shadow.SetScale(640,480);
     black_shadow.SetColor(glm::vec4(0, 0, 0, 0.5 * alpha));
@@ -338,7 +338,7 @@ bool MainScreen::Question::Draw(smk::Screen& screen) {
 
   // White Shadow
   {
-    smk::Shape white_shadow = smk::Shape::Square();
+    auto white_shadow = smk::Shape::Square();
     white_shadow.SetPosition(640 * 0.2, 480 * 0.2);
     white_shadow.SetScale(640 * 0.6, 480 * 0.6);
     white_shadow.SetColor(glm::vec4(1, 1, 1, alpha));

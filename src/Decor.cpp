@@ -1,3 +1,4 @@
+#include <iostream>
 #include "Decor.hpp"
 #include "Resource.hpp"
 #include <smk/Screen.hpp>

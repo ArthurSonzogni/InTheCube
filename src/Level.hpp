@@ -113,11 +113,11 @@ class Level {
   bool CollisionWithAllBlock(Rectangle geom);
   bool CollisionWithAllBlock(Line l);
   bool CollisionWithAllBlock(Point p);
-  bool PlaceFree(Hero h, float x, float y);
-  bool PlaceFree(MovingBlock m, float x, float y);
-  bool PlaceFree(FallingBlock m, float x, float y);
-  bool PlaceFree(MovableBlock m, float x, float y);
-  bool PlaceFree(Glass m, float x, float y);
+  bool PlaceFree(const Hero& h, float x, float y);
+  bool PlaceFree(const MovingBlock& m, float x, float y);
+  bool PlaceFree(const FallingBlock& m, float x, float y);
+  bool PlaceFree(const MovableBlock& m, float x, float y);
+  bool PlaceFree(const Glass& m, float x, float y);
 
   void EmitLaser(smk::Screen& screen,
                  float x,

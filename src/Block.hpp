@@ -19,6 +19,8 @@ class Block {
   bool tiled;
   bool drawable;
   virtual void Draw(smk::Screen& screen);
+
+  Block(Block&&) = default;
 };
 
 #endif /* BLOCK_HPP */

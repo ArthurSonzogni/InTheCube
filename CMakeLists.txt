@@ -1,6 +1,8 @@
 # Projects Settings
 cmake_minimum_required (VERSION 3.1)
-project(opengl-cmake-skeleton-webassembly)
+
+add_subdirectory(third_party)
+project(InTheCube)
 
 # The main executable
 add_executable(main
@@ -99,7 +101,7 @@ target_compile_options(main
   -Wextra
 )
 
-set_property(TARGET main PROPERTY CXX_STANDARD 14)
+set_property(TARGET main PROPERTY CXX_STANDARD 17)
 add_definitions(-DGLM_FORCE_RADIANS)
 
 # Detect emscripten is used.
@@ -140,28 +142,11 @@ if(CMAKE_CXX_COMPILER MATCHES "/em\\+\\+(-[a-zA-Z0-9.])?$")
   )
 
   # Allow some files to be fetched.
-  file(GLOB shader_files "./shader/*")
-  file(GLOB img_files "./img/*")
-  file(GLOB lvl_files "./lvl/*")
-  file(GLOB lang_files "./lang/*")
-  file(GLOB font_files "./font/*")
-  file(GLOB snd_files "./snd/*")
-  foreach(file ${shader_files} ${img_files} ${lvl_files} ${lang_files} ${font_files} ${snd_files})
+  file(GLOB files "./shader/*" "./img/*" "./lvl/*" "./lang/*" "./snd/*")
+  foreach(file ${files})
     file(RELATIVE_PATH relative_file ${CMAKE_SOURCE_DIR} ${file})
     string(APPEND CMAKE_CXX_FLAGS " --preload-file ${file}@/${relative_file}")
   endforeach()
-else()
-  add_subdirectory(lib/glew EXCLUDE_FROM_ALL)
-  add_subdirectory(lib/glfw EXCLUDE_FROM_ALL)
-
-  add_subdirectory(lib/openal EXCLUDE_FROM_ALL)
 endif()
-
-add_subdirectory(lib/freetype2 EXCLUDE_FROM_ALL)
-add_subdirectory(lib/glm EXCLUDE_FROM_ALL)
-add_definitions(-DCELT_DECODER_C -DCELT_ENCODER_C)
-
-add_subdirectory(lib/libnyquist EXCLUDE_FROM_ALL)
-add_subdirectory(src/smk EXCLUDE_FROM_ALL)
 
 target_link_libraries(main PRIVATE smk)

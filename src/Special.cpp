@@ -348,7 +348,7 @@ void Special::DrawForeground(smk::Screen& screen, bool& isWin) {
       }
 
       // focus
-      smk::Shape rect = smk::Shape::Square();
+      auto rect = smk::Shape::Square();
       rect.SetScale(6400,4800);
       rect.SetColor({0, 0, 0, t / 2 / 255});
       screen.Draw(rect);

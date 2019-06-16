@@ -14,25 +14,25 @@ Rectangle::Rectangle() {
   bottom = 32;
 }
 
-Rectangle Rectangle::shift(float x, float y) {
+Rectangle Rectangle::shift(float x, float y) const {
   return Rectangle(left + x, right + x, top + y, bottom + y);
 }
 
-Rectangle Rectangle::increase(float xinc, float yinc) {
+Rectangle Rectangle::increase(float xinc, float yinc) const {
   return Rectangle(left - xinc, right + xinc, bottom + yinc, top - yinc);
 }
 
-bool Rectangle::operator==(Rectangle r) {
+bool Rectangle::operator==(Rectangle r) const {
   if (left != r.left)
     return false;
-  else if (right != r.right)
+  if (right != r.right)
     return false;
-  else if (top != r.top)
+  if (top != r.top)
     return false;
-  else if (bottom != r.bottom)
+  if (bottom != r.bottom)
     return false;
-  else
-    return true;
+
+  return true;
 }
 
 Point::Point(float X, float Y) {

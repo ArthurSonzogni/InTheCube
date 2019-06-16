@@ -32,7 +32,7 @@ LaserTurret::LaserTurret(int X,
 }
 
 void LaserTurret::Draw(smk::Screen& screen) {
-  smk::Shape line =
+  auto line =
       smk::Shape::Line(glm::vec2(x, y), glm::vec2(xattach, yattach), 1);
   line.SetColor(smk::Color::Black);
   screen.Draw(line);

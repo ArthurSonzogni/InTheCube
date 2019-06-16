@@ -8,9 +8,9 @@ class Rectangle {
   Rectangle();
 
   // return the Rectangle shifted, it does't modify the Rectangle
-  Rectangle shift(float x, float y);
-  Rectangle increase(float xinc, float yinc);
-  bool operator==(Rectangle r);
+  Rectangle shift(float x, float y) const;
+  Rectangle increase(float xinc, float yinc) const;
+  bool operator==(Rectangle r) const;
 };
 
 class Point {

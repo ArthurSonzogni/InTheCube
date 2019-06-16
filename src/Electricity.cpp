@@ -57,13 +57,13 @@ void Electricity::Draw(smk::Screen& screen) {
       int xx = x - 9 * cos(angle);
       int yy = y - 9 * sin(angle);
       for (int r = 3; r <= 10; r += 2) {
-        smk::Shape line1 = smk::Shape::Line({x, y}, {xx, yy}, r);
+        auto line1 = smk::Shape::Line({x, y}, {xx, yy}, r);
         line1.SetColor(glm::vec4(242, 224, 58, 20 - r) / 255.f);
         line1.SetBlendMode(smk::BlendMode::Add);
         screen.Draw(line1);
       }
 
-      smk::Shape line = smk::Shape::Line({x, y}, {xx, yy}, 1);
+      auto line = smk::Shape::Line({x, y}, {xx, yy}, 1);
       line.SetColor(glm::vec4(252, 234, 68, 255) / 255.f);
       x = xx;
       y = yy;

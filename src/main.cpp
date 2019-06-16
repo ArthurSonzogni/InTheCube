@@ -1,5 +1,6 @@
 #include <smk/Input.hpp>
 #include <smk/Shape.hpp>
+#include <smk/Audio.hpp>
 #include <smk/Text.hpp>
 #include "BackgroundMusic.hpp"
 #include "Lang.hpp"
@@ -147,6 +148,7 @@ void MainLoop() {
 }
 
 int main() {
+  smk::Audio audio;
   std::locale::global(std::locale("C.UTF-8"));
 
 #ifdef __EMSCRIPTEN__

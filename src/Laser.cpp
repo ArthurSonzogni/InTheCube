@@ -28,7 +28,7 @@ void Laser::Draw(smk::Screen& screen) {
   screen.Draw(line);
 
   // Draw an halo on the impact of the Laser
-  auto circle = smk::Shape::Circle(12);
+  auto circle = smk::Shape::Circle(1.0, 12);
   circle.SetBlendMode(smk::BlendMode::Add);
   circle.SetPosition(end);
   int i = rand();
