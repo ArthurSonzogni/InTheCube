@@ -600,51 +600,48 @@ void Level::Step(smk::Screen& screen) {
   //        movingBlocks         //
   /////////////////////////////////
 
-  for (auto& it : movBlock_list) {
-    // test if there are an Hero on it.
-    for (std::vector<Hero>::iterator itHero = hero_list.begin();
-         itHero != hero_list.end(); ++itHero) {
-      if (IsCollision(it.geometry, (*itHero).geometry.shift(0, 2))) {
-        if (PlaceFree((*itHero), it.xspeed,
-                      it.yspeed))  // can we shift the levelHero
-        {
-          (*itHero).x += it.xspeed;
-          (*itHero).y += it.yspeed;
-          (*itHero).UpdateGeometry();
+  for (auto& block : movBlock_list) {
+    // If there is a moving block under the hero, make the hero move with the
+    // block.
+    for (auto& hero : hero_list) {
+      if (IsCollision(block.geometry, hero.geometry.shift(0, 2))) {
+        if (PlaceFree(hero, block.xspeed, block.yspeed)) {
+          hero.x += block.xspeed;
+          hero.y += block.yspeed;
+          hero.UpdateGeometry();
         }
       }
     }
 
-    // test if we can apply speed
-    if (!PlaceFree(it, it.xspeed, it.yspeed)) {
-      for (std::vector<Hero>::iterator itHero = hero_list.begin();
-           itHero != hero_list.end(); ++itHero) {
-        if (IsCollision(it.geometry.shift(it.xspeed, it.yspeed),
-                        (*itHero).geometry))  // collision with levelHero?
-        {
-          if (PlaceFree((*itHero), it.xspeed,
-                        it.yspeed))  // can we shift the levelHero
-          {
-            (*itHero).x += it.xspeed;
-            (*itHero).y += it.yspeed;
-            (*itHero).UpdateGeometry();
+    // Move the moving block.
+    if (PlaceFree(block, block.xspeed, block.yspeed)) {
+      block.x += block.xspeed;
+      block.y += block.yspeed;
+      block.UpdateGeometry();
+    } else {
+      // Is block blocked by the hero? If yes, try to move the hero.
+      for (auto& hero : hero_list) {
+        if (IsCollision(block.geometry.shift(block.xspeed, block.yspeed),
+                        hero.geometry)) {
+          // The moving block is blocked by the hero. Try to move the hero.
+          if (PlaceFree(hero, block.xspeed, block.yspeed)) {
+            hero.x += block.xspeed;
+            hero.y += block.yspeed;
+            hero.UpdateGeometry();
           }
         }
       }
-      if (PlaceFree(it, it.xspeed,
-                    it.yspeed))  // after that, can we move?
-      {
-        it.x += it.xspeed;
-        it.y += it.yspeed;
-        it.UpdateGeometry();
+
+      // Are we unblocked?
+      if (PlaceFree(block, block.xspeed, block.yspeed)) {
+        block.x += block.xspeed;
+        block.y += block.yspeed;
+        block.UpdateGeometry();
       } else {
-        it.xspeed *= -1;
-        it.yspeed *= -1;
+        block.xspeed *= -1;
+        block.yspeed *= -1;
+        block.UpdateGeometry();
       }
-    } else {
-      it.x += it.xspeed;
-      it.y += it.yspeed;
-      it.UpdateGeometry();
     }
   }
 
@@ -1302,8 +1299,7 @@ bool Level::PlaceFree(const Hero& h, float x, float y) {
 }
 
 bool Level::PlaceFree(const MovingBlock& m, float x, float y) {
-  Rectangle geom = m.geometry;
-  geom.shift(x, y);
+  Rectangle geom = m.geometry.shift(x,y);
   for (auto& it : block_list) {
     if (IsCollision(geom, it.geometry))
       return false;
