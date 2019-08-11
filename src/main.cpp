@@ -7,6 +7,7 @@
 #include "Level.hpp"
 #include "LevelListLoader.hpp"
 #include "SaveManager.hpp"
+#include "Resource.hpp"
 
 #include <smk/Screen.hpp>
 
@@ -15,12 +16,6 @@
 #include "activity/MainScreen.hpp"
 #include "activity/ResourceLoadingScreen.hpp"
 #include "activity/WelcomeScreen.hpp"
-
-#ifdef __EMSCRIPTEN__
-#define P "./"
-#else
-#define P "../"
-#endif
 
 BackgroundMusic background_music;
 
@@ -35,8 +30,8 @@ class Main {
 
     Display(&resource_loading_screen_);
     resource_loading_screen_.on_quit = [&] {
-      savFile.Load(P "sav/gameSav");
-      langFile.Load(P "sav/language");
+      savFile.Load(SavePath() + "/.in_the_cube_sav");
+      langFile.Load(SavePath() + "/.in_the_cube_language");
       UpdateTraduction();
       Display(&welcome_screen_);
     };
@@ -111,10 +106,10 @@ class Main {
     // load traduction
     // clang-format off
     switch (langFile.saveList["language"]) {
-      case 0: LoadTraduction(P"lang/lang_fr"); break;
+      case 0: LoadTraduction(ResourcePath() + "/lang/lang_fr"); break;
       case -1: // fallthrough
-      case 1: LoadTraduction(P"lang/lang_en"); break;
-      case 2: LoadTraduction(P"lang/lang_de"); break;
+      case 1: LoadTraduction(ResourcePath() + "/lang/lang_en"); break;
+      case 2: LoadTraduction(ResourcePath() + "/lang/lang_de"); break;
     }
     // clang-format on
   }

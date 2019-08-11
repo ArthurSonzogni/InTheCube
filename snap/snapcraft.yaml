@@ -1,0 +1,35 @@
+name: inthecube
+version: '0.1'
+summary: An amazing cube.
+description: |
+  InTheCube is a platform/puzzle game.
+
+  You are a little cubic robot (1cm³) sent in a bigger one.
+
+  Your agility and reflection will be challenged for you to go through more
+  than 30 levels. You will discover many different mechanism (laser, mirrors,
+  moving blocks, ...)
+
+  Strange machines are found in the most advanced levels.
+grade: devel
+confinement: strict
+base: core18
+apps:
+  inthecube:
+    command: desktop-launch ${SNAP}/usr/local/bin/inthecube
+    plugs:
+      - opengl
+      - pulseaudio
+      - x11
+parts:
+  inthecube:
+    plugin: cmake
+    source: .
+    configflags:
+      - -DCMAKE_INSTALL_PREFIX=/usr/local/
+      - -DCMAKE_BUILD_TYPE=Release
+    stage-packages:
+      - libgl1-mesa-glx
+      - libpulse0
+    after:
+      - desktop-glib-only

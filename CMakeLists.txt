@@ -1,11 +1,13 @@
 # Projects Settings
 cmake_minimum_required (VERSION 3.1)
 
+set_property(GLOBAL PROPERTY INTERPROCEDURAL_OPTIMIZATION TRUE)
+
 add_subdirectory(third_party)
 project(InTheCube)
 
-# The main executable
-add_executable(main
+# The inthecube executable
+add_executable(inthecube
   src/activity/Activity.hpp
   src/activity/WelcomeScreen.hpp
   src/activity/WelcomeScreen.cpp
@@ -91,9 +93,9 @@ add_executable(main
   src/main.cpp
 )
 
-target_include_directories(main PRIVATE ./src)
+target_include_directories(inthecube PRIVATE ./src)
 
-target_compile_options(main
+target_compile_options(inthecube
  PRIVATE
   -Wall
   -Werror
@@ -101,7 +103,7 @@ target_compile_options(main
   -Wextra
 )
 
-set_property(TARGET main PROPERTY CXX_STANDARD 17)
+set_property(TARGET inthecube PROPERTY CXX_STANDARD 17)
 add_definitions(-DGLM_FORCE_RADIANS)
 
 # Detect emscripten is used.
@@ -136,17 +138,21 @@ if(CMAKE_CXX_COMPILER MATCHES "/em\\+\\+(-[a-zA-Z0-9.])?$")
   )
 
   configure_file(
-    ${CMAKE_CURRENT_SOURCE_DIR}/img/img_hero.png
+    ${CMAKE_CURRENT_SOURCE_DIR}/resources/img/img_hero.png
     ${CMAKE_CURRENT_BINARY_DIR}/favicon.png
     COPYONLY
   )
 
   # Allow some files to be fetched.
-  file(GLOB files "./shader/*" "./img/*" "./lvl/*" "./lang/*" "./snd/*")
+  file(GLOB files "./resources/*")
   foreach(file ${files})
+    message(STATUS "--preload-file ${file}@/${relative_file}")
     file(RELATIVE_PATH relative_file ${CMAKE_SOURCE_DIR} ${file})
     string(APPEND CMAKE_CXX_FLAGS " --preload-file ${file}@/${relative_file}")
   endforeach()
 endif()
 
-target_link_libraries(main PRIVATE smk)
+target_link_libraries(inthecube PRIVATE smk)
+
+install(TARGETS inthecube RUNTIME DESTINATION "bin")
+install(DIRECTORY resources DESTINATION share/inthecube)

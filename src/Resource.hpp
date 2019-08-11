@@ -8,6 +8,9 @@
 #include <variant>
 #include <list>
 
+std::string ResourcePath();
+std::string SavePath();
+
 extern smk::Font font_arial;
 extern smk::Texture img_block;
 extern smk::Texture img_block1;
