@@ -33,3 +33,11 @@ parts:
       - libpulse0
     after:
       - desktop-glib-only
+  desktop-glib-only:
+    build-packages:
+    - libglib2.0-dev
+    plugin: make
+    source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
+    source-subdir: glib-only
+    stage-packages:
+    - libglib2.0-bin
