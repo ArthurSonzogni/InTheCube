@@ -1,3 +1,5 @@
+[![inthecube](https://snapcraft.io/inthecube/badge.svg)](https://snapcraft.io/inthecube)
+
 ![logo](https://arthursonzogni.com/InTheCube/carrousel/1.png)
 
 InTheCube
@@ -6,6 +8,8 @@ InTheCube
 [[Project link]](https://arthursonzogni.com/en/InTheCube/)
 
 [[**Play** online]](https://arthursonzogni.com/InTheCube/play)
+
+[![Get it from the Snap Store](https://snapcraft.io/static/images/badges/en/snap-store-white.svg)](https://snapcraft.io/inthecube)
 
 # Description
 ~~~

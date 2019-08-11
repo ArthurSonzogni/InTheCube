@@ -12,14 +12,6 @@ bool intOf(int& t, const std::string& s);
 
 void SaveManager::Load(std::string savFile) {
   fileName = savFile;
-#ifdef __EMSCRIPTEN__
-  int slash_position = -1;
-  for (int i = 0; i < (int)fileName.size(); ++i) {
-    if (fileName[i] == '/')
-      slash_position = i;
-  }
-  fileName = "/sav/" + fileName.substr(slash_position + 1, -1);
-#endif
 
   std::ifstream file(fileName.c_str());
   if (!file)

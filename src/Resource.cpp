@@ -57,6 +57,11 @@ std::string SavePath() {
     return save_path;
   initialized = true;
 
+#ifdef __EMSCRIPTEN__
+  save_path = "/sav";
+  return save_path;
+#endif
+
   auto SNAP_USER_COMMON = GetEnvironmentVariable("SNAP_USER_COMMON");
   auto HOME = GetEnvironmentVariable("HOME");
 

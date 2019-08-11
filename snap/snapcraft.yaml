@@ -11,6 +11,7 @@ description: |
   moving blocks, ...)
 
   Strange machines are found in the most advanced levels.
+icon: ./resources/img/img_hero.png
 grade: stable
 confinement: strict
 base: core18
@@ -22,11 +23,13 @@ apps:
       - pulseaudio
       - x11
 icon: ./resources/img/img_hero.png
-license: MIT
 parts:
+
   inthecube:
     plugin: cmake
-    source: .
+    source: "https://github.com/ArthurSonzogni/InTheCube"
+    source-type: git
+    source-depth: 1
     configflags:
       - -DCMAKE_INSTALL_PREFIX=/usr/local/
       - -DCMAKE_BUILD_TYPE=Release
@@ -35,6 +38,7 @@ parts:
       - libpulse0
     after:
       - desktop-glib-only
+
   desktop-glib-only:
     build-packages:
     - libglib2.0-dev
@@ -43,3 +47,6 @@ parts:
     source-subdir: glib-only
     stage-packages:
     - libglib2.0-bin
+passthrough:
+  license: MIT
+  title: InTheCube
