@@ -1,6 +1,6 @@
 name: inthecube
 version: '0.1'
-summary: An amazing cube.
+summary: A tiny cube in a giant maze. Platform/puzzle game.
 description: |
   InTheCube is a platform/puzzle game.
 
@@ -11,7 +11,7 @@ description: |
   moving blocks, ...)
 
   Strange machines are found in the most advanced levels.
-grade: devel
+grade: stable
 confinement: strict
 base: core18
 apps:
@@ -21,6 +21,8 @@ apps:
       - opengl
       - pulseaudio
       - x11
+icon: ./resources/img/img_hero.png
+license: MIT
 parts:
   inthecube:
     plugin: cmake

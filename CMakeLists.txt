@@ -1,5 +1,5 @@
 # Projects Settings
-cmake_minimum_required (VERSION 3.1)
+cmake_minimum_required (VERSION 3.11)
 
 set_property(GLOBAL PROPERTY INTERPROCEDURAL_OPTIMIZATION TRUE)
 
