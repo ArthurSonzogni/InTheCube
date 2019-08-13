@@ -31,8 +31,12 @@ parts:
     stage-packages:
       - libgl1-mesa-glx
       - libpulse0
+      - libpng16-16
     build-packages:
-      - libssl-dev
+      - libglu-dev
+      - libssl1.0-dev
+      - libpulse-dev
+      - xorg-dev
     override-build: |
       git clone https://github.com/Kitware/CMake --depth 1 || true
       mkdir -p CMake/build

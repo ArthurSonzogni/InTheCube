@@ -9,12 +9,9 @@ InTheCube
 [[**Play** online]](https://arthursonzogni.com/InTheCube/play)
 
 #### Snap build ‑ Play on linux
-[![inthecube](https://snapcraft.io/inthecube/badge.svg)](https://snapcraft.io/inthecube)
-
-[![Snap Status](https://build.snapcraft.io/badge/ArthurSonzogni/InTheCube.svg)](https://build.snapcraft.io/user/ArthurSonzogni/InTheCube)
-
-[![Get it from the Snap Store](https://snapcraft.io/static/images/badges/en/snap-store-white.svg)](https://snapcraft.io/inthecube)
-
+[![inthecube](https://snapcraft.io/inthecube/badge.svg)](https://snapcraft.io/inthecube)  
+[![Snap Status](https://build.snapcraft.io/badge/ArthurSonzogni/InTheCube.svg)](https://build.snapcraft.io/user/ArthurSonzogni/InTheCube)  
+[![Get it from the Snap Store](https://snapcraft.io/static/images/badges/en/snap-store-white.svg)](https://snapcraft.io/inthecube)  
 ~~~bash
 sudo snap install inthecube
 ~~~
