@@ -1,15 +1,22 @@
-[![inthecube](https://snapcraft.io/inthecube/badge.svg)](https://snapcraft.io/inthecube)
 
 ![logo](https://arthursonzogni.com/InTheCube/carrousel/1.png)
 
 InTheCube
 =========
 
+### Project link
 [[Project link]](https://arthursonzogni.com/en/InTheCube/)
 
+### WebAssembly build:  (Play online)
 [[**Play** online]](https://arthursonzogni.com/InTheCube/play)
 
+### Snap build ‑ Play on linux
 [![Get it from the Snap Store](https://snapcraft.io/static/images/badges/en/snap-store-white.svg)](https://snapcraft.io/inthecube)
+[![inthecube](https://snapcraft.io/inthecube/badge.svg)](https://snapcraft.io/inthecube)
+[![Snap Status](https://build.snapcraft.io/badge/ArthurSonzogni/InTheCube.svg)](https://build.snapcraft.io/user/ArthurSonzogni/InTheCube)
+~~~bash
+sudo snap install inthecube
+~~~
 
 # Description
 ~~~
