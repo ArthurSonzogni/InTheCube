@@ -23,7 +23,23 @@ apps:
       - pulseaudio
       - x11
 parts:
+
+  cmake:
+    source: https://github.com/Kitware/CMake
+    source-type: git
+    source-depth: 1
+    plugin: cmake
+    override-build: |
+      mkdir -p build
+      cd build
+      cmake \
+        -DCMAKE_INSTALL_PREFIX=$SNAPCRAFT_STAGE/cmake \
+        $SNAPCRAFT_PART_SRC
+      make -j 4
+      make install
+
   inthecube:
+    after: [cmake]
     plugin: cmake
     source: https://github.com/ArthurSonzogni/InTheCube
     source-type: git
@@ -38,19 +54,13 @@ parts:
       - libpulse-dev
       - xorg-dev
     override-build: |
-      git clone https://github.com/Kitware/CMake --depth 1 || true
-      mkdir -p CMake/build
-      cd CMake/build
-      cmake .. -DCMAKE_INSTALL_PREFIX=../../cmake_install
-      make -j 4
-      make install
-      cd ../..
-      ./cmake_install/bin/cmake \
+      $SNAPCRAFT_STAGE/cmake/bin/cmake \
         -DCMAKE_INSTALL_PREFIX=$SNAPCRAFT_PART_INSTALL/usr/local \
         -DCMAKE_BUILD_TYPE=Release \
         $SNAPCRAFT_PART_SRC
       make -j 4
       make install
+
   desktop-glib-only:
     plugin: make
     source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
@@ -59,6 +69,7 @@ parts:
     - libglib2.0-dev
     stage-packages:
     - libglib2.0-bin
+
 passthrough:
   title: InTheCube
   license: MIT
