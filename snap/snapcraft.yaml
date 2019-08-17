@@ -27,7 +27,7 @@ parts:
   inthecube:
     build-snaps:
       - cmake/latest/stable
-    plugin: cmake
+    plugin: make
     source: https://github.com/ArthurSonzogni/InTheCube
     source-type: git
     source-depth: 1
@@ -40,9 +40,13 @@ parts:
       - libssl1.0-dev
       - libpulse-dev
       - xorg-dev
-    configflags:
-      - -DCMAKE_INSTALL_PREFIX=/usr/local/
-      - -DCMAKE_BUILD_TYPE=Release
+    override-build: |
+      /snap/bin/cmake \
+        -DCMAKE_INSTALL_PREFIX=$SNAPCRAFT_PART_INSTALL/usr/local \
+        -DCMAKE_BUILD_TYPE=Release \
+        $SNAPCRAFT_PART_SRC
+      make -j 4
+      make install
 
   desktop-glib-only:
     plugin: make
