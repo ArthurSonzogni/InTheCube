@@ -24,22 +24,9 @@ apps:
       - x11
 parts:
 
-  cmake:
-    source: https://github.com/Kitware/CMake
-    source-type: git
-    source-depth: 1
-    plugin: cmake
-    override-build: |
-      mkdir -p build
-      cd build
-      cmake \
-        -DCMAKE_INSTALL_PREFIX=$SNAPCRAFT_STAGE/cmake \
-        $SNAPCRAFT_PART_SRC
-      make -j 4
-      make install
-
   inthecube:
-    after: [cmake]
+    build-snaps:
+      - cmake/latest/stable
     plugin: cmake
     source: https://github.com/ArthurSonzogni/InTheCube
     source-type: git
@@ -53,13 +40,9 @@ parts:
       - libssl1.0-dev
       - libpulse-dev
       - xorg-dev
-    override-build: |
-      $SNAPCRAFT_STAGE/cmake/bin/cmake \
-        -DCMAKE_INSTALL_PREFIX=$SNAPCRAFT_PART_INSTALL/usr/local \
-        -DCMAKE_BUILD_TYPE=Release \
-        $SNAPCRAFT_PART_SRC
-      make -j 4
-      make install
+    configflags:
+      - -DCMAKE_INSTALL_PREFIX=/usr/local/
+      - -DCMAKE_BUILD_TYPE=Release
 
   desktop-glib-only:
     plugin: make
