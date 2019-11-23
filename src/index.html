@@ -37,6 +37,8 @@
         preRun: [],
         postRun: [],
         canvas: canvas,
+        print: console.log,
+        printErr: console.error,
         onRuntimeInitialized: function() {
           document.querySelector("#loading_page").remove();
         },
@@ -44,20 +46,6 @@
 
     </script>
 
-    <!--<script>-->
-      <!--function onResize() {-->
-        <!--let wx = window.innerWidth / 640.0;-->
-        <!--let wy = window.innerHeight / 480.0;-->
-        <!--let size = Math.min(wx, wy);-->
-        <!--size = 1;-->
-        <!--Module.canvas.width = size * 640;-->
-        <!--Module.canvas.height = size * 480;-->
-      <!--}-->
-      <!--window.addEventListener("resize", onResize, true);-->
-      <!--for(let j in [100, 200, 500, 1000, 3000, 6000])-->
-        <!--window.setTimeout(onResize, 100);-->
-    <!--</script>-->
-
-    <script async src="main.js"></script>
+    <script async src="inthecube.js"></script>
   </body>
 </html>

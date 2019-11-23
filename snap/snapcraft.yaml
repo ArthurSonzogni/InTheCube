@@ -33,6 +33,7 @@ parts:
       cd build
       cmake \
         -DCMAKE_INSTALL_PREFIX=$SNAPCRAFT_STAGE/cmake \
+        -DCMAKE_BUILD_TYPE=Release \
         $SNAPCRAFT_PART_SRC
       make -j 4
       make install

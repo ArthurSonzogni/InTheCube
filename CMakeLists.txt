@@ -93,6 +93,8 @@ add_executable(inthecube
   src/main.cpp
 )
 
+target_compile_options(inthecube PRIVATE -Wall -Wextra -pedantic -Werror)
+
 target_include_directories(inthecube PRIVATE ./src)
 
 target_compile_options(inthecube
@@ -108,18 +110,18 @@ add_definitions(-DGLM_FORCE_RADIANS)
 
 # Detect emscripten is used.
 if(CMAKE_CXX_COMPILER MATCHES "/em\\+\\+(-[a-zA-Z0-9.])?$") 
-  string(APPEND CMAKE_CXX_FLAGS " -s DEMANGLE_SUPPORT=1")
-  string(APPEND CMAKE_CXX_FLAGS " -s DISABLE_EXCEPTION_CATCHING=2")
-  string(APPEND CMAKE_CXX_FLAGS " -s WASM=1")
-  string(APPEND CMAKE_CXX_FLAGS " -s TOTAL_MEMORY=134217728")
-  string(APPEND CMAKE_CXX_FLAGS " -s BINARYEN_TRAP_MODE='allow'")
+  set_property(TARGET inthecube APPEND_STRING PROPERTY LINK_FLAGS  " -s DEMANGLE_SUPPORT=1")
+  set_property(TARGET inthecube APPEND_STRING PROPERTY LINK_FLAGS  " -s DISABLE_EXCEPTION_CATCHING=2")
+  set_property(TARGET inthecube APPEND_STRING PROPERTY LINK_FLAGS  " -s WASM=1")
+  set_property(TARGET inthecube APPEND_STRING PROPERTY LINK_FLAGS  " -s TOTAL_MEMORY=134217728")
+  set_property(TARGET inthecube APPEND_STRING PROPERTY LINK_FLAGS  " -s BINARYEN_TRAP_MODE='allow'")
 
   # Release flags
-  string(APPEND CMAKE_CXX_FLAGS " --closure 1")
-  string(APPEND CMAKE_CXX_FLAGS " --js-opts 3")
-  string(APPEND CMAKE_CXX_FLAGS " --llvm-lto 3")
-  string(APPEND CMAKE_CXX_FLAGS " --llvm-opts 3")
-  string(APPEND CMAKE_CXX_FLAGS " -O3")
+  set_property(TARGET inthecube APPEND_STRING PROPERTY LINK_FLAGS  " --closure 1")
+  set_property(TARGET inthecube APPEND_STRING PROPERTY LINK_FLAGS  " --js-opts 3")
+  set_property(TARGET inthecube APPEND_STRING PROPERTY LINK_FLAGS  " --llvm-lto 3")
+  set_property(TARGET inthecube APPEND_STRING PROPERTY LINK_FLAGS  " --llvm-opts 3")
+  set_property(TARGET inthecube APPEND_STRING PROPERTY LINK_FLAGS  " -O3")
 
   option(ADD_GOOGLE_ANALYTICS "Add google analytics script" ON)
   if (ADD_GOOGLE_ANALYTICS)
@@ -144,11 +146,10 @@ if(CMAKE_CXX_COMPILER MATCHES "/em\\+\\+(-[a-zA-Z0-9.])?$")
   )
 
   # Allow some files to be fetched.
-  file(GLOB files "./resources/*")
+  file(GLOB files "./resources/*" "./resources/*/*")
   foreach(file ${files})
-    message(STATUS "--preload-file ${file}@/${relative_file}")
     file(RELATIVE_PATH relative_file ${CMAKE_SOURCE_DIR} ${file})
-    string(APPEND CMAKE_CXX_FLAGS " --preload-file ${file}@/${relative_file}")
+    set_property(TARGET inthecube APPEND_STRING PROPERTY LINK_FLAGS  " --preload-file ${file}@/${relative_file}")
   endforeach()
 endif()
 

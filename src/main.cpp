@@ -30,10 +30,15 @@ class Main {
 
     Display(&resource_loading_screen_);
     resource_loading_screen_.on_quit = [&] {
+      std::cerr << "LINE = " << __LINE__ << std::endl;
       savFile.Load(SavePath() + "/.in_the_cube_sav");
+      std::cerr << "LINE = " << __LINE__ << std::endl;
       langFile.Load(SavePath() + "/.in_the_cube_language");
+      std::cerr << "LINE = " << __LINE__ << std::endl;
       UpdateTraduction();
+      std::cerr << "LINE = " << __LINE__ << std::endl;
       Display(&welcome_screen_);
+      std::cerr << "LINE = " << __LINE__ << std::endl;
     };
 
     // 2. Starting activity. The welcome screen_.

@@ -35,6 +35,10 @@ std::string ResourcePath() {
 
     // Code build and run inside ${CMAKE_CURRENT_DIRECTORY}
     "../resources",
+
+    // Code build for WebAssembly.
+    "/resources",
+
   };
 
   for (auto& path : path_list) {
