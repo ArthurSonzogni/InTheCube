@@ -1,7 +1,7 @@
 #ifndef ELECTRICITY_HP
 #define ELECTRICITY_HP
 
-#include <smk/Screen.hpp>
+#include <smk/Window.hpp>
 #include <smk/Sound.hpp>
 #include "Resource.hpp"
 
@@ -20,7 +20,7 @@ class Electricity {
               int Periode,
               int Offset);
   void Step(int time);
-  void Draw(smk::Screen&);
+  void Draw(smk::Window&);
   bool is_active() { return is_active_; }
  private:
   bool is_active_ = false;

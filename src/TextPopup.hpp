@@ -8,14 +8,14 @@
 #include "Forme.hpp"
 
 namespace smk {
-class Screen;
+class Window;
 }  // namespace smk
 
 class TextPopup {
  public:
   TextPopup(int type);
-  bool Step(smk::Screen& screen);
-  void Draw(smk::Screen& screen);
+  bool Step(smk::Window& window);
+  void Draw(smk::Window& window);
   Rectangle geometry;
 
  private:

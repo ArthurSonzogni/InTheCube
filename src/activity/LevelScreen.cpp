@@ -1,14 +1,14 @@
 #include "activity/LevelScreen.hpp"
 #include <smk/Color.hpp>
-LevelScreen::LevelScreen(smk::Screen& screen, std::string level_name)
-    : Activity(screen) {
+LevelScreen::LevelScreen(smk::Window& window, std::string level_name)
+    : Activity(window) {
   level_.LoadFromFile(level_name);
   frame = 0;
-  start_time = screen.time();
+  start_time = window.time();
 }
 
 void LevelScreen::Draw() {
-  float new_time = screen().time();
+  float new_time = window().time();
   int new_frame = (new_time - start_time) * 30;
 
   if (new_frame > frame + 10) {
@@ -19,13 +19,13 @@ void LevelScreen::Draw() {
   }
 
   for (; frame < new_frame; ++frame) {
-    screen().PoolEvents();
-    level_.Step(screen());
+    window().PoolEvents();
+    level_.Step(window());
   }
 
-  screen().Clear(glm::vec4(0.f, 0.f, 0.f, 0.f));
-  level_.Draw(screen());
-  screen().Display();
+  window().Clear(glm::vec4(0.f, 0.f, 0.f, 0.f));
+  level_.Draw(window());
+  window().Display();
 
   if (level_.isLose) {
     on_restart();

@@ -4,7 +4,7 @@
 #include "Lang.hpp"
 #include "Resource.hpp"
 #include "smk/Color.hpp"
-#include <smk/Screen.hpp>
+#include <smk/Window.hpp>
 #include <smk/Shape.hpp>
 #include <smk/Input.hpp>
 
@@ -94,14 +94,14 @@ TextPopup::TextPopup(int t) {
   spaceSprite.SetTexture(img_decorSpace);
 }
 
-bool TextPopup::Step(smk::Screen& screen) {
+bool TextPopup::Step(smk::Window& window) {
   time++;
   horizontal_shift += (100 - horizontal_shift) / 10.0;
 
   if (time > 10) {
-    if (screen.input().IsMousePressed(GLFW_MOUSE_BUTTON_1) ||
-        screen.input().IsKeyPressed(GLFW_KEY_SPACE) ||
-        screen.input().IsKeyPressed(GLFW_KEY_ENTER)) {
+    if (window.input().IsMousePressed(GLFW_MOUSE_BUTTON_1) ||
+        window.input().IsKeyPressed(GLFW_KEY_SPACE) ||
+        window.input().IsKeyPressed(GLFW_KEY_ENTER)) {
       p++;
       horizontal_shift = 640;
       time = 0;
@@ -112,13 +112,13 @@ bool TextPopup::Step(smk::Screen& screen) {
   return false;
 }
 
-void TextPopup::Draw(smk::Screen& screen) {
+void TextPopup::Draw(smk::Window& window) {
   if (p >= (int)text.size())
     return;
-  //FloatRect rect = screen.GetView().GetRect();
+  //FloatRect rect = window.GetView().GetRect();
   // drawing cadre
-  float left = screen.GetView().Left();
-  float top = screen.GetView().Top();
+  float left = window.GetView().Left();
+  float top = window.GetView().Top();
   int x1 = left + 640 / 5;
   int y1 = top + 480 / 5 + horizontal_shift;
 
@@ -138,30 +138,30 @@ void TextPopup::Draw(smk::Screen& screen) {
   for (glm::vec2 position : {glm::vec2(x1, y1), glm::vec2(x2, y1)}) {
     circle_1.SetPosition(position);
     circle_2.SetPosition(position);
-    screen.Draw(circle_1);
-    screen.Draw(circle_2);
+    window.Draw(circle_1);
+    window.Draw(circle_2);
   }
 
   auto rect = smk::Shape::Square();
   rect.SetPosition(x1, y1-r);
   rect.SetScale(x2-x1, y2-y1+2*r);
   rect.SetColor(c0);
-  screen.Draw(rect);
+  window.Draw(rect);
 
   rect.SetPosition(x1-r, y1);
   rect.SetScale(x2-x1+2*r, y2-y1);
-  screen.Draw(rect);
+  window.Draw(rect);
 
   rect.SetColor(c1);
 
   rect.SetPosition(x1, y1-r+e);
   rect.SetScale(x2-x1, y2-y1+2*r-2*e);
   rect.SetColor(c1);
-  screen.Draw(rect);
+  window.Draw(rect);
 
   rect.SetPosition(x1-r+e, y1);
   rect.SetScale(x2-x1+2*r-2*e, y2-y1);
-  screen.Draw(rect);
+  window.Draw(rect);
 
   // drawing texte
   int x = x1 + 5;
@@ -171,9 +171,9 @@ void TextPopup::Draw(smk::Screen& screen) {
   for (auto& t : text[p]) {
     textString.SetPosition(x, y);
     textString.SetString(t);
-    screen.Draw(textString);
+    window.Draw(textString);
     y += 40;
   }
   spaceSprite.SetPosition(x2 - 128, y2 - 135);
-  screen.Draw(spaceSprite);
+  window.Draw(spaceSprite);
 }

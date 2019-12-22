@@ -12,7 +12,7 @@
 extern BackgroundMusic background_music;
 
 void IntroScreen::OnEnter() {
-  previous_time = screen().time();
+  previous_time = window().time();
   x = 0;
   dx = 0;
   position = 1;
@@ -20,17 +20,17 @@ void IntroScreen::OnEnter() {
 }
 
 void IntroScreen::Draw() {
-  screen().PoolEvents();
+  window().PoolEvents();
   // Input
   {
-    if (screen().input().IsKeyPressed(GLFW_KEY_SPACE) ||
-        screen().input().IsKeyPressed(GLFW_KEY_ENTER) ||
-        screen().input().IsMousePressed(GLFW_MOUSE_BUTTON_1)) {
+    if (window().input().IsKeyPressed(GLFW_KEY_SPACE) ||
+        window().input().IsKeyPressed(GLFW_KEY_ENTER) ||
+        window().input().IsMousePressed(GLFW_MOUSE_BUTTON_1)) {
       position++;
     }
   }
 
-  float t = screen().time();
+  float t = window().time();
   float dt = t - previous_time;
   previous_time = t;
 
@@ -56,7 +56,7 @@ void IntroScreen::Draw() {
     float lambda = (x - index * 640) / 640.0;
     glm::vec4 background_color =
         glm::lerp(colors[index], colors[index + 1], lambda);
-    screen().Clear(background_color);
+    window().Clear(background_color);
   }
 
   // Text
@@ -80,7 +80,7 @@ void IntroScreen::Draw() {
       it.SetPosition(670-x+p*640,10);
       it.SetFont(font_arial);
       it.SetColor(smk::Color::White);
-      screen().Draw(it);
+      window().Draw(it);
       ++p;
     }
   }
@@ -88,5 +88,5 @@ void IntroScreen::Draw() {
   if (x > 640 * 5.9)
     on_quit();
 
-  screen().Display();
+  window().Display();
 }

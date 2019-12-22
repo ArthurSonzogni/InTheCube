@@ -110,14 +110,15 @@ add_definitions(-DGLM_FORCE_RADIANS)
 
 # Detect emscripten is used.
 if(CMAKE_CXX_COMPILER MATCHES "/em\\+\\+(-[a-zA-Z0-9.])?$") 
+  target_link_libraries(inthecube PRIVATE -lidbfs.js)
+
   set_property(TARGET inthecube APPEND_STRING PROPERTY LINK_FLAGS  " -s DEMANGLE_SUPPORT=1")
   set_property(TARGET inthecube APPEND_STRING PROPERTY LINK_FLAGS  " -s DISABLE_EXCEPTION_CATCHING=2")
   set_property(TARGET inthecube APPEND_STRING PROPERTY LINK_FLAGS  " -s WASM=1")
   set_property(TARGET inthecube APPEND_STRING PROPERTY LINK_FLAGS  " -s TOTAL_MEMORY=134217728")
-  set_property(TARGET inthecube APPEND_STRING PROPERTY LINK_FLAGS  " -s BINARYEN_TRAP_MODE='allow'")
 
   # Release flags
-  set_property(TARGET inthecube APPEND_STRING PROPERTY LINK_FLAGS  " --closure 1")
+  #set_property(TARGET inthecube APPEND_STRING PROPERTY LINK_FLAGS  " --closure 1")
   set_property(TARGET inthecube APPEND_STRING PROPERTY LINK_FLAGS  " --js-opts 3")
   set_property(TARGET inthecube APPEND_STRING PROPERTY LINK_FLAGS  " --llvm-lto 3")
   set_property(TARGET inthecube APPEND_STRING PROPERTY LINK_FLAGS  " --llvm-opts 3")

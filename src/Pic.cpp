@@ -1,5 +1,5 @@
 #include "Pic.hpp"
-#include <smk/Screen.hpp>
+#include <smk/Window.hpp>
 #include "Resource.hpp"
 
 Pic::Pic(int X,
@@ -20,8 +20,8 @@ Pic::Pic(int X,
   sprite.SetRotation(angle);
 }
 
-void Pic::Draw(smk::Screen& screen) {
+void Pic::Draw(smk::Window& window) {
   sprite.SetPosition(x + avancement * cos(angle * 0.0174532925),
                      y - avancement * sin(angle * 0.0174532925));
-  screen.Draw(sprite);
+  window.Draw(sprite);
 }

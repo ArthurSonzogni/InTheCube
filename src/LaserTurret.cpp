@@ -2,7 +2,7 @@
 
 #include <cmath>
 #include "Resource.hpp"
-#include <smk/Screen.hpp>
+#include <smk/Window.hpp>
 #include <smk/Shape.hpp>
 #include <smk/Color.hpp>
 
@@ -31,12 +31,12 @@ LaserTurret::LaserTurret(int X,
     angleMedium = Angle;
 }
 
-void LaserTurret::Draw(smk::Screen& screen) {
+void LaserTurret::Draw(smk::Window& window) {
   auto line =
       smk::Shape::Line(glm::vec2(x, y), glm::vec2(xattach, yattach), 1);
   line.SetColor(smk::Color::Black);
-  screen.Draw(line);
-  screen.Draw(sprite);
+  window.Draw(line);
+  window.Draw(sprite);
 }
 
 void LaserTurret::Step() {

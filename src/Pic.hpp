@@ -5,7 +5,7 @@
 #include <vector>
 
 namespace smk {
-class Screen;
+class Window;
 }
 
 class Pic {
@@ -25,7 +25,7 @@ class Pic {
       int Comparateur,
       std::vector<int> Connexion);
 
-  void Draw(smk::Screen& screen);
+  void Draw(smk::Window& window);
 };
 
 #endif /* PIC_HPP */

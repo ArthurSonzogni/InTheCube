@@ -9,24 +9,24 @@
 extern BackgroundMusic background_music;
 
 void WelcomeScreen::OnEnter() {
-  time_start = screen().time();
+  time_start = window().time();
   background_music.SetSound(SB_intro);
 }
 
 void WelcomeScreen::Draw() {
-  screen().PoolEvents();
+  window().PoolEvents();
   smk::View view;
   view.SetCenter(320, 240);
   view.SetSize(640, 480);
-  screen().SetView(view);
+  window().SetView(view);
 
-  if (screen().input().IsMousePressed(GLFW_MOUSE_BUTTON_1) ||
-      screen().input().IsKeyPressed(GLFW_KEY_SPACE) ||
-      screen().input().IsKeyPressed(GLFW_KEY_ENTER)) {
+  if (window().input().IsMousePressed(GLFW_MOUSE_BUTTON_1) ||
+      window().input().IsKeyPressed(GLFW_KEY_SPACE) ||
+      window().input().IsKeyPressed(GLFW_KEY_ENTER)) {
     on_quit();
   }
 
-  float t = screen().time() - time_start;
+  float t = window().time() - time_start;
   t = std::max(0.f, std::min(1.f, t));
   t = t * t;
 
@@ -34,7 +34,7 @@ void WelcomeScreen::Draw() {
   sprite.SetTexture(img_accueil);
   sprite.SetColor(glm::vec4(t, t, t, 1.0));
 
-  screen().Clear(glm::vec4(0.0, 0.0, 0.0, 0.0));
-  screen().Draw(sprite);
-  screen().Display();
+  window().Clear(glm::vec4(0.0, 0.0, 0.0, 0.0));
+  window().Draw(sprite);
+  window().Display();
 }

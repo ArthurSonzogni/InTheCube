@@ -6,7 +6,7 @@
 #include <smk/Sprite.hpp>
 
 namespace smk {
-class Screen;
+class Window;
 }  // namespace smk
 
 class Hero {
@@ -27,7 +27,7 @@ class Hero {
   void SetPosition(float x, float y);
   void UpdateGeometry();
 
-  void Draw(smk::Screen& screen, bool selected);
+  void Draw(smk::Window& window, bool selected);
 };
 
 #endif /* HERO_HPP */

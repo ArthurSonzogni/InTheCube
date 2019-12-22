@@ -35,13 +35,13 @@ void Electricity::Step(int time) {
   }
 }
 
-void Electricity::Draw(smk::Screen& screen) {
+void Electricity::Draw(smk::Window& window) {
   smk::Sprite sprite;
   sprite.SetTexture(img_electricitySupport);
   sprite.SetPosition(x1 - 8, y1 - 8);
-  screen.Draw(sprite);
+  window.Draw(sprite);
   sprite.SetPosition(x2 - 8, y2 - 8);
-  screen.Draw(sprite);
+  window.Draw(sprite);
 
   if (!is_active_)
     return;
@@ -60,7 +60,7 @@ void Electricity::Draw(smk::Screen& screen) {
         auto line1 = smk::Shape::Line({x, y}, {xx, yy}, r);
         line1.SetColor(glm::vec4(242, 224, 58, 20 - r) / 255.f);
         line1.SetBlendMode(smk::BlendMode::Add);
-        screen.Draw(line1);
+        window.Draw(line1);
       }
 
       auto line = smk::Shape::Line({x, y}, {xx, yy}, 1);
@@ -68,7 +68,7 @@ void Electricity::Draw(smk::Screen& screen) {
       x = xx;
       y = yy;
 
-      screen.Draw(line);
+      window.Draw(line);
     }
   }
 }

@@ -13,10 +13,10 @@ Button::Button(int x, int y, int n) {
   nb_pressed_required = n;
 }
 
-void Button::Draw(smk::Screen& screen) {
+void Button::Draw(smk::Window& window) {
   smk::Sprite sprite;
   sprite.SetTexture(img_button[nb_pressed]);
   sprite.SetCenter(8, 8);
   sprite.SetPosition(geometry.left + 8, geometry.top + 8);
-  screen.Draw(sprite);
+  window.Draw(sprite);
 }

@@ -1,7 +1,7 @@
 #include "Arrow.hpp"
 
 #include <cmath>
-#include <smk/Screen.hpp>
+#include <smk/Window.hpp>
 #include "Resource.hpp"
 
 Arrow::Arrow(float X, float Y, float Xspeed, float Yspeed) {
@@ -26,7 +26,7 @@ void Arrow::Step() {
   geometry.y = y;
 }
 
-void Arrow::Draw(smk::Screen& screen) {
+void Arrow::Draw(smk::Window& window) {
   sprite.SetPosition(x, y);
-  screen.Draw(sprite);
+  window.Draw(sprite);
 }

@@ -10,7 +10,7 @@
 #include <vector>
 #include <string>
 
-#include <smk/Screen.hpp>
+#include <smk/Window.hpp>
 #include <smk/View.hpp>
 #include <smk/Sound.hpp>
 #include "Accelerator.hpp"
@@ -52,10 +52,10 @@ class Level {
   void LoadFromFile(std::string fileName);
 
   // 2. Advance in the simulation. 30 times per secondes.
-  void Step(smk::Screen& screen);
+  void Step(smk::Window& window);
 
   // 3. Draw the current state of the level.
-  void Draw(smk::Screen& screen);
+  void Draw(smk::Window& window);
 
   bool isPrevious = false;
   bool isWin = false;
@@ -119,7 +119,7 @@ class Level {
   bool PlaceFree(const MovableBlock& m, float x, float y);
   bool PlaceFree(const Glass& m, float x, float y);
 
-  void EmitLaser(smk::Screen& screen,
+  void EmitLaser(smk::Window& window,
                  float x,
                  float y,
                  float angle,

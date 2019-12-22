@@ -5,7 +5,7 @@
 #include <smk/Sprite.hpp>
 
 namespace smk {
-class Screen;
+class Window;
 }  // namespace smk
 
 class Arrow {
@@ -19,7 +19,7 @@ class Arrow {
 
   Arrow(float X, float Y, float Xspeed, float Yspeed);
   void Step();
-  void Draw(smk::Screen& screen);
+  void Draw(smk::Window& window);
 };
 
 #endif /* ARROW_HPP */

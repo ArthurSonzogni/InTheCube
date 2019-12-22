@@ -3,7 +3,7 @@
 
 #include <smk/Sprite.hpp>
 namespace smk {
-class Screen;
+class Window;
 }  // namespace smk
 
 class LaserTurret {
@@ -21,7 +21,7 @@ class LaserTurret {
               int Yattach,
               int Mode,
               int AngleSpeed);
-  void Draw(smk::Screen& screen);
+  void Draw(smk::Window& window);
   void Step();
 };
 

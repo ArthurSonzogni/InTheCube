@@ -45,14 +45,14 @@ parts:
     source-type: git
     source-depth: 1
     stage-packages:
-      - libgl1-mesa-glx
-      - libpulse0
-      - libpng16-16
+      #- libgl1-mesa-glx
+      #- libpulse0
+      #- libpng16-16
     build-packages:
-      - libglu-dev
-      - libssl1.0-dev
-      - libpulse-dev
-      - xorg-dev
+      #- libglu-dev
+      #- libssl1.0-dev
+      #- libpulse-dev
+      #- xorg-dev
     override-build: |
       $SNAPCRAFT_STAGE/cmake/bin/cmake \
         -DCMAKE_INSTALL_PREFIX=$SNAPCRAFT_PART_INSTALL/usr/local \

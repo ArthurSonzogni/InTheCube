@@ -1,6 +1,6 @@
 #include "StaticMirror.hpp"
 #include "Resource.hpp"
-#include <smk/Screen.hpp>
+#include <smk/Window.hpp>
 #include <smk/Shape.hpp>
 #include <smk/Color.hpp>
 
@@ -28,9 +28,9 @@ StaticMirror::StaticMirror(int x1,
   sprite.SetScaleX(sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1)) / 32.0);
 }
 
-void StaticMirror::Draw(smk::Screen& screen) {
+void StaticMirror::Draw(smk::Window& window) {
   auto line = smk::Shape::Line({xcenter, ycenter}, {xattach, yattach}, 2);
   line.SetColor(smk::Color::Black);
-  screen.Draw(line);
-  screen.Draw(sprite);
+  window.Draw(line);
+  window.Draw(sprite);
 }

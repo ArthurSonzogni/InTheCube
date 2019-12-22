@@ -1,6 +1,6 @@
 #include "MovableBlock.hpp"
 #include "Resource.hpp"
-#include <smk/Screen.hpp>
+#include <smk/Window.hpp>
 
 MovableBlock::MovableBlock(int X, int Y) {
   x = X;
@@ -22,6 +22,6 @@ void MovableBlock::UpdateGeometry() {
   sprite.SetPosition(x, y);
 }
 
-void MovableBlock::Draw(smk::Screen& screen) {
-  screen.Draw(sprite);
+void MovableBlock::Draw(smk::Window& window) {
+  window.Draw(sprite);
 }

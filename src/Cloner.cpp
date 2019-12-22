@@ -1,6 +1,6 @@
 #include "Cloner.hpp"
 #include "Resource.hpp"
-#include <smk/Screen.hpp>
+#include <smk/Window.hpp>
 
 Cloner::Cloner(int Xstart, int Ystart, int Xend, int Yend) {
   xstart = Xstart;
@@ -12,9 +12,9 @@ Cloner::Cloner(int Xstart, int Ystart, int Xend, int Yend) {
   enable = true;
 }
 
-void Cloner::Draw(smk::Screen& screen) {
+void Cloner::Draw(smk::Window& window) {
   sprite.SetPosition(xstart, ystart);
-  screen.Draw(sprite);
+  window.Draw(sprite);
   sprite.SetPosition(xend, yend);
-  screen.Draw(sprite);
+  window.Draw(sprite);
 }

@@ -2,7 +2,7 @@
 #define BUTTON_HPP
 
 #include "Forme.hpp"
-#include <smk/Screen.hpp>
+#include <smk/Window.hpp>
 
 class Button {
  public:
@@ -14,7 +14,7 @@ class Button {
 
   Button(int x, int y, int n);
 
-  void Draw(smk::Screen& screen);
+  void Draw(smk::Window& window);
 };
 
 #endif /* BUTTON_HPP */

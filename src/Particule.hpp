@@ -4,7 +4,7 @@
 #include "Hero.hpp"
 #include <smk/Sprite.hpp>
 
-class Screen;
+class window;
 
 class Particule {
  public:
@@ -16,7 +16,7 @@ class Particule {
   int t;
   Particule(bool (*stepF)(Particule*));
   bool Step();
-  void Draw(smk::Screen& screen);
+  void Draw(smk::Window& window);
 };
 
 // particules fonctions

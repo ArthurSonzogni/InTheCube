@@ -5,7 +5,7 @@
 #include <smk/Sprite.hpp>
 
 namespace smk {
-class Screen;
+class Window;
 }  // namespace smk
 
 class FallingBlock {
@@ -14,7 +14,7 @@ class FallingBlock {
   Rectangle geometry;
   smk::Sprite sprite;
   void UpdateGeometry();
-  void Draw(smk::Screen& screen);
+  void Draw(smk::Window& window);
   float x, y;
   float yspeed;
   int etape;

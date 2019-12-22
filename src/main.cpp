@@ -9,7 +9,7 @@
 #include "SaveManager.hpp"
 #include "Resource.hpp"
 
-#include <smk/Screen.hpp>
+#include <smk/Window.hpp>
 
 #include "activity/IntroScreen.hpp"
 #include "activity/LevelScreen.hpp"
@@ -22,26 +22,21 @@ BackgroundMusic background_music;
 class Main {
  public:
   Main()
-      : resource_loading_screen_(screen_),
-        welcome_screen_(screen_),
-        main_screen_(screen_, savFile),
-        intro_screen_(screen_) {
-    screen_ = smk::Screen(640, 480, "InTheCube");
+      : resource_loading_screen_(window_),
+        welcome_screen_(window_),
+        main_screen_(window_, savFile),
+        intro_screen_(window_) {
+    window_ = smk::Window(640, 480, "InTheCube");
 
     Display(&resource_loading_screen_);
     resource_loading_screen_.on_quit = [&] {
-      std::cerr << "LINE = " << __LINE__ << std::endl;
       savFile.Load(SavePath() + "/.in_the_cube_sav");
-      std::cerr << "LINE = " << __LINE__ << std::endl;
       langFile.Load(SavePath() + "/.in_the_cube_language");
-      std::cerr << "LINE = " << __LINE__ << std::endl;
       UpdateTraduction();
-      std::cerr << "LINE = " << __LINE__ << std::endl;
       Display(&welcome_screen_);
-      std::cerr << "LINE = " << __LINE__ << std::endl;
     };
 
-    // 2. Starting activity. The welcome screen_.
+    // 2. Starting activity. The welcome window_.
     welcome_screen_.on_quit = [&] { Display(&main_screen_); };
 
     // 3. Then the save / language selector
@@ -52,10 +47,10 @@ class Main {
     };
     main_screen_.on_quit = [&] { Display(&welcome_screen_); };
 
-    // 4. The intro screen_.
+    // 4. The intro window_.
     intro_screen_.on_quit = [&] { MoveToLevel(1); };
 
-    // 5. The level screen_.
+    // 5. The level window_.
   }
 
   void Display(Activity* activity) {
@@ -83,7 +78,7 @@ class Main {
 
     to_be_removed_screen_ = std::move(level_screen_);
     level_screen_ =
-        std::make_unique<LevelScreen>(screen_, LevelListLoader()[level_index_]);
+        std::make_unique<LevelScreen>(window_, LevelListLoader()[level_index_]);
     level_screen_->on_restart = [&] { MoveToLevel(level_index_); };
     level_screen_->on_win = [&] { MoveToLevel(level_index_ + 1); };
     level_screen_->on_previous = [&] { MoveToLevel(level_index_ - 1); };
@@ -97,7 +92,7 @@ class Main {
     to_be_removed_screen_.reset();
 
 #ifndef __EMSCRIPTEN__
-    screen_.LimitFrameRate(60.f);
+    window_.LimitFrameRate(60.f);
 #endif
   }
 
@@ -121,7 +116,7 @@ class Main {
 
  private:
   Activity* activity_;
-  smk::Screen screen_;
+  smk::Window window_;
 
   ResourceLoadingScreen resource_loading_screen_;
   WelcomeScreen welcome_screen_;

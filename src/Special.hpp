@@ -2,7 +2,7 @@
 #define SPECIAL_HPP
 
 #include <list>
-#include <smk/Screen.hpp>
+#include <smk/Window.hpp>
 #include <smk/Sound.hpp>
 #include <smk/Sprite.hpp>
 #include <vector>
@@ -30,9 +30,9 @@ class Special {
   std::vector<smk::Sprite> sprite;
 
   void Step(Level& level);
-  void DrawBackground(smk::Screen& screen, float xcenter, float ycenter);
-  void DrawOverDecoration(smk::Screen& screen);
-  void DrawForeground(smk::Screen& screen, bool& isWin);
+  void DrawBackground(smk::Window& window, float xcenter, float ycenter);
+  void DrawOverDecoration(smk::Window& window);
+  void DrawForeground(smk::Window& window, bool& isWin);
 
   bool erased = false;
 };

@@ -1,7 +1,7 @@
 #include "ArrowLauncher.hpp"
 
 #include "Resource.hpp"
-#include <smk/Screen.hpp>
+#include <smk/Window.hpp>
 
 ArrowLauncher::ArrowLauncher(float X, float Y, float O) {
   x = X;
@@ -13,6 +13,6 @@ ArrowLauncher::ArrowLauncher(float X, float Y, float O) {
   sound.SetLoop(false);
 }
 
-void ArrowLauncher::Draw(smk::Screen& screen) {
-  screen.Draw(sprite);
+void ArrowLauncher::Draw(smk::Window& window) {
+  window.Draw(sprite);
 }

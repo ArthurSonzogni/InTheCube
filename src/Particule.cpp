@@ -1,5 +1,5 @@
 #include "Particule.hpp"
-#include <smk/Screen.hpp>
+#include <smk/Window.hpp>
 #include <cstdlib>
 #include <cmath>
 
@@ -11,8 +11,8 @@ bool Particule::Step() {
   return transform(this);
 }
 
-void Particule::Draw(smk::Screen& screen) {
-  screen.Draw(sprite);
+void Particule::Draw(smk::Window& window) {
+  window.Draw(sprite);
 }
 
 Particule essai() {

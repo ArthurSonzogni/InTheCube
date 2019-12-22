@@ -1,12 +1,12 @@
 #include "InvisibleBlock.hpp"
-#include <smk/Screen.hpp>
+#include <smk/Window.hpp>
 #include <cmath>
 
 float sqr(float x) {
   return x * x;
 }
 
-void InvisibleBlock::Draw(smk::Screen& screen, const Hero& hero) {
+void InvisibleBlock::Draw(smk::Window& window, const Hero& hero) {
   float distance =
       std::sqrt(sqr((hero.geometry.left + hero.geometry.right) / 2 -
                     (geometry.left + geometry.right) / 2) +
@@ -19,7 +19,7 @@ void InvisibleBlock::Draw(smk::Screen& screen, const Hero& hero) {
   else if (coef < 0)
     coef = 0;
   sprite.SetColor(glm::vec4(1.0, 1.0, 1.0, coef));
-  screen.Draw(sprite);
+  window.Draw(sprite);
 }
 
 InvisibleBlock::InvisibleBlock(int x, int y, int width, int height) {

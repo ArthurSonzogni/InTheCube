@@ -4,7 +4,7 @@
 #include "Forme.hpp"
 #include <smk/Sprite.hpp>
 namespace smk {
-class Screen;
+class Window;
 }  // namespace smk
 
 class MovingBlock {
@@ -21,7 +21,7 @@ class MovingBlock {
 
   MovingBlock(int X, int Y, int WIDTH, int HEIGHT, float XSPEED, float YSPEED);
   void UpdateGeometry();
-  void Draw(smk::Screen& screen);
+  void Draw(smk::Window& window);
 };
 
 #endif /* MOVING_BLOCK_HPP */

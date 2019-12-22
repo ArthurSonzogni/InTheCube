@@ -5,7 +5,7 @@
 #include <smk/Sprite.hpp>
 
 namespace smk {
-class Screen;
+class Window;
 }  // namespace smk
 
 class MovableBlock {
@@ -16,7 +16,7 @@ class MovableBlock {
 
   MovableBlock(int x, int y);
   void UpdateGeometry();
-  void Draw(smk::Screen& screen);
+  void Draw(smk::Window& window);
 };
 
 #endif /* MOVABLE_BLOCK_HPP */

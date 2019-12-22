@@ -4,7 +4,7 @@
 #include <smk/Sprite.hpp>
 
 namespace smk {
-class Screen;
+class Window;
 }  // namespace smk
 
 class Decor {
@@ -12,7 +12,7 @@ class Decor {
   smk::Sprite sprite;
 
   Decor(int X, int Y, int IMG);
-  void Draw(smk::Screen& screen);
+  void Draw(smk::Window& window);
 };
 
 #endif /* DECORS_HPP */

@@ -5,7 +5,7 @@
 #include <smk/Sprite.hpp>
 
 namespace smk {
-class Screen;
+class Window;
 }  // namespace smk
 
 class ArrowLauncher {
@@ -16,7 +16,7 @@ class ArrowLauncher {
   float orientation;
 
   ArrowLauncher(float X, float Y, float Orientation);
-  void Draw(smk::Screen& screen);
+  void Draw(smk::Window& window);
 };
 
 #endif /* ARROW_LAUNCHER_HPP */

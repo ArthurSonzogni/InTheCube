@@ -5,7 +5,7 @@
 #include <smk/Sprite.hpp>
 
 namespace smk {
-class Screen;
+class Window;
 }  // namespace smk
 
 class Block {
@@ -18,7 +18,7 @@ class Block {
   int xtile, ytile;
   bool tiled;
   bool drawable;
-  virtual void Draw(smk::Screen& screen);
+  virtual void Draw(smk::Window& window);
 
   Block(Block&&) = default;
 };

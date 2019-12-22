@@ -1,7 +1,7 @@
 #include <iostream>
 #include "Decor.hpp"
 #include "Resource.hpp"
-#include <smk/Screen.hpp>
+#include <smk/Window.hpp>
 
 Decor::Decor(int X, int Y, int IMG) {
   sprite.SetPosition(X, Y);
@@ -42,6 +42,6 @@ Decor::Decor(int X, int Y, int IMG) {
   }
 }
 
-void Decor::Draw(smk::Screen& screen) {
-  screen.Draw(sprite);
+void Decor::Draw(smk::Window& window) {
+  window.Draw(sprite);
 }

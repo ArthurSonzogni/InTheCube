@@ -6,7 +6,7 @@
 #include <smk/Sprite.hpp>
 
 namespace smk {
-class Screen;
+class Window;
 }  // namespace smk
 
 #define DEGTORAD 0.0174532925
@@ -19,7 +19,7 @@ class StaticMirror {
   int xcenter, ycenter;
   int angle;
   StaticMirror(int x1, int y1, int x2, int y2, int Xattach, int Yattach);
-  void Draw(smk::Screen& screen);
+  void Draw(smk::Window& window);
 };
 
 #endif /* STATIC_MIRROR_HPP */

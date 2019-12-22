@@ -371,56 +371,56 @@ void Level::LoadFromFile(std::string fileName) {
   }
 }
 
-void Level::Draw(smk::Screen& screen) {
-  screen.SetView(view_);
+void Level::Draw(smk::Window& window) {
+  window.SetView(view_);
 
   // clang-format off
   for (int x = xcenter - 320 - int(xcenter / 2.67) % 24; x < xcenter + 320; x += 24) {
   for (int y = ycenter - 240 - int(ycenter / 2.67) % 24; y < ycenter + 240; y += 24) {
       spriteBackground.SetPosition(x, y);
-      screen.Draw(spriteBackground);
+      window.Draw(spriteBackground);
     }
   }
 
-  for (auto& it : special_list) it.DrawBackground(screen, xcenter, ycenter);
-  for (auto& it : decorBack_list) it.Draw(screen);
-  for (auto& it : special_list) it.DrawOverDecoration(screen);
+  for (auto& it : special_list) it.DrawBackground(window, xcenter, ycenter);
+  for (auto& it : decorBack_list) it.Draw(window);
+  for (auto& it : special_list) it.DrawOverDecoration(window);
   // clang-format on
 
 
   // Draw static turrets and throw out Laser
   for (auto& it : laserTurret_list) {
-    it.Draw(screen);
-    EmitLaser(screen, it.x, it.y, it.angle, 10);
+    it.Draw(window);
+    EmitLaser(window, it.x, it.y, it.angle, 10);
   }
 
   // clang-format off
-  for (auto& it : block_list) it.Draw(screen);
-  for (auto& it : invBlock_list) it.Draw(screen, hero_list[heroSelected]);
-  for (auto& it : movBlock_list) it.Draw(screen);
-  for (auto& it : fallBlock_list) it.Draw(screen);
-  for (auto& it : movableBlock_list) it.Draw(screen);
-  for (auto& it : glassBlock_list) it.Draw(screen);
-  for (auto& it : staticMiroir_list) it.Draw(screen);
-  for (auto& it : pic_list) it.Draw(screen);
-  for (auto& it : special_list) it.DrawForeground(screen, isWin);
-  for (auto& it : button_list) it.Draw(screen);
+  for (auto& it : block_list) it.Draw(window);
+  for (auto& it : invBlock_list) it.Draw(window, hero_list[heroSelected]);
+  for (auto& it : movBlock_list) it.Draw(window);
+  for (auto& it : fallBlock_list) it.Draw(window);
+  for (auto& it : movableBlock_list) it.Draw(window);
+  for (auto& it : glassBlock_list) it.Draw(window);
+  for (auto& it : staticMiroir_list) it.Draw(window);
+  for (auto& it : pic_list) it.Draw(window);
+  for (auto& it : special_list) it.DrawForeground(window, isWin);
+  for (auto& it : button_list) it.Draw(window);
   int i = 0;
-  for (auto& it : hero_list) it.Draw(screen, heroSelected == i++);
-  for (auto& it : creeper_list) it.Draw(screen);
-  for (auto& it : arrow_list) it.Draw(screen);
-  for (auto& it : arrowLauncher_list) it.Draw(screen);
-  for (auto& it : cloneur_list) it.Draw(screen);
-  for (auto& it : particule_list) it.Draw(screen);
-  for (auto& it : electricity_list) it.Draw(screen);
+  for (auto& it : hero_list) it.Draw(window, heroSelected == i++);
+  for (auto& it : creeper_list) it.Draw(window);
+  for (auto& it : arrow_list) it.Draw(window);
+  for (auto& it : arrowLauncher_list) it.Draw(window);
+  for (auto& it : cloneur_list) it.Draw(window);
+  for (auto& it : particule_list) it.Draw(window);
+  for (auto& it : electricity_list) it.Draw(window);
   // clang-format on
 
 
   for (auto it = laser_.begin(); it != laser_.end(); it = laser_.erase(it))
-    it->Draw(screen);
-  for (auto& it : laser_) it.Draw(screen);
-  for (auto& pincette : pincette_list) pincette.Draw(screen);
-  for (auto& it : decorFront_list) it.Draw(screen);
+    it->Draw(window);
+  for (auto& it : laser_) it.Draw(window);
+  for (auto& pincette : pincette_list) pincette.Draw(window);
+  for (auto& it : decorFront_list) it.Draw(window);
 
   // drawing life bar
   smk::Sprite Coeur;
@@ -429,7 +429,7 @@ void Level::Draw(smk::Screen& screen) {
     int nbCoeur = hero_list[heroSelected].life;
     for (int i = 1; i <= nbCoeur; i++) {
       Coeur.SetPosition(xcenter + i * 16 - 320, ycenter + 220);
-      screen.Draw(Coeur);
+      window.Draw(Coeur);
     }
   }
 
@@ -437,11 +437,11 @@ void Level::Draw(smk::Screen& screen) {
   // Draw popup
   for (auto it = drawn_textpopup_list.begin(); it != drawn_textpopup_list.end();
        ++it) {
-    it->Draw(screen);
+    it->Draw(window);
   }
 }
 
-void Level::Step(smk::Screen& screen) {
+void Level::Step(smk::Window& window) {
   std::shuffle(std::begin(fallBlock_list), std::end(fallBlock_list), rng);
 
   SetView();
@@ -451,24 +451,24 @@ void Level::Step(smk::Screen& screen) {
   /////////////////////////////////
 
   // test if the player will end the game
-  if (screen.input().IsKeyReleased(GLFW_KEY_ESCAPE)) {
+  if (window.input().IsKeyReleased(GLFW_KEY_ESCAPE)) {
     isEscape = true;
   }
   // test if the player will restart the room
-  if (screen.input().IsKeyPressed(GLFW_KEY_R)) {
+  if (window.input().IsKeyPressed(GLFW_KEY_R)) {
     isLose = true;
   }
-  //if (screen.input().IsKeyPressed(GLFW_KEY_T)) {
+  //if (window.input().IsKeyPressed(GLFW_KEY_T)) {
     //isWin = true;
   //}
-  //if (screen.input().IsKeyPressed(GLFW_KEY_Y)) {
+  //if (window.input().IsKeyPressed(GLFW_KEY_Y)) {
     //isPrevious = true;
   //}
 
   // Drawn popup
   for (auto it = drawn_textpopup_list.begin(); it != drawn_textpopup_list.end();
        ++it) {
-    if (it->Step(screen))
+    if (it->Step(window))
       drawn_textpopup_list.erase(it);
     return;
   }
@@ -485,7 +485,7 @@ void Level::Step(smk::Screen& screen) {
   // changement de joueur
   static bool spacepressed = false;
   if (!hero_list.empty()) {
-    if (screen.input().IsKeyHold(GLFW_KEY_SPACE)) {
+    if (window.input().IsKeyHold(GLFW_KEY_SPACE)) {
       if (spacepressed == false) {
         spacepressed = true;
         heroSelected = (heroSelected + 1) % nbHero;
@@ -541,8 +541,8 @@ void Level::Step(smk::Screen& screen) {
 
       // test for un jump
       if (i == heroSelected) {
-        if (screen.input().IsKeyHold(GLFW_KEY_W) ||
-            screen.input().IsKeyHold(GLFW_KEY_UP)) {
+        if (window.input().IsKeyHold(GLFW_KEY_W) ||
+            window.input().IsKeyHold(GLFW_KEY_UP)) {
           hero.yspeed = -20;
         }
       }
@@ -550,15 +550,15 @@ void Level::Step(smk::Screen& screen) {
 
     if (i == heroSelected) {
       // move on the right
-      if (screen.input().IsKeyHold(GLFW_KEY_D) ||
-          screen.input().IsKeyHold(GLFW_KEY_RIGHT)) {
+      if (window.input().IsKeyHold(GLFW_KEY_D) ||
+          window.input().IsKeyHold(GLFW_KEY_RIGHT)) {
         hero.sens = false;
         hero.xspeed += 2;
       }
 
       // move on the left
-      if (screen.input().IsKeyHold(GLFW_KEY_A) ||
-          screen.input().IsKeyHold(GLFW_KEY_LEFT)) {
+      if (window.input().IsKeyHold(GLFW_KEY_A) ||
+          window.input().IsKeyHold(GLFW_KEY_LEFT)) {
         hero.sens = true;
         hero.xspeed -= 2;
       }
@@ -1474,7 +1474,7 @@ bool Level::CollisionWithAllBlock(Line l) {
   return false;
 }
 
-void Level::EmitLaser(smk::Screen& screen,
+void Level::EmitLaser(smk::Window& window,
                   float x,
                   float y,
                   float angle,
@@ -1497,7 +1497,7 @@ void Level::EmitLaser(smk::Screen& screen,
         auto line = smk::Shape::Line({xx, yy}, {xxx, yyy}, r);
         line.SetColor(glm::vec4(0.2, 0, 0, 0));
         line.SetBlendMode(smk::BlendMode::Add);
-        screen.Draw(line);
+        window.Draw(line);
       }
       xx = xxx;
       yy = yyy;
@@ -1517,7 +1517,7 @@ void Level::EmitLaser(smk::Screen& screen,
   {
           auto Line=smk::Shape::Line(xx,yy,xxx,yyy,r,Color(50,0,0));
           Line.SetBlendMode(Blend::Add);
-          screen.Draw(Line);
+          window.Draw(Line);
   }
   */
 
@@ -1549,7 +1549,7 @@ void Level::EmitLaser(smk::Screen& screen,
   // checking impact of the Laser with StaticMirror
   for (auto& it : staticMiroir_list) {
     if (IsCollision(Rectangle(xx - 5, xx + 5, yy - 5, yy + 5), it.geometry)) {
-      EmitLaser(screen, xx, yy, 2 * it.angle - angle,
+      EmitLaser(window, xx, yy, 2 * it.angle - angle,
             recursiveMaxLevel - 1);  // throw reflection
     }
   }

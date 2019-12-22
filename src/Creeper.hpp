@@ -5,7 +5,7 @@
 #include <smk/Sprite.hpp>
 
 namespace smk {
-class Screen;
+class Window;
 } // namespace smk
 
 class Creeper {
@@ -17,7 +17,7 @@ class Creeper {
   int t;
 
   Creeper(int x, int y);
-  void Draw(smk::Screen& screen);
+  void Draw(smk::Window& window);
   void UpdateGeometry();
 };
 

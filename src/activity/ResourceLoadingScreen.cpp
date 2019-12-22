@@ -4,10 +4,10 @@
 #include <smk/Text.hpp>
 
 void ResourceLoadingScreen::Draw() {
-  screen().PoolEvents();
-  time = screen().time();
+  window().PoolEvents();
+  time = window().time();
 
-  screen().Clear(smk::Color::Black);
+  window().Clear(smk::Color::Black);
 
   if (!initializer.resources.empty()) {
     ResourceInitializer::Resource resource = initializer.resources.front();
@@ -16,16 +16,16 @@ void ResourceLoadingScreen::Draw() {
     smk::View view;
     view.SetCenter(320, 240);
     view.SetSize(640, 480);
-    screen().SetView(view);
+    window().SetView(view);
 
     smk::Text text;
     text.SetFont(font_arial);
     text.SetString("Decoding: " + *resource.path);
     text.SetColor(smk::Color::White);
     text.SetPosition({10.f, 480.f - 60.f});
-    screen().Draw(text);
+    window().Draw(text);
 
-    screen().Display();
+    window().Display();
 
     resource.Load();
     return;
@@ -37,9 +37,9 @@ void ResourceLoadingScreen::Draw() {
   text.SetColor(smk::Color::White * float(0.5f + 0.4f * sin(time * 8.f)));
   text.SetPosition({10.f, 480.f - 60.f});
 
-  screen().Draw(text);
-  screen().Display();
+  window().Draw(text);
+  window().Display();
 
-  if (screen().input().IsKeyPressed(GLFW_KEY_SPACE))
+  if (window().input().IsKeyPressed(GLFW_KEY_SPACE))
     on_quit();
 }

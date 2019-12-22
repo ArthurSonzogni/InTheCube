@@ -1,6 +1,6 @@
 #include "FallingBlock.hpp"
+#include <smk/Window.hpp>
 #include "Resource.hpp"
-#include <smk/Screen.hpp>
 
 FallingBlock::FallingBlock(float X, float Y) {
   x = X;
@@ -27,12 +27,12 @@ void FallingBlock::UpdateGeometry() {
   geometry.bottom = y + 31;
   sprite.SetPosition(x, y);
 }
-void FallingBlock::Draw(smk::Screen& screen) {
+void FallingBlock::Draw(smk::Window& window) {
   if (etape != 0 and etape <= 15) {
     sprite.Move(SinusSintoide(etape), 0);
-     screen.Draw(sprite);
+    window.Draw(sprite);
     sprite.Move(-SinusSintoide(etape), 0);
   } else {
-     screen.Draw(sprite);
+    window.Draw(sprite);
   }
 }

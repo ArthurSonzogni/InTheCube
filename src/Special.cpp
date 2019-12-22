@@ -245,7 +245,7 @@ void Special::Step(Level& level) {
   }
 }
 
-void Special::DrawBackground(smk::Screen& screen,
+void Special::DrawBackground(smk::Window& window,
                              float xcenter,
                              float ycenter) {
   if (erased) return;
@@ -256,24 +256,24 @@ void Special::DrawBackground(smk::Screen& screen,
     for (int x = xcenter - 320 - int(xcenter / 2.67) % 340; x < xcenter + 320; x += 340)
     for (int y = ycenter - 240 - int(ycenter / 2.67) % 340; y < ycenter + 240; y += 340) {
       sprite.SetPosition(x, y);
-      screen.Draw(sprite);
+      window.Draw(sprite);
     }
     // clang-format on
   }
 }
 
-void Special::DrawOverDecoration(smk::Screen& screen) {
+void Special::DrawOverDecoration(smk::Window& window) {
   if (erased) return;
   if (m == SPECIAL_END) {
     int t = var[0];
     smk::Sprite spr;
     spr.SetTexture(img_arbreDecorsEndBack2);
     spr.SetColor(glm::vec4(1.0, 1.0, 1.0, t / 255.f));
-    screen.Draw(spr);
+    window.Draw(spr);
   }
 }
 
-void Special::DrawForeground(smk::Screen& screen, bool& isWin) {
+void Special::DrawForeground(smk::Window& window, bool& isWin) {
   if (erased) return;
   switch (m) {
     case SPECIAL_ARBREBOSS: {
@@ -283,7 +283,7 @@ void Special::DrawForeground(smk::Screen& screen, bool& isWin) {
       spr.SetTexture(img_sapin);
       spr.SetPosition(520, 303);
       spr.Move(-3 * sin(timesalvo / 100.0 * 3.14), 0);
-      screen.Draw(spr);
+      window.Draw(spr);
 
       float angle1 = 270 - 180 * sin(timesalvo / 100.0 * (3.14));
       float angle2 = angle1 * angle1 / 300;
@@ -294,12 +294,12 @@ void Special::DrawForeground(smk::Screen& screen, bool& isWin) {
 
       spr.SetPosition(520 + 45, 303 + 86);
       spr.SetRotation(angle1);
-      screen.Draw(spr);
+      window.Draw(spr);
 
       spr.Move(30 * cos(angle1 * 0.0174532925),
                -30 * sin(angle1 * 0.0174532925));
       spr.SetRotation(angle2);
-      screen.Draw(spr);
+      window.Draw(spr);
 
     } break;
     case SPECIAL_END2: {
@@ -315,7 +315,7 @@ void Special::DrawForeground(smk::Screen& screen, bool& isWin) {
           case 0:
             pos += (400.0 - pos) / 30.0;
             if ((400 - pos) < 30) {
-              if (screen.input().IsKeyHold(GLFW_KEY_SPACE)) {
+              if (window.input().IsKeyHold(GLFW_KEY_SPACE)) {
                 mode = 1;
               }
             }
@@ -338,7 +338,7 @@ void Special::DrawForeground(smk::Screen& screen, bool& isWin) {
             if (color < 255) {
               color += 2;
             } else {
-              if (screen.input().IsKeyHold(GLFW_KEY_SPACE))
+              if (window.input().IsKeyHold(GLFW_KEY_SPACE))
                 isWin = true;
               color = 255;
             }
@@ -351,24 +351,24 @@ void Special::DrawForeground(smk::Screen& screen, bool& isWin) {
       auto rect = smk::Shape::Square();
       rect.SetScale(6400,4800);
       rect.SetColor({0, 0, 0, t / 2 / 255});
-      screen.Draw(rect);
+      window.Draw(rect);
 
       // tree
       smk::Sprite spr;
       spr.SetPosition(700, 348);
       spr.SetTexture(img_arbre);
-      screen.Draw(spr);
+      window.Draw(spr);
 
       spr.SetTexture(img_arbre_white);
       spr.SetBlendMode(smk::BlendMode::Add);
       spr.SetColor(glm::vec4(1.0, 1.0, 1.0, t / 255.f));
-      screen.Draw(spr);
+      window.Draw(spr);
 
       if (pos > 0) {
         smk::Sprite spr;
         spr.SetTexture(img_endPanel);
         spr.SetPosition(960 - 640 - 360 + pos, 0 + pos2);
-        screen.Draw(spr);
+        window.Draw(spr);
 
         smk::Text str[7];
         str[0].SetString(tr(L"end1"));
@@ -390,17 +390,17 @@ void Special::DrawForeground(smk::Screen& screen, bool& isWin) {
         for (int i = 0; i < 7; i++) {
           str[i].SetFont(font_arial);
           str[i].SetColor(glm::vec4(0.0, 0.0, 0.0, 0.0));
-          screen.Draw(str[i]);
+          window.Draw(str[i]);
           str[i].Move(0, 1);
           str[i].SetColor(glm::vec4(60, 60, 60, 255) / 255.f);
-          screen.Draw(str[i]);
+          window.Draw(str[i]);
         }
 
         smk::Sprite sprCredit;
         sprCredit.SetTexture(img_credit);
         sprCredit.SetPosition(960 - 640, 0);
         sprCredit.SetColor(glm::vec4(color, color, color, alpha) / 255.f);
-        screen.Draw(sprCredit);
+        window.Draw(sprCredit);
       }
 
     } break;

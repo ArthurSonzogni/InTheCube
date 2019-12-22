@@ -1,5 +1,5 @@
-#ifndef LEVEL_SCREEN_HPP
-#define LEVEL_SCREEN_HPP
+#ifndef LEVEL_WINDOW_HPP
+#define LEVEL_WINDOW_HPP
 
 #include "SaveManager.hpp"
 #include "activity/Activity.hpp"
@@ -8,7 +8,7 @@
 
 class LevelScreen : public Activity {
  public:
-  LevelScreen(smk::Screen& screen, std::string level);
+  LevelScreen(smk::Window& window, std::string level);
   ~LevelScreen() override = default;
 
   void Draw() override;
@@ -23,4 +23,4 @@ class LevelScreen : public Activity {
   int frame = 0;
 };
 
-#endif /* end of include guard: LEVEL_SCREEN_HPP */
+#endif /* end of include guard: LEVEL_window_HPP */

@@ -30,27 +30,27 @@ std::string intToString(int n) {
 }
 
 void MainScreen::OnEnter() {
-  previous_time = screen().time();
+  previous_time = window().time();
   languageXPos[0] = 640;
   languageXPos[1] = 640;
   languageXPos[2] = 640;
 }
 
 void MainScreen::Draw() {
-  screen().PoolEvents();
+  window().PoolEvents();
 
   // escape button
-  if (screen().input().IsKeyPressed(GLFW_KEY_ESCAPE))
+  if (window().input().IsKeyPressed(GLFW_KEY_ESCAPE))
     on_quit();
 
-  float time = screen().time();
+  float time = window().time();
   float dt = time - previous_time;
   previous_time = time;
 
   smk::View view;
   view.SetCenter(320, 240);
   view.SetSize(640, 480);
-  screen().SetView(view);
+  window().SetView(view);
 
   smk::Sprite sprLanguage[3];
   sprLanguage[0].SetTexture(img_frenchFlag);
@@ -78,8 +78,8 @@ void MainScreen::Draw() {
 
   std::string name;
 
-  glm::vec2 mouse = screen().input().mouse();
-  bool mouse_pressed = screen().input().IsMousePressed(GLFW_MOUSE_BUTTON_1);
+  glm::vec2 mouse = window().input().mouse();
+  bool mouse_pressed = window().input().IsMousePressed(GLFW_MOUSE_BUTTON_1);
 
   if (question_) {
     mouse = question_->alpha * glm::vec2(0.f, 0.f) +
@@ -95,7 +95,7 @@ void MainScreen::Draw() {
   for (int x = 0; x <= 640; x += 24) {
     for (int y = 0; y <= 480; y += 24) {
       background.SetPosition(x, y);
-      screen().Draw(background);
+      window().Draw(background);
     }
   }
 
@@ -117,7 +117,7 @@ void MainScreen::Draw() {
       newGameText.SetPosition(220, 430);
     }
 
-    screen().Draw(sprLanguage[i]);
+    window().Draw(sprLanguage[i]);
   }
   // Draw the save files.
   int i = 0;
@@ -135,7 +135,7 @@ void MainScreen::Draw() {
                                  2 * decale + 150, 255 - decale * 4) /
                        255.f);
     rectangle.Move(decale, 0);
-    screen().Draw(rectangle);
+    window().Draw(rectangle);
 
     // text
     smk::Text text;
@@ -144,11 +144,11 @@ void MainScreen::Draw() {
     text.SetPosition(40, 30 + i * 40);
     text.SetColor(glm::vec4(0.0, 0.0, 0.0, 1.0));
     text.Move(decale, 0);
-    screen().Draw(text);
+    window().Draw(text);
 
     text.Move(-2, -2);
     text.SetColor(glm::vec4(1.0, 1.0, 1.0, 1.0));
-    screen().Draw(text);
+    window().Draw(text);
 
     // deleteButton
     deleteButton.SetPosition(1, 30 + i * 40);
@@ -157,7 +157,7 @@ void MainScreen::Draw() {
     delete_button_alpha = std::max(100.f, std::min(255.f, delete_button_alpha));
     deleteButton.SetColor(
         glm::vec4(1.0, 1.0, 1.0, delete_button_alpha / 255.f));
-    screen().Draw(deleteButton);
+    window().Draw(deleteButton);
 
     if (mouse_pressed) {
       if (mouse.y > 30 + i * 40 && mouse.y < 70 + i * 40) {
@@ -187,10 +187,10 @@ void MainScreen::Draw() {
       mouse.x < 640 / 2 + 300 / 2) {
     newGame.SetColor(glm::vec4(1.0, 1.0, 1.0, 1.0));
     if (mouse_pressed) {
-      screen().Draw(newGame);
-      screen().Draw(newGameText);
+      window().Draw(newGame);
+      window().Draw(newGameText);
 
-      get_string_ = std::make_unique<GetString>(screen());
+      get_string_ = std::make_unique<GetString>(window());
       get_string_->message = tr(L"enterYourName");
       get_string_->on_enter = [this](std::string name) {
         if (save_file_.saveList.count(name)) {
@@ -206,21 +206,21 @@ void MainScreen::Draw() {
   } else {
     newGame.SetColor(glm::vec4(200, 200, 200, 255) / 255.f);
   }
-  screen().Draw(newGame);
-  screen().Draw(newGameText);
+  window().Draw(newGame);
+  window().Draw(newGameText);
 
 
   if (question_) {
-    if (question_->Draw(screen()))
+    if (question_->Draw(window()))
       question_.reset();
   }
 
   if (get_string_) {
-    if (get_string_->Draw(screen()))
+    if (get_string_->Draw(window()))
       get_string_.reset();
   }
 
-  screen().Display();
+  window().Display();
 }
 
 std::string* character_callback_string = nullptr;
@@ -231,28 +231,28 @@ void character_callback(GLFWwindow* , unsigned int codepoint)
   *character_callback_string += (wchar_t)codepoint;
 }
 
-MainScreen::GetString::GetString(smk::Screen& screen) : screen_(screen) {
+MainScreen::GetString::GetString(smk::Window& window) : window_(window) {
   character_callback_string = &typed_text_;
-  glfwSetCharCallback(screen_.window(), character_callback);
+  glfwSetCharCallback(window_.window(), character_callback);
 }
 
 MainScreen::GetString::~GetString() {
-  glfwSetCharCallback(screen_.window(), nullptr);
+  glfwSetCharCallback(window_.window(), nullptr);
 }
 
-bool MainScreen::GetString::Draw(smk::Screen& screen) {
+bool MainScreen::GetString::Draw(smk::Window& window) {
   {
     if (time_ <= -1) {
-      time_ = screen.time();
+      time_ = window.time();
     }
     float target = exiting_ ? 0.0 : 1.0;
     for (int i = 0; i < 10; ++i) {
-      alpha += (target - alpha) * (screen.time() - time_);
+      alpha += (target - alpha) * (window.time() - time_);
     }
 
     if (exiting_ && alpha <= 0.01)
       return true;
-    time_ = screen.time();
+    time_ = window.time();
   }
 
   // Black shadow.
@@ -261,7 +261,7 @@ bool MainScreen::GetString::Draw(smk::Screen& screen) {
     black_shadow.SetPosition(0,0);
     black_shadow.SetScale(640,480);
     black_shadow.SetColor(glm::vec4(0, 0, 0, 0.5 * alpha));
-    screen.Draw(black_shadow);
+    window.Draw(black_shadow);
   }
 
   // Frame
@@ -271,7 +271,7 @@ bool MainScreen::GetString::Draw(smk::Screen& screen) {
     frame_sprite.SetColor(glm::vec4(1.0, 1.0, 1.0, alpha));
     frame_sprite.SetPosition(640 / 2 - img_cadreInput.width / 2,
                              480 / 2 - img_cadreInput.height / 2);
-    screen.Draw(frame_sprite);
+    window.Draw(frame_sprite);
   }
 
   // text
@@ -284,7 +284,7 @@ bool MainScreen::GetString::Draw(smk::Screen& screen) {
     glm::vec2 dimension = enter_your_name.ComputeDimensions();
     enter_your_name.SetPosition(640 / 2 - dimension.x / 2,
                                 480 / 2 - dimension.y / 2);
-    screen.Draw(enter_your_name);
+    window.Draw(enter_your_name);
   }
 
 
@@ -296,14 +296,14 @@ bool MainScreen::GetString::Draw(smk::Screen& screen) {
     auto dimension = text.ComputeDimensions();
     text.SetPosition(640 / 2 - dimension.x / 2, 480 / 2 - dimension.y / 2);
     text.SetColor(glm::vec4(0.0, 0.0, 0.0, alpha));
-    screen.Draw(text);
+    window.Draw(text);
 
-    if (screen.input().IsKeyPressed(GLFW_KEY_BACKSPACE) ||
+    if (window.input().IsKeyPressed(GLFW_KEY_BACKSPACE) ||
         dimension.x > img_cadreInput.width - 12) {
       typed_text_ = typed_text_.substr(0, typed_text_.size() - 1);
     }
 
-    if (screen.input().IsKeyPressed(GLFW_KEY_ENTER)) {
+    if (window.input().IsKeyPressed(GLFW_KEY_ENTER)) {
       on_enter(typed_text_);
       exiting_ = true;
     }
@@ -312,19 +312,19 @@ bool MainScreen::GetString::Draw(smk::Screen& screen) {
   return false;
 }
 
-bool MainScreen::Question::Draw(smk::Screen& screen) {
+bool MainScreen::Question::Draw(smk::Window& window) {
   {
     if (time_ <= -1) {
-      time_ = screen.time();
+      time_ = window.time();
     }
     float target = exiting_ ? 0.0 : 1.0;
     for (int i = 0; i < 10; ++i) {
-      alpha += (target - alpha) * (screen.time() - time_);
+      alpha += (target - alpha) * (window.time() - time_);
     }
 
     if (exiting_ && alpha <= 0.01)
       return true;
-    time_ = screen.time();
+    time_ = window.time();
   }
 
   // Black shadow.
@@ -333,7 +333,7 @@ bool MainScreen::Question::Draw(smk::Screen& screen) {
     black_shadow.SetPosition(0,0);
     black_shadow.SetScale(640,480);
     black_shadow.SetColor(glm::vec4(0, 0, 0, 0.5 * alpha));
-    screen.Draw(black_shadow);
+    window.Draw(black_shadow);
   }
 
   // White Shadow
@@ -342,7 +342,7 @@ bool MainScreen::Question::Draw(smk::Screen& screen) {
     white_shadow.SetPosition(640 * 0.2, 480 * 0.2);
     white_shadow.SetScale(640 * 0.6, 480 * 0.6);
     white_shadow.SetColor(glm::vec4(1, 1, 1, alpha));
-    screen.Draw(white_shadow);
+    window.Draw(white_shadow);
   }
 
   // Question
@@ -353,7 +353,7 @@ bool MainScreen::Question::Draw(smk::Screen& screen) {
     auto dimension = text_string.ComputeDimensions();
     text_string.SetPosition(640 * 0.5 - dimension.x / 2, 480 * 0.2 + 10);
     text_string.SetColor(glm::vec4(0.f, 0.f, 0.f, alpha));
-    screen.Draw(text_string);
+    window.Draw(text_string);
   }
 
   // Yes answer
@@ -368,12 +368,12 @@ bool MainScreen::Question::Draw(smk::Screen& screen) {
     float top = bottom - dimension.y;
     yes_string.SetPosition(left, top);
 
-    if (screen.input().mouse().x >= left &&   //
-        screen.input().mouse().x <= right &&  //
-        screen.input().mouse().y >= top &&    //
-        screen.input().mouse().y <= bottom) {
+    if (window.input().mouse().x >= left &&   //
+        window.input().mouse().x <= right &&  //
+        window.input().mouse().y >= top &&    //
+        window.input().mouse().y <= bottom) {
       yes_string.SetColor(glm::vec4(0.f, 0.f, 0.f, alpha));
-      if (screen.input().IsMousePressed(GLFW_MOUSE_BUTTON_1) && !exiting_) {
+      if (window.input().IsMousePressed(GLFW_MOUSE_BUTTON_1) && !exiting_) {
         on_yes();
         exiting_ = true;
       }
@@ -381,7 +381,7 @@ bool MainScreen::Question::Draw(smk::Screen& screen) {
       yes_string.SetColor(glm::vec4(0.5, 0.5, 0.5, alpha));
     }
 
-    screen.Draw(yes_string);
+    window.Draw(yes_string);
   }
 
   // No answer
@@ -396,19 +396,19 @@ bool MainScreen::Question::Draw(smk::Screen& screen) {
     float top = bottom - dimension.y;
     no_string.SetPosition(left, top);
 
-    if (screen.input().mouse().x >= left &&   //
-        screen.input().mouse().x <= right &&  //
-        screen.input().mouse().y >= top &&    //
-        screen.input().mouse().y <= bottom) {
+    if (window.input().mouse().x >= left &&   //
+        window.input().mouse().x <= right &&  //
+        window.input().mouse().y >= top &&    //
+        window.input().mouse().y <= bottom) {
       no_string.SetColor(glm::vec4(0.0, 0.0, 0.0, alpha));
-      if (screen.input().IsMousePressed(GLFW_MOUSE_BUTTON_1) && !exiting_) {
+      if (window.input().IsMousePressed(GLFW_MOUSE_BUTTON_1) && !exiting_) {
         on_no();
         exiting_ = true;
       }
     } else {
       no_string.SetColor(glm::vec4(0.5, 0.5, 0.5, alpha));
     }
-    screen.Draw(no_string);
+    window.Draw(no_string);
   }
 
   return false;

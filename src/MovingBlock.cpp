@@ -1,5 +1,5 @@
 #include "MovingBlock.hpp"
-#include <smk/Screen.hpp>
+#include <smk/Window.hpp>
 #include "Resource.hpp"
 
 MovingBlock::MovingBlock(int X,
@@ -33,7 +33,7 @@ MovingBlock::MovingBlock(int X,
   }
 }
 
-void MovingBlock::Draw(smk::Screen& screen) {
+void MovingBlock::Draw(smk::Window& window) {
   if (tiled) {
     int x = geometry.left;
     int y = geometry.top;
@@ -41,11 +41,11 @@ void MovingBlock::Draw(smk::Screen& screen) {
     for (a = 0; a < xtile; a++) {
       for (b = 0; b < ytile; b++) {
         sprite.SetPosition(x + 32 * a, y + 32 * b);
-        screen.Draw(sprite);
+        window.Draw(sprite);
       }
     }
   } else
-    screen.Draw(sprite);
+    window.Draw(sprite);
 }
 
 void MovingBlock::UpdateGeometry() {

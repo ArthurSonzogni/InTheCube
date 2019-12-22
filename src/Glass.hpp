@@ -5,7 +5,7 @@
 #include "Forme.hpp"
 
 namespace smk {
-class Screen;
+class Window;
 }  // namespace smk
 
 class Glass {
@@ -19,7 +19,7 @@ class Glass {
 
   Glass(int x, int y);
   void UpdateGeometry();
-  void Draw(smk::Screen& screen);
+  void Draw(smk::Window& window);
 };
 
 #endif /* GLASS_HPP */

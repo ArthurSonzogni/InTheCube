@@ -6,7 +6,7 @@
 
 class ResourceLoadingScreen : public Activity {
  public:
-  ResourceLoadingScreen(smk::Screen& screen) : Activity(screen) {}
+  ResourceLoadingScreen(smk::Window& window) : Activity(window) {}
   ~ResourceLoadingScreen() override = default;
 
   void Draw() override;

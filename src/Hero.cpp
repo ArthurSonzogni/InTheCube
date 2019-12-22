@@ -1,5 +1,5 @@
 #include "Hero.hpp"
-#include <smk/Screen.hpp>
+#include <smk/Window.hpp>
 #include <smk/Color.hpp>
 
 //Hero::Hero() {
@@ -41,12 +41,12 @@ void Hero::SetPosition(float X, float Y) {
   y = Y;
 }
 
-void Hero::Draw(smk::Screen& screen, bool selected) {
+void Hero::Draw(smk::Window& window, bool selected) {
   static const glm::vec4 colorNonSelected = {0.78, 0.78, 0.39, 1.f};
   sprite.SetColor(selected ? smk::Color::White : colorNonSelected);
   sprite.SetTexture(sens ? img_hero_left : img_hero_right);
   sprite.SetPosition(x, y);
-  screen.Draw(sprite);
+  window.Draw(sprite);
 }
 
 void Hero::UpdateGeometry() {

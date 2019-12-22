@@ -5,14 +5,14 @@
 #include <smk/Sprite.hpp>
 
 namespace smk {
-class Screen;
+class Window;
 }  // namespace smk
 
 class Pincette {
  public:
   Pincette();
   void Step();
-  void Draw(smk::Screen& screen);
+  void Draw(smk::Window& window);
 
  private:
   int step_ = 0;
