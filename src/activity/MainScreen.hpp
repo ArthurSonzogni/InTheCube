@@ -1,8 +1,8 @@
 #ifndef MAINwindow_HPP
 #define MAINwindow_HPP
 
-#include "SaveManager.hpp"
 #include "activity/Activity.hpp"
+#include "game/SaveManager.hpp"
 #include <functional>
 #include <memory>
 
@@ -28,6 +28,7 @@ class MainScreen : public Activity {
 
   class Question {
    public:
+    Question(smk::Window& window);
     std::wstring question;
     std::wstring yes;
     std::wstring no;
@@ -36,6 +37,7 @@ class MainScreen : public Activity {
 
     bool Draw(smk::Window& window);
     float alpha = 0.f;
+
    private:
     float time_ = -1;
     bool exiting_ = false;
@@ -43,8 +45,8 @@ class MainScreen : public Activity {
 
   class GetString {
    public:
-     GetString(smk::Window&);
-     ~GetString();
+    GetString(smk::Window&);
+    ~GetString();
     std::wstring message;
     std::function<void(std::string)> on_enter = [](std::string) {};
 

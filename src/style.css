@@ -13,12 +13,11 @@ html, body {
 
 #canvas {
   position: absolute;
-  top: 0;
-  left:0;
-  right:0;
-  margin-left: auto;
-  margin-right: auto;
   display: block;
+	margin:0;
+  padding:0;
+  width:100vw;
+  height:100vh;
 }
 
 #loading_page {
@@ -58,8 +57,7 @@ html, body {
 @keyframes spin {
   to { -webkit-transform: rotate(360deg); }
 }
+
 @-webkit-keyframes spin {
   to { -webkit-transform: rotate(360deg); }
 }
-
-Resources 1×0.5×0.25× Rerun

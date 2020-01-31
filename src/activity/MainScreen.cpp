@@ -1,18 +1,16 @@
 #include "activity/MainScreen.hpp"
 
-#include "Lang.hpp"
-#include "Resource.hpp"
-#include <codecvt>
 #include <codecvt>
 #include <iostream>
 #include <locale>
 #include <smk/Color.hpp>
 #include <smk/Input.hpp>
 #include <smk/Shape.hpp>
-#include <smk/Shape.hpp>
 #include <smk/Sprite.hpp>
 #include <smk/Text.hpp>
 #include <smk/View.hpp>
+#include "Lang.hpp"
+#include "Resource.hpp"
 
 std::wstring to_wstring(const std::string& s) {
   std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
@@ -31,15 +29,13 @@ std::string intToString(int n) {
 
 void MainScreen::OnEnter() {
   previous_time = window().time();
-  languageXPos[0] = 640;
-  languageXPos[1] = 640;
-  languageXPos[2] = 640;
+  for(auto& it : languageXPos)
+    it = 640;
 }
 
 void MainScreen::Draw() {
   window().PoolEvents();
 
-  // escape button
   if (window().input().IsKeyPressed(GLFW_KEY_ESCAPE))
     on_quit();
 
@@ -47,55 +43,33 @@ void MainScreen::Draw() {
   float dt = time - previous_time;
   previous_time = time;
 
-  smk::View view;
-  view.SetCenter(320, 240);
-  view.SetSize(640, 480);
-  window().SetView(view);
+  std::vector<smk::Sprite> sprLanguage = {
+      smk::Sprite(img_frenchFlag),
+      smk::Sprite(img_englishFlag),
+      smk::Sprite(img_deutschFlag),
+  };
+  for (size_t i = 0; i < sprLanguage.size(); ++i)
+    sprLanguage[0].SetPosition(640, 100 * i);
 
-  smk::Sprite sprLanguage[3];
-  sprLanguage[0].SetTexture(img_frenchFlag);
-  sprLanguage[1].SetTexture(img_englishFlag);
-  sprLanguage[2].SetTexture(img_deutschFlag);
-  sprLanguage[0].SetPosition(640, 0);
-  sprLanguage[1].SetPosition(640, 100);
-  sprLanguage[2].SetPosition(640, 200);
-
-  smk::Sprite deleteButton;
-  smk::Sprite newGame;
-  smk::Sprite background;
-
-  deleteButton.SetTexture(img_deleteButton);
-
-  newGame.SetTexture(img_newGame);
-  newGame.SetPosition(320 - 300 / 2, 480 - 64);
-  smk::Text newGameText;
-  newGameText.SetFont(font_arial);
-  newGameText.SetString(tr(L"newGame"));
-  newGameText.SetPosition(220, 430);
-  newGameText.SetColor(glm::vec4(0.0, 0.0, 0.0, 1.0));
-
-  background.SetTexture(img_background);
-
-  std::string name;
-
+  float zoom = std::min(window().width() / 640.f, window().height() / 480.f);
   glm::vec2 mouse = window().input().mouse();
+  mouse -= window().dimension() * 0.5f;
+  mouse /= zoom;
+  mouse += glm::vec2(640,480) * 0.5f;
+
+  if (question_ || get_string_)
+    mouse = {0.f, 0.f};
+
   bool mouse_pressed = window().input().IsMousePressed(GLFW_MOUSE_BUTTON_1);
 
-  if (question_) {
-    mouse = question_->alpha * glm::vec2(0.f, 0.f) +
-            (1.f - question_->alpha) * mouse;
-  }
-  if (get_string_) {
-    mouse = get_string_->alpha * glm::vec2(0.f, 0.f) +
-            (1.f - get_string_->alpha) * mouse;
-  }
-  ///// Draw
-
   // Draw the background.
-  for (int x = 0; x <= 640; x += 24) {
-    for (int y = 0; y <= 480; y += 24) {
-      background.SetPosition(x, y);
-      window().Draw(background);
+  {
+    auto background = smk::Sprite(img_background);
+    for (int x = 0; x <= 640; x += 24) {
+      for (int y = 0; y <= 480; y += 24) {
+        background.SetPosition(x, y);
+        window().Draw(background);
+      }
     }
   }
 
@@ -107,57 +81,62 @@ void MainScreen::Draw() {
                     mouse.y <= 100 * i + 64;  //
 
     float target = selected ? 640 - 128 : 640 - 100;
-    languageXPos[i] += (target - languageXPos[i]) * 30 *  dt;
+    languageXPos[i] += (target - languageXPos[i]) * 30 * dt;
     sprLanguage[i].SetPosition(languageXPos[i], 100 * i);
     sprLanguage[i].SetColor(selected ? smk::Color::White
                                      : glm::vec4{0.5, 0.5, 0.5, 1.0});
-    if (selected && mouse_pressed) {
+    if (selected && mouse_pressed)
       on_update_traduction(i);
-      newGameText.SetString(tr(L"newGame"));
-      newGameText.SetPosition(220, 430);
-    }
 
     window().Draw(sprLanguage[i]);
   }
+
   // Draw the save files.
   int i = 0;
   for (auto& it : save_file_.saveList) {
-    (void)it;
     float decale = std::abs(mouse.y - (50 + i * 40));
-    decale = std::max(decale, -30-370 + mouse.x);
+    decale = std::max(decale, -30 - 370 + mouse.x);
     decale = std::max(5.f, std::min(decale, 40.f));
 
     // rectangle
-    auto rectangle = smk::Shape::Square();
-    rectangle.SetPosition(30, 30 + i * 40);
-    rectangle.SetScale(370, 40);
-    rectangle.SetColor(glm::vec4(decale + 50, 2 * decale + 100,
-                                 2 * decale + 150, 255 - decale * 4) /
-                       255.f);
-    rectangle.Move(decale, 0);
-    window().Draw(rectangle);
+    {
+      auto rectangle = smk::Shape::Square();
+      rectangle.SetPosition(30, 30 + i * 40);
+      rectangle.SetScale(370, 40);
+      rectangle.SetColor(glm::vec4(decale + 50, 2 * decale + 100,
+                                   2 * decale + 150, 255 - decale * 4) /
+                         255.f);
+      rectangle.Move(decale, 0);
+      window().Draw(rectangle);
+    }
 
     // text
-    smk::Text text;
-    text.SetFont(font_arial);
-    text.SetString(it.first + "  /  " + intToString(it.second));
-    text.SetPosition(40, 30 + i * 40);
-    text.SetColor(glm::vec4(0.0, 0.0, 0.0, 1.0));
-    text.Move(decale, 0);
-    window().Draw(text);
+    {
+      smk::Text text;
+      text.SetFont(font_arial);
+      text.SetString(it.first + "  /  " + intToString(it.second));
+      text.SetPosition(40, 30 + i * 40);
+      text.SetColor(glm::vec4(0.0, 0.0, 0.0, 1.0));
+      text.Move(decale, 0);
+      window().Draw(text);
 
-    text.Move(-2, -2);
-    text.SetColor(glm::vec4(1.0, 1.0, 1.0, 1.0));
-    window().Draw(text);
+      text.Move(-2, -2);
+      text.SetColor(glm::vec4(1.0, 1.0, 1.0, 1.0));
+      window().Draw(text);
+    }
 
     // deleteButton
-    deleteButton.SetPosition(1, 30 + i * 40);
-    float delete_button_alpha =
-        8000.0 / (std::abs(mouse.x) + std::abs(mouse.y - 40 - i * 40));
-    delete_button_alpha = std::max(100.f, std::min(255.f, delete_button_alpha));
-    deleteButton.SetColor(
-        glm::vec4(1.0, 1.0, 1.0, delete_button_alpha / 255.f));
-    window().Draw(deleteButton);
+    {
+      auto deleteButton = smk::Sprite(img_deleteButton);
+      deleteButton.SetPosition(1, 30 + i * 40);
+      float delete_button_alpha =
+          8000.0 / (std::abs(mouse.x) + std::abs(mouse.y - 40 - i * 40));
+      delete_button_alpha =
+          std::max(100.f, std::min(255.f, delete_button_alpha));
+      deleteButton.SetColor(
+          glm::vec4(1.0, 1.0, 1.0, delete_button_alpha / 255.f));
+      window().Draw(deleteButton);
+    }
 
     if (mouse_pressed) {
       if (mouse.y > 30 + i * 40 && mouse.y < 70 + i * 40) {
@@ -166,7 +145,7 @@ void MainScreen::Draw() {
         } else {
           if (mouse.x >= 0 && mouse.x <= 24 && mouse.y >= 30 + i * 40 &&
               mouse.y <= 24 + 30 + i * 40) {
-            question_ = std::make_unique<Question>();
+            question_ = std::make_unique<Question>(window());
             question_->question = tr(L"confirmDelete1") + L"\n" +
                                   tr(L"confirmDelete2") + L"\n" +
                                   tr(L"confirmDelete3") + to_wstring(it.first);
@@ -182,6 +161,13 @@ void MainScreen::Draw() {
     i++;
   }
 
+  auto newGame = smk::Sprite(img_newGame);
+  newGame.SetPosition(320 - 300 / 2, 480 - 64);
+
+  auto newGameText = smk::Text(font_arial, tr(L"newGame"));
+  newGameText.SetPosition(220, 430);
+  newGameText.SetColor(glm::vec4(0.0, 0.0, 0.0, 1.0));
+
   // button new game
   if (mouse.y < 480 && mouse.y > 480 - 64 && mouse.x > 640 / 2 - 300 / 2 &&
       mouse.x < 640 / 2 + 300 / 2) {
@@ -194,12 +180,11 @@ void MainScreen::Draw() {
       get_string_->message = tr(L"enterYourName");
       get_string_->on_enter = [this](std::string name) {
         if (save_file_.saveList.count(name)) {
-          question_ = std::make_unique<Question>();
+          question_ = std::make_unique<Question>(window());
           question_->question = tr(L"profileExistAlready");
           question_->yes = tr(L"okay");
           question_->no = tr(L"");
-        }
-        else
+        } else
           save_file_.saveList[name] = 0;
       };
     }
@@ -208,7 +193,6 @@ void MainScreen::Draw() {
   }
   window().Draw(newGame);
   window().Draw(newGameText);
-
 
   if (question_) {
     if (question_->Draw(window()))
@@ -219,13 +203,10 @@ void MainScreen::Draw() {
     if (get_string_->Draw(window()))
       get_string_.reset();
   }
-
-  window().Display();
 }
 
 std::string* character_callback_string = nullptr;
-void character_callback(GLFWwindow* , unsigned int codepoint)
-{
+void character_callback(GLFWwindow*, unsigned int codepoint) {
   if (!character_callback_string)
     return;
   *character_callback_string += (wchar_t)codepoint;
@@ -258,19 +239,18 @@ bool MainScreen::GetString::Draw(smk::Window& window) {
   // Black shadow.
   {
     auto black_shadow = smk::Shape::Square();
-    black_shadow.SetPosition(0,0);
-    black_shadow.SetScale(640,480);
+    black_shadow.SetPosition(0, 0);
+    black_shadow.SetScale(640, 480);
     black_shadow.SetColor(glm::vec4(0, 0, 0, 0.5 * alpha));
     window.Draw(black_shadow);
   }
 
   // Frame
   {
-    smk::Sprite frame_sprite;
-    frame_sprite.SetTexture(img_cadreInput);
+    auto frame_sprite = smk::Sprite(img_cadreInput);
     frame_sprite.SetColor(glm::vec4(1.0, 1.0, 1.0, alpha));
-    frame_sprite.SetPosition(640 / 2 - img_cadreInput.width / 2,
-                             480 / 2 - img_cadreInput.height / 2);
+    frame_sprite.SetPosition(640 / 2 - img_cadreInput.width() / 2,
+                             480 / 2 - img_cadreInput.height() / 2);
     window.Draw(frame_sprite);
   }
 
@@ -287,7 +267,6 @@ bool MainScreen::GetString::Draw(smk::Window& window) {
     window.Draw(enter_your_name);
   }
 
-
   // Written text
   {
     smk::Text text;
@@ -299,7 +278,7 @@ bool MainScreen::GetString::Draw(smk::Window& window) {
     window.Draw(text);
 
     if (window.input().IsKeyPressed(GLFW_KEY_BACKSPACE) ||
-        dimension.x > img_cadreInput.width - 12) {
+        dimension.x > img_cadreInput.width() - 12) {
       typed_text_ = typed_text_.substr(0, typed_text_.size() - 1);
     }
 
@@ -312,26 +291,27 @@ bool MainScreen::GetString::Draw(smk::Window& window) {
   return false;
 }
 
+MainScreen::Question::Question(smk::Window& window) {
+  time_ = window.time();
+}
+
 bool MainScreen::Question::Draw(smk::Window& window) {
   {
-    if (time_ <= -1) {
-      time_ = window.time();
-    }
     float target = exiting_ ? 0.0 : 1.0;
     for (int i = 0; i < 10; ++i) {
       alpha += (target - alpha) * (window.time() - time_);
     }
+    time_ = window.time();
 
     if (exiting_ && alpha <= 0.01)
       return true;
-    time_ = window.time();
   }
 
   // Black shadow.
   {
     auto black_shadow = smk::Shape::Square();
-    black_shadow.SetPosition(0,0);
-    black_shadow.SetScale(640,480);
+    black_shadow.SetPosition(0, 0);
+    black_shadow.SetScale(640, 480);
     black_shadow.SetColor(glm::vec4(0, 0, 0, 0.5 * alpha));
     window.Draw(black_shadow);
   }
@@ -362,16 +342,18 @@ bool MainScreen::Question::Draw(smk::Window& window) {
     yes_string.SetFont(font_arial);
     yes_string.SetString(yes);
     auto dimension = yes_string.ComputeDimensions();
-    float left = 640*0.2+10;
+    float left = 640 * 0.2 + 10;
     float right = left + dimension.x;
-    float bottom = 480*0.8-10;
+    float bottom = 480 * 0.8 - 10;
     float top = bottom - dimension.y;
     yes_string.SetPosition(left, top);
 
-    if (window.input().mouse().x >= left &&   //
-        window.input().mouse().x <= right &&  //
-        window.input().mouse().y >= top &&    //
-        window.input().mouse().y <= bottom) {
+    auto mouse = window.input().mouse();
+    bool hover = mouse.x >= left &&   //
+                 mouse.x <= right &&  //
+                 mouse.y >= top &&    //
+                 mouse.y <= bottom;
+    if (hover) {
       yes_string.SetColor(glm::vec4(0.f, 0.f, 0.f, alpha));
       if (window.input().IsMousePressed(GLFW_MOUSE_BUTTON_1) && !exiting_) {
         on_yes();

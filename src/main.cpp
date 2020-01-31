@@ -1,21 +1,20 @@
-#include <smk/Input.hpp>
-#include <smk/Shape.hpp>
-#include <smk/Audio.hpp>
-#include <smk/Text.hpp>
-#include "BackgroundMusic.hpp"
-#include "Lang.hpp"
-#include "Level.hpp"
-#include "LevelListLoader.hpp"
-#include "SaveManager.hpp"
-#include "Resource.hpp"
-
-#include <smk/Window.hpp>
-
 #include "activity/IntroScreen.hpp"
 #include "activity/LevelScreen.hpp"
 #include "activity/MainScreen.hpp"
 #include "activity/ResourceLoadingScreen.hpp"
 #include "activity/WelcomeScreen.hpp"
+#include "game/BackgroundMusic.hpp"
+#include "game/Lang.hpp"
+#include "game/Level.hpp"
+#include "game/LevelListLoader.hpp"
+#include "game/Resource.hpp"
+#include "game/SaveManager.hpp"
+#include <experimental/filesystem>
+#include <smk/Audio.hpp>
+#include <smk/Input.hpp>
+#include <smk/Shape.hpp>
+#include <smk/Text.hpp>
+#include <smk/Window.hpp>
 
 BackgroundMusic background_music;
 
@@ -26,14 +25,22 @@ class Main {
         welcome_screen_(window_),
         main_screen_(window_, savFile),
         intro_screen_(window_) {
-    window_ = smk::Window(640, 480, "InTheCube");
 
+    window_ = smk::Window(640, 480, "InTheCube");
     Display(&resource_loading_screen_);
-    resource_loading_screen_.on_quit = [&] {
-      savFile.Load(SavePath() + "/.in_the_cube_sav");
-      langFile.Load(SavePath() + "/.in_the_cube_language");
+
+    resource_loading_screen_.on_desktop_device = [&] {
+      savFile.Load(SavePath() + "/InTheCubeSav");
+      langFile.Load(SavePath() + "/InTheCubeLang");
       UpdateTraduction();
       Display(&welcome_screen_);
+    };
+
+    resource_loading_screen_.on_touch_device = [&] {
+      savFile.Load(SavePath() + "/InTheCubeSav");
+      langFile.Load(SavePath() + "/InTheCubeLang");
+      UpdateTraduction();
+      MoveToLevel(1);
     };
 
     // 2. Starting activity. The welcome window_.
@@ -51,6 +58,7 @@ class Main {
     intro_screen_.on_quit = [&] { MoveToLevel(1); };
 
     // 5. The level window_.
+    //...
   }
 
   void Display(Activity* activity) {
@@ -87,6 +95,21 @@ class Main {
   }
 
   void Loop() {
+    window_.Clear({0.f, 0.f, 0.f, 0.f});
+
+    {
+      smk::View view;
+      view.SetSize(640,480);
+      view.SetCenter(640 * 0.5f, 480.f * 0.5f);
+      window_.SetView(view);
+
+      float zoom = std::min(window_.width() / 640.f, window_.height() / 480.f);
+      float width = 640.f * zoom;
+      float height = 480.f * zoom;
+      glViewport(window_.width() * 0.5 - width * 0.5,
+                 window_.height() * 0.5 - height * 0.5, width, height);
+    }
+
     activity_->Draw();
     background_music.Step();
     to_be_removed_screen_.reset();
@@ -94,6 +117,7 @@ class Main {
 #ifndef __EMSCRIPTEN__
     window_.LimitFrameRate(60.f);
 #endif
+    window_.Display();
   }
 
   void SetLanguage(int i) {
@@ -154,6 +178,8 @@ int main() {
       FS.syncfs(true, function(err){console.log("IndexDB synced", err)});
   , 0);
   // clang-format on
+#else
+  std::experimental::filesystem::create_directory(SavePath());
 #endif
 
 #ifdef __EMSCRIPTEN__

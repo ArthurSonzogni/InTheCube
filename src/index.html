@@ -6,6 +6,7 @@
     <title>In the cube</title>
     <link rel="stylesheet" type="text/css" href="style.css">
     <link rel="icon" type="image/png" href="./favicon.png">
+    <meta name="viewport" content="width=device-width, user-scalable=no">
   </head>
   <body>
 
@@ -19,9 +20,8 @@
       <div class="flex"></div>
     </div>
 
-
     <canvas id="canvas" oncontextmenu="event.preventDefault()">
-        Chargement... 
+      Loading... 
     </canvas>
 
     <script>
@@ -33,18 +33,27 @@
         e.preventDefault();
       }, false);
 
+      function onResize() {
+        canvas.width = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+        canvas.height = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+      }
+      window.addEventListener("resize", onResize, true);
+
       window.Module = {
         preRun: [],
         postRun: [],
         canvas: canvas,
-        print: console.log,
-        printErr: console.error,
         onRuntimeInitialized: function() {
           document.querySelector("#loading_page").remove();
+          for(ms of [0, 100, 1000, 3000])
+            window.setTimeout(onResize, ms);
         },
+        print: console.log,
+        printErr: console.error,
       };
 
     </script>
+
 
     <script async src="inthecube.js"></script>
   </body>
