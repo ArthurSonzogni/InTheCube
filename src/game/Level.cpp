@@ -1218,7 +1218,6 @@ void Level::SetView(smk::Window& window) {
   if (!hero_list.empty()) {
     auto geometry = hero_list[heroSelected].geometry;
     if (fluidViewEnable) {
-      center += 0.1f * ({geometry.left, geometry.top) - center);
       xcenter += 0.1 * (geometry.left - xcenter);
       ycenter += 0.1 * (geometry.top - ycenter);
     } else {

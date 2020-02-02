@@ -66,23 +66,10 @@ void LevelScreen::Draw() {
 
   level_.Draw(window());
 
-  if (level_.isLose) {
-    on_restart();
-    return;
-  }
-
-  if (level_.isWin) {
-    on_win();
-    return;
-  }
-
-  if (level_.isPrevious) {
-    on_previous();
-    return;
-  }
-
-  if (level_.isEscape) {
-    on_quit();
-    return;
-  }
+  // clang-format off
+  if (level_.isLose)     return on_restart();
+  if (level_.isWin)      return on_win();
+  if (level_.isPrevious) return on_previous();
+  if (level_.isEscape)   return on_quit();
+  // clang-format on
 }

@@ -9,16 +9,18 @@ project(InTheCube)
 # The inthecube executable
 add_executable(inthecube
   src/activity/Activity.hpp
-  src/activity/WelcomeScreen.hpp
-  src/activity/WelcomeScreen.cpp
-  src/activity/IntroScreen.hpp
   src/activity/IntroScreen.cpp
-  src/activity/MainScreen.hpp
-  src/activity/MainScreen.cpp
+  src/activity/IntroScreen.hpp
   src/activity/LevelScreen.cpp
   src/activity/LevelScreen.hpp
+  src/activity/Main.cpp
+  src/activity/Main.hpp
+  src/activity/MainScreen.cpp
+  src/activity/MainScreen.hpp
   src/activity/ResourceLoadingScreen.cpp
   src/activity/ResourceLoadingScreen.hpp
+  src/activity/WelcomeScreen.cpp
+  src/activity/WelcomeScreen.hpp
   src/game/Accelerator.cpp
   src/game/Accelerator.hpp
   src/game/Arrow.cpp

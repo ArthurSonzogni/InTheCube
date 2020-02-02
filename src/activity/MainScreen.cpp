@@ -9,8 +9,8 @@
 #include <smk/Sprite.hpp>
 #include <smk/Text.hpp>
 #include <smk/View.hpp>
-#include "Lang.hpp"
-#include "Resource.hpp"
+#include "game/Resource.hpp"
+#include "game/Lang.hpp"
 
 std::wstring to_wstring(const std::string& s) {
   std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;

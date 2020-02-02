@@ -12,6 +12,7 @@ void ResourceLoadingScreen::Draw() {
     initializer.resources.pop_front();
 
     smk::Text text;
+    text.SetScale(0.7);
     text.SetFont(font_arial);
     text.SetString("Decoding: " + *resource.path);
     text.SetColor(smk::Color::White);
