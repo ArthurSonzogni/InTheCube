@@ -17,12 +17,13 @@ confinement: strict
 base: core18
 apps:
   inthecube:
-    command: desktop-launch ${SNAP}/usr/local/bin/inthecube
+    command: ./bin/inthecube
     plugs:
+      - audio-playback
       - opengl
-      - pulseaudio
       - x11
 parts:
+  # Build cmake from source to get a recent version.
   cmake:
     source: https://github.com/Kitware/CMake
     source-type: git
@@ -33,43 +34,40 @@ parts:
       cd build
       cmake \
         -DCMAKE_INSTALL_PREFIX=$SNAPCRAFT_STAGE/cmake \
-        -DCMAKE_BUILD_TYPE=Release \
         $SNAPCRAFT_PART_SRC
-      make -j 4
+      make -j ${SNAPCRAFT_PARALLEL_BUILD_COUNT}
       make install
+    build-packages:
+      - build-essential
+      - libssl-dev
+      - libncurses5-dev
+    stage-packages:
+      - libssl1.1
+      - libncurses5
+      - libtinfo5
+    prime: []
 
   inthecube:
     after: [cmake]
     plugin: cmake
-    source: https://github.com/ArthurSonzogni/InTheCube
+    source: https://github.com/ArthurSonzogni/inthecube
     source-type: git
     source-depth: 1
     stage-packages:
-      - libgl1-mesa-glx
       - libpulse0
-      - libpng16-16
+      - libgl1-mesa-glx
     build-packages:
       - libglu-dev
-      - libssl1.0-dev
       - libpulse-dev
       - xorg-dev
     override-build: |
       $SNAPCRAFT_STAGE/cmake/bin/cmake \
-        -DCMAKE_INSTALL_PREFIX=$SNAPCRAFT_PART_INSTALL/usr/local \
-        -DCMAKE_BUILD_TYPE=Release \
+        -DCMAKE_INSTALL_PREFIX=$SNAPCRAFT_PART_INSTALL \
+        -DCMAKE_BUILD_TYPE=RelWithDebInfo \
         $SNAPCRAFT_PART_SRC
-      make -j 4
+      make -j ${SNAPCRAFT_PARALLEL_BUILD_COUNT}
       make install
 
-  desktop-glib-only:
-    plugin: make
-    source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
-    source-subdir: glib-only
-    build-packages:
-    - libglib2.0-dev
-    stage-packages:
-    - libglib2.0-bin
-
 passthrough:
-  title: InTheCube
+  title: inthecube
   license: MIT

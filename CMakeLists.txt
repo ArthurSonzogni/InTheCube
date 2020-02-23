@@ -159,5 +159,5 @@ endif()
 
 target_link_libraries(inthecube PRIVATE smk)
 
-install(TARGETS inthecube RUNTIME DESTINATION "bin")
+install(TARGETS inthecube RUNTIME DESTINATION bin)
 install(DIRECTORY resources DESTINATION share/inthecube)
