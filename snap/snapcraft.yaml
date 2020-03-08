@@ -11,20 +11,22 @@ description: |
   moving blocks, ...)
 
   Strange machines are found in the most advanced levels.
-icon: ../resources/img/img_hero.png
+icon: "../resources/img/img_hero.png"
 grade: stable
 confinement: strict
 base: core18
+
 apps:
   inthecube:
     command: desktop-launch ${SNAP}/bin/inthecube
     plugs:
-      - audio-playback
-      - opengl
-      - pulseaudio
-      - x11
+    - audio-playback
+    - opengl
+    - x11
+    - pulseaudio
+
 parts:
-  # Build cmake from source to get a recent version.
+
   cmake:
     source: https://github.com/Kitware/CMake
     source-type: git
@@ -39,37 +41,39 @@ parts:
       make -j ${SNAPCRAFT_PARALLEL_BUILD_COUNT}
       make install
     build-packages:
-      - build-essential
-      - libssl-dev
-      - libncurses5-dev
+    - build-essential
+    - libssl-dev
+    - libncurses5-dev
     stage-packages:
-      - libssl1.1
-      - libncurses5
-      - libtinfo5
+    - libssl1.1
+    - libncurses5
+    - libtinfo5
     prime: []
 
   desktop-glib-only:
-    plugin: make	   
-    source: https://github.com/ubuntu/snapcraft-desktop-helpers.git	   
-    source-subdir: glib-only	   
-    build-packages:	   
-    - libglib2.0-dev	   
-    stage-packages:	   
+    plugin: make
+    source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
+    source-subdir: glib-only
+    build-packages:
+    - libglib2.0-dev
+    stage-packages:
     - libglib2.0-bin
 
   inthecube:
-    after: [cmake, desktop-glib-only]
+    after:
+    - cmake
+    - desktop-glib-only
     plugin: cmake
     source: https://github.com/ArthurSonzogni/inthecube
     source-type: git
     source-depth: 1
     stage-packages:
-      - libgl1-mesa-glx
-      - libpulse0
+    - libgl1-mesa-glx
+    - libpulse0
     build-packages:
-      - libglu-dev
-      - libpulse-dev
-      - xorg-dev
+    - libglu-dev
+    - libpulse-dev
+    - xorg-dev
     override-build: |
       $SNAPCRAFT_STAGE/cmake/bin/cmake \
         -DCMAKE_INSTALL_PREFIX=$SNAPCRAFT_PART_INSTALL \
