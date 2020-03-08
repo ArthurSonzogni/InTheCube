@@ -11,7 +11,7 @@ description: |
   moving blocks, ...)
 
   Strange machines are found in the most advanced levels.
-icon: "../resources/img/img_hero.png"
+icon: "./resources/img/img_hero.png"
 grade: stable
 confinement: strict
 base: core18
