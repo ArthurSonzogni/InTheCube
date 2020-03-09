@@ -25,7 +25,7 @@ std::string ResourcePath() {
 
   std::vector<std::string> path_list = {
       // Application installed using snapcraft.
-      SNAP + "/usr/share/inthecube/resources",
+      SNAP + "/share/icemaze/resources",
 
       // Application installed using "sudo make install"
       "/usr/share/inthecube/resources",
