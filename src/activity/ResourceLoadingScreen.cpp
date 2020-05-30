@@ -2,6 +2,7 @@
 #include <cmath>
 #include <smk/Color.hpp>
 #include <smk/Text.hpp>
+#include <smk/Input.hpp>
 
 void ResourceLoadingScreen::Draw() {
   window().PoolEvents();

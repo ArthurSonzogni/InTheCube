@@ -1,5 +1,7 @@
 #include "activity/LevelScreen.hpp"
+
 #include <smk/Color.hpp>
+#include <smk/Input.hpp>
 #include <smk/Vibrate.hpp>
 
 LevelScreen::LevelScreen(smk::Window& window, std::string level_name)
