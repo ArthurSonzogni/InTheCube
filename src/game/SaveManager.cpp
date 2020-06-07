@@ -1,4 +1,9 @@
+// Copyright 2020 Arthur Sonzogni. All rights reserved.
+// Use of this source code is governed by the MIT license that can be found in
+// the LICENSE file.
+
 #include "game/SaveManager.hpp"
+
 #include <algorithm>
 #include <fstream>
 #include <iostream>
@@ -31,7 +36,7 @@ void SaveManager::Sync() {
   if (!file)
     return;
 
-  for(auto& it : saveList) {
+  for (auto& it : saveList) {
     file << it.first << std::endl;
     file << it.second << std::endl;
   }

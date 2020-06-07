@@ -1,8 +1,13 @@
+// Copyright 2020 Arthur Sonzogni. All rights reserved.
+// Use of this source code is governed by the MIT license that can be found in
+// the LICENSE file.
+
 #ifndef GAME_ELECTRICITY_HPP
 #define GAME_ELECTRICITY_HPP
 
-#include <smk/Window.hpp>
 #include <smk/Sound.hpp>
+#include <smk/Window.hpp>
+
 #include "game/Resource.hpp"
 
 class Electricity {
@@ -22,6 +27,7 @@ class Electricity {
   void Step(int time);
   void Draw(smk::Window&);
   bool is_active() { return is_active_; }
+
  private:
   bool is_active_ = false;
 };

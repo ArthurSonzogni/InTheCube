@@ -1,6 +1,12 @@
+// Copyright 2020 Arthur Sonzogni. All rights reserved.
+// Use of this source code is governed by the MIT license that can be found in
+// the LICENSE file.
+
 #include "game/Decor.hpp"
+
 #include <iostream>
 #include <smk/Window.hpp>
+
 #include "game/Resource.hpp"
 
 Decor::Decor(int X, int Y, int IMG) {
@@ -37,7 +43,7 @@ Decor::Decor(int X, int Y, int IMG) {
     case 28: sprite = smk::Sprite(img_arbreDecorsEndFront);break;
     case 29: sprite = smk::Sprite(img_arbreDecorsEndBack1);break;
     case 30: sprite = smk::Sprite(img_arbreDecorsEndBack2);break;
-    // clang-format on
+      // clang-format on
   }
   sprite.SetPosition(X, Y);
 }

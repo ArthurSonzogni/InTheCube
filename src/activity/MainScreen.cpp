@@ -1,3 +1,7 @@
+// Copyright 2020 Arthur Sonzogni. All rights reserved.
+// Use of this source code is governed by the MIT license that can be found in
+// the LICENSE file.
+
 #include "activity/MainScreen.hpp"
 
 #include <codecvt>
@@ -9,8 +13,9 @@
 #include <smk/Sprite.hpp>
 #include <smk/Text.hpp>
 #include <smk/View.hpp>
-#include "game/Resource.hpp"
+
 #include "game/Lang.hpp"
+#include "game/Resource.hpp"
 
 std::wstring to_wstring(const std::string& s) {
   std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
@@ -29,7 +34,7 @@ std::string intToString(int n) {
 
 void MainScreen::OnEnter() {
   previous_time = window().time();
-  for(auto& it : languageXPos)
+  for (auto& it : languageXPos)
     it = 640;
 }
 
@@ -55,7 +60,7 @@ void MainScreen::Draw() {
   glm::vec2 mouse = window().input().mouse();
   mouse -= window().dimension() * 0.5f;
   mouse /= zoom;
-  mouse += glm::vec2(640,480) * 0.5f;
+  mouse += glm::vec2(640, 480) * 0.5f;
 
   if (question_ || get_string_)
     mouse = {0.f, 0.f};

@@ -1,7 +1,13 @@
+// Copyright 2020 Arthur Sonzogni. All rights reserved.
+// Use of this source code is governed by the MIT license that can be found in
+// the LICENSE file.
+
 #include "game/Creeper.hpp"
-#include "game/Resource.hpp"
+
 #include <cstdlib>
 #include <smk/Window.hpp>
+
+#include "game/Resource.hpp"
 
 Creeper::Creeper(int X, int Y) {
   x = X;

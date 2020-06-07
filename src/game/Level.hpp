@@ -1,3 +1,7 @@
+// Copyright 2020 Arthur Sonzogni. All rights reserved.
+// Use of this source code is governed by the MIT license that can be found in
+// the LICENSE file.
+
 #ifndef GAME_LEVEL_HPP
 #define GAME_LEVEL_HPP
 
@@ -6,13 +10,13 @@
 #include <fstream>
 #include <iostream>
 #include <list>
+#include <smk/Sound.hpp>
+#include <smk/View.hpp>
+#include <smk/Window.hpp>
 #include <sstream>
 #include <string>
 #include <vector>
 
-#include <smk/Sound.hpp>
-#include <smk/View.hpp>
-#include <smk/Window.hpp>
 #include "game/Accelerator.hpp"
 #include "game/Arrow.hpp"
 #include "game/ArrowLauncher.hpp"

@@ -1,11 +1,15 @@
+// Copyright 2020 Arthur Sonzogni. All rights reserved.
+// Use of this source code is governed by the MIT license that can be found in
+// the LICENSE file.
+
 #include "game/Resource.hpp"
+
+#include <cstdlib>
 #include <fstream>
+#include <iostream>
 #include <smk/SoundBuffer.hpp>
 #include <smk/Texture.hpp>
 #include <vector>
-#include <cstdlib>
-
-#include <iostream>
 
 std::string GetEnvironmentVariable(const char* env) {
   auto value = std::getenv(env);

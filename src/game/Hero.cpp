@@ -1,20 +1,25 @@
-#include "game/Hero.hpp"
-#include <smk/Window.hpp>
-#include <smk/Color.hpp>
+// Copyright 2020 Arthur Sonzogni. All rights reserved.
+// Use of this source code is governed by the MIT license that can be found in
+// the LICENSE file.
 
-//Hero::Hero() {
-  //geometry.left = 0;
-  //geometry.top = 0;
-  //geometry.right = 29;
-  //geometry.bottom = 29;
-  //sprite.SetTexture(img_hero_right);
-  //sprite.SetPosition(0, 0);
-  //x = 0;
-  //y = 0;
-  //xspeed = 0;
-  //yspeed = 0;
-  //life = 10;
-  //sens = true;
+#include "game/Hero.hpp"
+
+#include <smk/Color.hpp>
+#include <smk/Window.hpp>
+
+// Hero::Hero() {
+// geometry.left = 0;
+// geometry.top = 0;
+// geometry.right = 29;
+// geometry.bottom = 29;
+// sprite.SetTexture(img_hero_right);
+// sprite.SetPosition(0, 0);
+// x = 0;
+// y = 0;
+// xspeed = 0;
+// yspeed = 0;
+// life = 10;
+// sens = true;
 //}
 
 Hero::Hero(float X, float Y) {

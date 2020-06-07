@@ -1,10 +1,15 @@
+// Copyright 2020 Arthur Sonzogni. All rights reserved.
+// Use of this source code is governed by the MIT license that can be found in
+// the LICENSE file.
+
 #ifndef LEVEL_WINDOW_HPP
 #define LEVEL_WINDOW_HPP
+
+#include <memory>
 
 #include "activity/Activity.hpp"
 #include "game/Level.hpp"
 #include "game/SaveManager.hpp"
-#include <memory>
 
 class LevelScreen : public Activity {
  public:
@@ -13,10 +18,11 @@ class LevelScreen : public Activity {
 
   void Draw() override;
 
-  std::function<void()> on_restart = []{};
+  std::function<void()> on_restart = [] {};
   std::function<void()> on_previous = [] {};
-  std::function<void()> on_win = []{};
-  std::function<void()> on_quit = []{};
+  std::function<void()> on_win = [] {};
+  std::function<void()> on_quit = [] {};
+
  private:
   Level level_;
   float start_time = 0.f;

@@ -1,12 +1,17 @@
+// Copyright 2020 Arthur Sonzogni. All rights reserved.
+// Use of this source code is governed by the MIT license that can be found in
+// the LICENSE file.
+
 #include "Special.hpp"
 
-#include "game/Lang.hpp"
-#include "game/Level.hpp"
-#include "game/Resource.hpp"
 #include <smk/Input.hpp>
 #include <smk/Shape.hpp>
 #include <smk/Sound.hpp>
 #include <smk/Text.hpp>
+
+#include "game/Lang.hpp"
+#include "game/Level.hpp"
+#include "game/Resource.hpp"
 
 Special::Special(int M) {
   m = M;
@@ -48,19 +53,27 @@ Special::Special(int M) {
 }
 
 void Special::Step(Level& level) {
-  if (erased) return;
+  if (erased)
+    return;
   switch (m) {
     case SPECIAL_ACC: {
       int& t = var[0];
       t = t + 1;
       // clang format off
-      level.particule_list.push_front(accParticule( 318 + 16 + sin(t / 15.) * 4, 1152 + 32, -2 * sin(t / 15.), 60));
-      level.particule_list.push_front(accParticule( 510 + 16 + sin(t / 15.) * 4, 1088 + 32, -2 * sin(t / 15.), 90));
-      level.particule_list.push_front(accParticule( 330 + 16 + sin(t / 15.) * 4, 928 + 32, -2 * sin(t / 15.), 110));
-      level.particule_list.push_front(accParticule( 70 + 16 + sin(t / 15.) * 4, 832 + 32, -2 * sin(t / 15.), 110));
-      level.particule_list.push_front(accParticule( 70 + 16 + sin(t / 15.) * 4, 512 + 32, -2 * sin(t / 15.), 90));
-      level.particule_list.push_front(accParticule( 288 + 16 + sin(t / 15.) * 4, 352 + 32, -2 * sin(t / 15.), 90));
-      level.particule_list.push_front(accParticule( 480 + 16 + sin(t / 15.) * 4, 896 + 32, -2 * sin(t / 15.), 130));
+      level.particule_list.push_front(accParticule(
+          318 + 16 + sin(t / 15.) * 4, 1152 + 32, -2 * sin(t / 15.), 60));
+      level.particule_list.push_front(accParticule(
+          510 + 16 + sin(t / 15.) * 4, 1088 + 32, -2 * sin(t / 15.), 90));
+      level.particule_list.push_front(accParticule(
+          330 + 16 + sin(t / 15.) * 4, 928 + 32, -2 * sin(t / 15.), 110));
+      level.particule_list.push_front(accParticule(
+          70 + 16 + sin(t / 15.) * 4, 832 + 32, -2 * sin(t / 15.), 110));
+      level.particule_list.push_front(accParticule(
+          70 + 16 + sin(t / 15.) * 4, 512 + 32, -2 * sin(t / 15.), 90));
+      level.particule_list.push_front(accParticule(
+          288 + 16 + sin(t / 15.) * 4, 352 + 32, -2 * sin(t / 15.), 90));
+      level.particule_list.push_front(accParticule(
+          480 + 16 + sin(t / 15.) * 4, 896 + 32, -2 * sin(t / 15.), 130));
       // clang format on
     } break;
     case SPECIAL_ARBRE: {
@@ -84,9 +97,9 @@ void Special::Step(Level& level) {
         if (time > 15) {
           size *= 0.98;
           level.hero_list[0].sprite.SetScale(size / 100.0);
-          level.hero_list[0].x += (768 - x) *0.01;
+          level.hero_list[0].x += (768 - x) * 0.01;
           level.hero_list[0].geometry.bottom =
-          level.hero_list[0].geometry.top + 24 * (size + 10) / 110.0;
+              level.hero_list[0].geometry.top + 24 * (size + 10) / 110.0;
         }
         if (size < 3) {
           level.isWin = true;
@@ -129,7 +142,7 @@ void Special::Step(Level& level) {
         if (timeWait <= 0) {
           timeWait = 2;
           int ii = 0;
-          for(auto& arrow_launcher : level.arrowLauncher_list) {
+          for (auto& arrow_launcher : level.arrowLauncher_list) {
             if (sequence[SalvoId][i] == ii) {
               level.arrow_list.push_front(
                   Arrow({arrow_launcher.x + 16, arrow_launcher.y + 16},

@@ -1,8 +1,13 @@
+// Copyright 2020 Arthur Sonzogni. All rights reserved.
+// Use of this source code is governed by the MIT license that can be found in
+// the LICENSE file.
+
 #ifndef INTRO_SCREEN_HPP
 #define INTRO_SCREEN_HPP
 
-#include "activity/Activity.hpp"
 #include <memory>
+
+#include "activity/Activity.hpp"
 
 class IntroScreen : public Activity {
  public:
@@ -12,7 +17,7 @@ class IntroScreen : public Activity {
   void Draw() override;
   void OnEnter() override;
 
-  std::function<void()> on_quit = []{};
+  std::function<void()> on_quit = [] {};
 
  private:
   bool quit_ = false;

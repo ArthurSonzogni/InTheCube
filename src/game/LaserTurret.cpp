@@ -1,10 +1,15 @@
+// Copyright 2020 Arthur Sonzogni. All rights reserved.
+// Use of this source code is governed by the MIT license that can be found in
+// the LICENSE file.
+
 #include "game/LaserTurret.hpp"
 
 #include <cmath>
-#include "game/Resource.hpp"
-#include <smk/Window.hpp>
-#include <smk/Shape.hpp>
 #include <smk/Color.hpp>
+#include <smk/Shape.hpp>
+#include <smk/Window.hpp>
+
+#include "game/Resource.hpp"
 
 LaserTurret::LaserTurret(int X,
                          int Y,
@@ -32,8 +37,7 @@ LaserTurret::LaserTurret(int X,
 }
 
 void LaserTurret::Draw(smk::Window& window) {
-  auto line =
-      smk::Shape::Line(glm::vec2(x, y), glm::vec2(xattach, yattach), 1);
+  auto line = smk::Shape::Line(glm::vec2(x, y), glm::vec2(xattach, yattach), 1);
   line.SetColor(smk::Color::Black);
   window.Draw(line);
   window.Draw(sprite);

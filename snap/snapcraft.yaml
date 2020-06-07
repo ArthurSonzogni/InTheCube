@@ -18,7 +18,7 @@ base: core18
 
 apps:
   inthecube:
-    command: desktop-launch ${SNAP}/bin/inthecube
+    command: desktop-launch $SNAP/bin/inthecube
     plugs:
     - audio-playback
     - opengl

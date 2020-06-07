@@ -1,13 +1,18 @@
+// Copyright 2020 Arthur Sonzogni. All rights reserved.
+// Use of this source code is governed by the MIT license that can be found in
+// the LICENSE file.
+
 #include "activity/IntroScreen.hpp"
 
+#include <glm/gtx/compatibility.hpp>
+#include <smk/Color.hpp>
 #include <smk/Input.hpp>
 #include <smk/Sprite.hpp>
 #include <smk/Text.hpp>
-#include "game/Resource.hpp"
-#include "game/Lang.hpp"
-#include <glm/gtx/compatibility.hpp>
-#include <smk/Color.hpp>
+
 #include "game/BackgroundMusic.hpp"
+#include "game/Lang.hpp"
+#include "game/Resource.hpp"
 
 extern BackgroundMusic background_music;
 
@@ -44,12 +49,9 @@ void IntroScreen::Draw() {
   // Background color
   {
     static const glm::vec4 colors[] = {
-      {0.0f, 0.0f, 0.0f, 1.0f},
-      {0.4f, 0.4f, 0.4f, 1.0f},
-      {0.0f, 0.4f, 0.8f, 1.0f},
-      {0.8f, 0.0f, 0.0f, 1.0f},
-      {0.4f, 0.4f, 0.0f, 1.0f},
-      {0.0f, 0.4f, 0.4f, 1.0f},
+        {0.0f, 0.0f, 0.0f, 1.0f}, {0.4f, 0.4f, 0.4f, 1.0f},
+        {0.0f, 0.4f, 0.8f, 1.0f}, {0.8f, 0.0f, 0.0f, 1.0f},
+        {0.4f, 0.4f, 0.0f, 1.0f}, {0.0f, 0.4f, 0.4f, 1.0f},
     };
 
     int index = x / 640;
@@ -72,7 +74,7 @@ void IntroScreen::Draw() {
     // clang-format on
 
     int p = 0;
-    for(auto& it : text) {
+    for (auto& it : text) {
       if (p >= position)
         break;
       it.SetPosition(670 - x + p * 640, 10);

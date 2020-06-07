@@ -1,11 +1,16 @@
+// Copyright 2020 Arthur Sonzogni. All rights reserved.
+// Use of this source code is governed by the MIT license that can be found in
+// the LICENSE file.
+
 #ifndef GAME_SPECIAL_HPP
 #define GAME_SPECIAL_HPP
 
 #include <list>
-#include <smk/Window.hpp>
 #include <smk/Sound.hpp>
 #include <smk/Sprite.hpp>
+#include <smk/Window.hpp>
 #include <vector>
+
 #include "game/Arrow.hpp"
 #include "game/ArrowLauncher.hpp"
 #include "game/Particule.hpp"

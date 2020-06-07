@@ -1,7 +1,12 @@
+// Copyright 2020 Arthur Sonzogni. All rights reserved.
+// Use of this source code is governed by the MIT license that can be found in
+// the LICENSE file.
+
 #include <smk/Input.hpp>
 #include <smk/Shape.hpp>
 #include <smk/Text.hpp>
 #include <smk/Window.hpp>
+
 #include "activity/IntroScreen.hpp"
 #include "activity/LevelScreen.hpp"
 #include "activity/MainScreen.hpp"
@@ -162,4 +167,3 @@ void MainLoop() {
   if (main)
     main->Loop();
 }
-

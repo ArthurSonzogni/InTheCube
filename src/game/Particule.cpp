@@ -1,7 +1,12 @@
+// Copyright 2020 Arthur Sonzogni. All rights reserved.
+// Use of this source code is governed by the MIT license that can be found in
+// the LICENSE file.
+
 #include "game/Particule.hpp"
-#include <smk/Window.hpp>
-#include <cstdlib>
+
 #include <cmath>
+#include <cstdlib>
+#include <smk/Window.hpp>
 
 Particule::Particule(bool (*stepF)(Particule*)) {
   transform = stepF;
@@ -123,7 +128,7 @@ bool particuleLaserOnGlassStep(Particule* p) {
   p->sprite.Move(p->xspeed, p->yspeed);
   p->sprite.SetRotation(atan2(-p->yspeed, p->xspeed) * 57 - 90);
   p->alpha *= 0.8;
-  p->sprite.SetColor(glm::vec4(40, 80, 255, p->alpha)/255.f);
+  p->sprite.SetColor(glm::vec4(40, 80, 255, p->alpha) / 255.f);
   p->yspeed += 0.2;
   p->xspeed *= 0.8;
   p->t++;

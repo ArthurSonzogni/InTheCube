@@ -1,7 +1,12 @@
+// Copyright 2020 Arthur Sonzogni. All rights reserved.
+// Use of this source code is governed by the MIT license that can be found in
+// the LICENSE file.
+
 #include "ArrowLauncher.hpp"
 
-#include "game/Resource.hpp"
 #include <smk/Window.hpp>
+
+#include "game/Resource.hpp"
 
 ArrowLauncher::ArrowLauncher(float X, float Y, float O) {
   sprite = smk::Sprite(img_arrowLauncher);

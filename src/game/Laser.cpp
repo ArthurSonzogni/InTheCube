@@ -1,10 +1,15 @@
+// Copyright 2020 Arthur Sonzogni. All rights reserved.
+// Use of this source code is governed by the MIT license that can be found in
+// the LICENSE file.
+
 #include "game/Laser.hpp"
+
 #include <cmath>
 #include <smk/Color.hpp>
 #include <smk/Shape.hpp>
 
 void Laser::Draw(smk::Window& window) {
-  glm::vec4 color  = smk::Color::Red;
+  glm::vec4 color = smk::Color::Red;
   auto line = smk::Shape::Line(start, end, 1.5f);
   line.SetColor(color);
   window.Draw(line);
@@ -37,5 +42,4 @@ void Laser::Draw(smk::Window& window) {
     circle.SetColor(glm::vec4(0.05, 0, 0, 1.0));
     window.Draw(circle);
   }
-
 }

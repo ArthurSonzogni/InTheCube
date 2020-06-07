@@ -1,7 +1,13 @@
+// Copyright 2020 Arthur Sonzogni. All rights reserved.
+// Use of this source code is governed by the MIT license that can be found in
+// the LICENSE file.
+
 #include "activity/WelcomeScreen.hpp"
+
 #include <smk/Input.hpp>
 #include <smk/Sprite.hpp>
 #include <smk/View.hpp>
+
 #include "game/BackgroundMusic.hpp"
 #include "game/Resource.hpp"
 

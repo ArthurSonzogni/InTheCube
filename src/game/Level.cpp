@@ -1,10 +1,16 @@
+// Copyright 2020 Arthur Sonzogni. All rights reserved.
+// Use of this source code is governed by the MIT license that can be found in
+// the LICENSE file.
+
 #include "game/Level.hpp"
+
 #include <algorithm>
 #include <random>
 #include <smk/Input.hpp>
 #include <smk/Shape.hpp>
 #include <smk/Text.hpp>
 #include <smk/View.hpp>
+
 #include "game/BackgroundMusic.hpp"
 #include "game/Lang.hpp"
 
@@ -219,7 +225,7 @@ void Level::LoadFromFile(std::string fileName) {
   int separator_position = 0;
   {
     int i = 0;
-    for(auto& it : fileName) {
+    for (auto& it : fileName) {
       ++i;
       if (it == '/' || it == '\\')
         separator_position = i;
@@ -259,7 +265,6 @@ void Level::Draw(smk::Window& window) {
   for (auto& it : decorBack_list) it.Draw(window);
   for (auto& it : special_list) it.DrawOverDecoration(window);
   // clang-format on
-
 
   // Draw static turrets and throw out Laser
   for (auto& it : laserTurret_list) {
@@ -317,11 +322,11 @@ void Level::Step(Input::T input, smk::Window& window) {
   isEscape = input & Input::Escape;
   isLose = input & Input::Restart;
 
-  //if (window.input().IsKeyPressed(GLFW_KEY_T)) {
-    //isWin = true;
+  // if (window.input().IsKeyPressed(GLFW_KEY_T)) {
+  // isWin = true;
   //}
-  //if (window.input().IsKeyPressed(GLFW_KEY_Y)) {
-    //isPrevious = true;
+  // if (window.input().IsKeyPressed(GLFW_KEY_Y)) {
+  // isPrevious = true;
   //}
 
   // Drawn popup
@@ -361,7 +366,7 @@ void Level::Step(Input::T input, smk::Window& window) {
       isLose = true;
   }
 
-  for(auto it = hero_list.begin(); it != hero_list.end(); ++it){
+  for (auto it = hero_list.begin(); it != hero_list.end(); ++it) {
     auto& hero = *it;
 
     if (hero.in_laser) {
@@ -777,7 +782,8 @@ void Level::Step(Input::T input, smk::Window& window) {
   /////////////////////////////////
 
   for (auto creeper = creeper_list.begin(); creeper != creeper_list.end();) {
-    if (!CollisionWithAllBlock(Point(creeper->x + creeper->xspeed * 7, creeper->y))) {
+    if (!CollisionWithAllBlock(
+            Point(creeper->x + creeper->xspeed * 7, creeper->y))) {
       creeper->x += creeper->xspeed;
     } else {
       creeper->xspeed *= -1;
@@ -788,7 +794,8 @@ void Level::Step(Input::T input, smk::Window& window) {
       creeper->t++;
       for (std::vector<Hero>::iterator itHero = hero_list.begin();
            itHero != hero_list.end(); ++itHero) {
-        if (abs((*itHero).x - creeper->x) + abs((*itHero).y - creeper->y) < 100) {
+        if (abs((*itHero).x - creeper->x) + abs((*itHero).y - creeper->y) <
+            100) {
           creeper->mode = 1;
           creeper->t = 0;
         }
@@ -804,12 +811,13 @@ void Level::Step(Input::T input, smk::Window& window) {
         creeper->mode = 0;
         creeper->t = 0;
         for (int i = 0; i <= 20; i++)
-          particule_list.push_front(particuleCreeperExplosion(creeper->x, creeper->y));
+          particule_list.push_front(
+              particuleCreeperExplosion(creeper->x, creeper->y));
 
         for (std::vector<Hero>::iterator itHero = hero_list.begin();
              itHero != hero_list.end(); ++itHero) {
-          float distance2 =
-              square((*itHero).x - creeper->x) + square((*itHero).y - creeper->y);
+          float distance2 = square((*itHero).x - creeper->x) +
+                            square((*itHero).y - creeper->y);
           (*itHero).xspeed +=
               InRange(1500 * ((*itHero).x - creeper->x) / distance2, -20, 20);
           (*itHero).yspeed +=
@@ -859,7 +867,7 @@ void Level::Step(Input::T input, smk::Window& window) {
   // ArrowLauncherDetector //
   //////////////////////////
 
-  for(auto& arrow_launcher_detector : arrowLauncherDetector_list) {
+  for (auto& arrow_launcher_detector : arrowLauncherDetector_list) {
     if (arrow_launcher_detector.mode != 0) {
       if (arrow_launcher_detector.mode <= 2) {
         bool isDetected = false;
@@ -875,7 +883,7 @@ void Level::Step(Input::T input, smk::Window& window) {
           else if (arrow_launcher_detector.mode == 2)
             arrow_launcher_detector.mode = 3;
           int i = 0;
-          for (auto& arrow_launcher: arrowLauncher_list) {
+          for (auto& arrow_launcher : arrowLauncher_list) {
             if (i == arrow_launcher_detector.launcherID) {
               arrow_list.push_front(
                   Arrow({arrow_launcher.x + 16, arrow_launcher.y + 16},
@@ -946,7 +954,8 @@ void Level::Step(Input::T input, smk::Window& window) {
   }
 
   // Pincette
-  for (auto& it : pincette_list) it.Step();
+  for (auto& it : pincette_list)
+    it.Step();
   for (auto& special : special_list)
     special.Step(*this);
 
@@ -1039,28 +1048,60 @@ void Level::Step(Input::T input, smk::Window& window) {
 }
 
 bool Level::CollisionWithAllBlock(Rectangle geom) {
-  for (auto& it : block_list)        if (IsCollision(geom, it.geometry)) if (!(geom == it.geometry)) return true;
-  for (auto& it : invBlock_list)     if (IsCollision(geom, it.geometry)) if (!(geom == it.geometry)) return true;
-  for (auto& it : movBlock_list)     if (IsCollision(geom, it.geometry)) if (!(geom == it.geometry)) return true;
-  for (auto& it : fallBlock_list)    if (IsCollision(geom, it.geometry)) if (!(geom == it.geometry)) return true;
-  for (auto& it : movableBlock_list) if (IsCollision(geom, it.geometry)) if (!(geom == it.geometry)) return true;
-  for (auto& it : glassBlock_list)   if (IsCollision(geom, it.geometry)) if (!(geom == it.geometry)) return true;
+  for (auto& it : block_list)
+    if (IsCollision(geom, it.geometry))
+      if (!(geom == it.geometry))
+        return true;
+  for (auto& it : invBlock_list)
+    if (IsCollision(geom, it.geometry))
+      if (!(geom == it.geometry))
+        return true;
+  for (auto& it : movBlock_list)
+    if (IsCollision(geom, it.geometry))
+      if (!(geom == it.geometry))
+        return true;
+  for (auto& it : fallBlock_list)
+    if (IsCollision(geom, it.geometry))
+      if (!(geom == it.geometry))
+        return true;
+  for (auto& it : movableBlock_list)
+    if (IsCollision(geom, it.geometry))
+      if (!(geom == it.geometry))
+        return true;
+  for (auto& it : glassBlock_list)
+    if (IsCollision(geom, it.geometry))
+      if (!(geom == it.geometry))
+        return true;
   return false;
 }
 
 bool Level::CollisionWithAllBlock(Point p) {
-  for (auto& it : hero_list)         if (IsCollision(p, it.geometry)) return true;
-  for (auto& it : block_list)        if (IsCollision(p, it.geometry)) return true;
-  for (auto& it : invBlock_list)     if (IsCollision(p, it.geometry)) return true;
-  for (auto& it : movBlock_list)     if (IsCollision(p, it.geometry)) return true;
-  for (auto& it : fallBlock_list)    if (IsCollision(p, it.geometry)) return true;
-  for (auto& it : movableBlock_list) if (IsCollision(p, it.geometry)) return true;
-  for (auto& it : glassBlock_list)   if (IsCollision(p, it.geometry)) return true;
+  for (auto& it : hero_list)
+    if (IsCollision(p, it.geometry))
+      return true;
+  for (auto& it : block_list)
+    if (IsCollision(p, it.geometry))
+      return true;
+  for (auto& it : invBlock_list)
+    if (IsCollision(p, it.geometry))
+      return true;
+  for (auto& it : movBlock_list)
+    if (IsCollision(p, it.geometry))
+      return true;
+  for (auto& it : fallBlock_list)
+    if (IsCollision(p, it.geometry))
+      return true;
+  for (auto& it : movableBlock_list)
+    if (IsCollision(p, it.geometry))
+      return true;
+  for (auto& it : glassBlock_list)
+    if (IsCollision(p, it.geometry))
+      return true;
   return false;
 }
 
 bool Level::PlaceFree(const Hero& h, float x, float y) {
-  Rectangle shifted = h.geometry.shift(x,y);
+  Rectangle shifted = h.geometry.shift(x, y);
   // clang-format off
   for (auto& it : block_list)        if (IsCollision(shifted, it.geometry)) return false;
   for (auto& it : invBlock_list)     if (IsCollision(shifted, it.geometry)) return false;
@@ -1074,14 +1115,29 @@ bool Level::PlaceFree(const Hero& h, float x, float y) {
 }
 
 bool Level::PlaceFree(const MovingBlock& m, float x, float y) {
-  Rectangle geom = m.geometry.shift(x,y);
-  for (auto& it : block_list)        if (IsCollision(geom, it.geometry)) return false;
-  for (auto& it : invBlock_list)     if (IsCollision(geom, it.geometry)) return false;
-  for (auto& it : fallBlock_list)    if (IsCollision(geom, it.geometry)) return false;
-  for (auto& it : movableBlock_list) if (IsCollision(geom, it.geometry)) return false;
-  for (auto& it : hero_list)         if (IsCollision(geom, it.geometry)) return false;
-  for (auto& it : glassBlock_list)   if (IsCollision(geom, it.geometry)) return false;
-  for (auto& it : movBlock_list)     if (IsCollision(geom, it.geometry)) if (!(m.geometry == it.geometry)) return false;
+  Rectangle geom = m.geometry.shift(x, y);
+  for (auto& it : block_list)
+    if (IsCollision(geom, it.geometry))
+      return false;
+  for (auto& it : invBlock_list)
+    if (IsCollision(geom, it.geometry))
+      return false;
+  for (auto& it : fallBlock_list)
+    if (IsCollision(geom, it.geometry))
+      return false;
+  for (auto& it : movableBlock_list)
+    if (IsCollision(geom, it.geometry))
+      return false;
+  for (auto& it : hero_list)
+    if (IsCollision(geom, it.geometry))
+      return false;
+  for (auto& it : glassBlock_list)
+    if (IsCollision(geom, it.geometry))
+      return false;
+  for (auto& it : movBlock_list)
+    if (IsCollision(geom, it.geometry))
+      if (!(m.geometry == it.geometry))
+        return false;
   return true;
 }
 
@@ -1143,24 +1199,24 @@ bool Level::CollisionWithAllBlock(Line l) {
 }
 
 void Level::EmitLaser(smk::Window& window,
-                  float x,
-                  float y,
-                  float angle,
-                  int recursiveMaxLevel) {
+                      float x,
+                      float y,
+                      float angle,
+                      int recursiveMaxLevel) {
   if (recursiveMaxLevel <= 0)
     return;
   float a = angle * 0.0174532925;
   int max = 1000;
   static int i = 0;
   float l = max;
-  float xx = x + 2*cos(a);
-  float yy = y - 2*sin(a);
+  float xx = x + 2 * cos(a);
+  float yy = y - 2 * sin(a);
 
   // Draw the Laser
   while (l > 0.5) {
     float xxx = xx + l * cos(a);
     float yyy = yy - l * sin(a);
-    if (!CollisionWithAllBlock(Line{{xx, yy},{ xxx, yyy}})) {
+    if (!CollisionWithAllBlock(Line{{xx, yy}, {xxx, yyy}})) {
       for (int r = 1; r <= 4; r += 1) {
         auto line = smk::Shape::Line({xx, yy}, {xxx, yyy}, r);
         line.SetColor(glm::vec4(0.2, 0, 0, 0));
@@ -1172,7 +1228,6 @@ void Level::EmitLaser(smk::Window& window,
     }
     l /= 2;
   }
-
 
   // we move on more Step
   xx = xx + 1 * cos(a);
@@ -1209,7 +1264,7 @@ void Level::EmitLaser(smk::Window& window,
   for (auto& it : staticMiroir_list) {
     if (IsCollision(Rectangle(xx - 5, xx + 5, yy - 5, yy + 5), it.geometry)) {
       EmitLaser(window, xx, yy, 2 * it.angle - angle,
-            recursiveMaxLevel - 1);  // throw reflection
+                recursiveMaxLevel - 1);  // throw reflection
     }
   }
 }
@@ -1232,5 +1287,5 @@ void Level::SetView(smk::Window& window) {
   }
 
   (void)window;
-  view_.SetSize(640,480);
+  view_.SetSize(640, 480);
 }

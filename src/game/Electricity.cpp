@@ -1,7 +1,13 @@
+// Copyright 2020 Arthur Sonzogni. All rights reserved.
+// Use of this source code is governed by the MIT license that can be found in
+// the LICENSE file.
+
 #include "game/Electricity.hpp"
-#include "game/Resource.hpp"
-#include <smk/Sprite.hpp>
+
 #include <smk/Shape.hpp>
+#include <smk/Sprite.hpp>
+
+#include "game/Resource.hpp"
 
 Electricity::Electricity(int X1,
                          int Y1,
