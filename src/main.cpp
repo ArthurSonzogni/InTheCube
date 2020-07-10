@@ -25,11 +25,7 @@ int main() {
   std::experimental::filesystem::create_directory(SavePath());
 #endif
 
-#ifdef __EMSCRIPTEN__
-  emscripten_set_main_loop(&MainLoop, 0, 1);
-#else
-  while (1)
-    MainLoop();
-#endif
+  auto main = std::make_unique<Main>();
+  main->Run();
   return EXIT_SUCCESS;
 }

@@ -13,7 +13,6 @@ add_executable(inthecube
   src/activity/IntroScreen.hpp
   src/activity/LevelScreen.cpp
   src/activity/LevelScreen.hpp
-  src/activity/Main.cpp
   src/activity/Main.hpp
   src/activity/MainScreen.cpp
   src/activity/MainScreen.hpp
