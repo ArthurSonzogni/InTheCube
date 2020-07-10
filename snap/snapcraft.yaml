@@ -1,5 +1,5 @@
 name: inthecube
-version: '0.1'
+adopt-info: inthecube
 summary: A tiny cube in a giant maze. Platform/puzzle game.
 description: |
   InTheCube is a platform/puzzle game.
@@ -58,6 +58,7 @@ parts:
         $SNAPCRAFT_PART_SRC
       make -j ${SNAPCRAFT_PARALLEL_BUILD_COUNT}
       make install
+      snapcraftctl set-version "$(git rev-list --count HEAD)"
 
 passthrough:
   title: inthecube
