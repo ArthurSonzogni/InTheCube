@@ -794,7 +794,7 @@ void Level::Step(Input::T input, smk::Window& window) {
       creeper->t++;
       for (std::vector<Hero>::iterator itHero = hero_list.begin();
            itHero != hero_list.end(); ++itHero) {
-        if (abs((*itHero).x - creeper->x) + abs((*itHero).y - creeper->y) <
+        if (std::abs((*itHero).x - creeper->x) + std::abs((*itHero).y - creeper->y) <
             100) {
           creeper->mode = 1;
           creeper->t = 0;
