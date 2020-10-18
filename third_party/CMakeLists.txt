@@ -2,7 +2,7 @@ include(FetchContent)
 
 FetchContent_Declare(smk
   GIT_REPOSITORY https://github.com/ArthurSonzogni/smk
-  GIT_TAG 4e3adfa250a6a6e81eb222604ce4a76c37723560
+  GIT_TAG d306aab
 )
 
 FetchContent_GetProperties(smk)

@@ -133,10 +133,10 @@ bool TextPopup::Step(smk::Window& window) {
 void TextPopup::Draw(smk::Window& window) {
   if (p >= (int)text.size())
     return;
-  // FloatRect rect = window.GetView().GetRect();
+  // FloatRect rect = window.view().GetRect();
   // drawing cadre
-  float left = window.GetView().Left();
-  float top = window.GetView().Top();
+  float left = window.view().Left();
+  float top = window.view().Top();
   int x1 = left + 640 / 5;
   int y1 = top + 480 / 5 + horizontal_shift;
 

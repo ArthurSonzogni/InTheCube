@@ -58,7 +58,7 @@ void MainScreen::Draw() {
 
   float zoom = std::min(window().width() / 640.f, window().height() / 480.f);
   glm::vec2 mouse = window().input().mouse();
-  mouse -= window().dimension() * 0.5f;
+  mouse -= window().dimensions() * 0.5f;
   mouse /= zoom;
   mouse += glm::vec2(640, 480) * 0.5f;
 

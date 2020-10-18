@@ -47,7 +47,7 @@ void LevelScreen::Draw() {
       cursor_in = true;
       cursor_reference = input.cursor();
     }
-    if (input.IsCursorHold()) {
+    if (input.IsCursorHeld()) {
       auto diff = input.cursor() - cursor_reference;
       float trigger = std::min(window().width(), window().height()) * 0.05f;
       if (glm::length(diff) > trigger) {
