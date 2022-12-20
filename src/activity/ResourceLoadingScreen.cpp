@@ -17,16 +17,15 @@ void ResourceLoadingScreen::Draw() {
     ResourceInitializer::Resource resource = initializer.resources.front();
     initializer.resources.pop_front();
 
+    resource.Load();
     smk::Text text;
     text.SetScale(0.7);
     text.SetFont(font_arial);
-    text.SetString("Decoding: " + *resource.path);
+    text.SetString("Decoded: " + *resource.path);
     text.SetColor(smk::Color::White);
     text.SetPosition({10.f, 480.f - 60.f});
     window().Draw(text);
     window().Display();
-
-    resource.Load();
     return;
   }
 

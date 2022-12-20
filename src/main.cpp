@@ -4,13 +4,13 @@
 
 #include "activity/Main.hpp"
 
-#include <experimental/filesystem>
+#include <filesystem>
 #include <smk/Audio.hpp>
 
 #include "game/Resource.hpp"
 
 int main() {
-  smk::Audio audio;
+  static smk::Audio audio;
   std::locale::global(std::locale("C.UTF-8"));
 
 #ifdef __EMSCRIPTEN__
@@ -22,10 +22,10 @@ int main() {
   , 0);
   // clang-format on
 #else
-  std::experimental::filesystem::create_directory(SavePath());
+  std::filesystem::create_directory(SavePath());
 #endif
 
-  auto main = std::make_unique<Main>();
-  main->Run();
+  static Main main;
+  main.Run();
   return EXIT_SUCCESS;
 }

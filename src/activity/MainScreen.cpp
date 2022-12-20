@@ -4,7 +4,6 @@
 
 #include "activity/MainScreen.hpp"
 
-#include <codecvt>
 #include <iostream>
 #include <locale>
 #include <smk/Color.hpp>
@@ -16,11 +15,7 @@
 
 #include "game/Lang.hpp"
 #include "game/Resource.hpp"
-
-std::wstring to_wstring(const std::string& s) {
-  std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
-  return converter.from_bytes(s);
-}
+#include "string.hpp"
 
 std::string intToString(int n) {
   std::string retour = "";

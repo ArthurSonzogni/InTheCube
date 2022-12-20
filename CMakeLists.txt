@@ -91,6 +91,8 @@ add_executable(inthecube
   src/game/TextPopup.cpp
   src/game/TextPopup.hpp
   src/main.cpp
+  src/string.cpp
+  src/string.hpp
 )
 
 target_compile_options(inthecube PRIVATE -Wall -Wextra -pedantic -Werror)
@@ -112,17 +114,13 @@ add_definitions(-DGLM_FORCE_RADIANS)
 if(CMAKE_CXX_COMPILER MATCHES "/em\\+\\+(-[a-zA-Z0-9.])?$") 
   target_link_libraries(inthecube PRIVATE -lidbfs.js)
 
-  set_property(TARGET inthecube APPEND_STRING PROPERTY LINK_FLAGS  " -s DEMANGLE_SUPPORT=1")
-  set_property(TARGET inthecube APPEND_STRING PROPERTY LINK_FLAGS  " -s DISABLE_EXCEPTION_CATCHING=2")
-  set_property(TARGET inthecube APPEND_STRING PROPERTY LINK_FLAGS  " -s WASM=1")
-  set_property(TARGET inthecube APPEND_STRING PROPERTY LINK_FLAGS  " -s TOTAL_MEMORY=134217728")
-
-  # Release flags
-  #set_property(TARGET inthecube APPEND_STRING PROPERTY LINK_FLAGS  " --closure 1")
-  set_property(TARGET inthecube APPEND_STRING PROPERTY LINK_FLAGS  " --js-opts 3")
-  set_property(TARGET inthecube APPEND_STRING PROPERTY LINK_FLAGS  " --llvm-lto 3")
-  set_property(TARGET inthecube APPEND_STRING PROPERTY LINK_FLAGS  " --llvm-opts 3")
-  set_property(TARGET inthecube APPEND_STRING PROPERTY LINK_FLAGS  " -O3")
+  set_property(TARGET inthecube APPEND_STRING PROPERTY LINK_FLAGS " -sDEMANGLE_SUPPORT")
+  set_property(TARGET inthecube APPEND_STRING PROPERTY LINK_FLAGS " -s TOTAL_MEMORY=536870912")
+  #target_compile_options(inthecube PRIVATE "-fwasm-exceptions")
+  #target_link_options(inthecube PRIVATE "-fwasm-exceptions")
+  #target_link_options(inthecube PRIVATE "-s ASSERTIONS=2")
+  #target_link_options(inthecube PRIVATE "-s SAFE_HEAP=1")
+  #target_link_options(inthecube PRIVATE "-g4 -s ASSERTIONS=2 -s SAFE_HEAP=1 -s STACK_OVERFLOW_CHECK=1")
 
   option(ADD_GOOGLE_ANALYTICS "Add google analytics script" ON)
   if (ADD_GOOGLE_ANALYTICS)
@@ -133,6 +131,11 @@ if(CMAKE_CXX_COMPILER MATCHES "/em\\+\\+(-[a-zA-Z0-9.])?$")
   configure_file(
     ${CMAKE_CURRENT_SOURCE_DIR}/src/index.html
     ${CMAKE_CURRENT_BINARY_DIR}/index.html
+  )
+
+  configure_file(
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/run_webassembly.py
+    ${CMAKE_CURRENT_BINARY_DIR}/run_webassembly.py
   )
 
   configure_file(

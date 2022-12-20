@@ -145,7 +145,7 @@ class Main {
   }
 
  private:
-  Activity* activity_;
+  Activity* activity_ = nullptr;
   smk::Window window_;
 
   ResourceLoadingScreen resource_loading_screen_;

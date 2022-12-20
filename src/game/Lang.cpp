@@ -10,12 +10,7 @@
 #include <locale>
 #include <map>
 
-namespace {
-std::wstring to_wstring(const std::string& s) {
-  std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
-  return converter.from_bytes(s);
-}
-}  // namespace
+#include "string.hpp"
 
 std::map<std::wstring, std::wstring> textMap;
 void LoadTraduction(std::string fileName) {

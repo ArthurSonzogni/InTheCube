@@ -53,7 +53,7 @@ std::string ResourcePath() {
     }
   }
 
-  std::cerr << "Resource path = " << resource_path << std::endl;
+  std::cout << "Resource path = " << resource_path << std::endl;
   return resource_path;
 }
 
@@ -81,7 +81,7 @@ std::string SavePath() {
     save_path = ".";
   }
 
-  std::cerr << "Save path = " << save_path << std::endl;
+  std::cout << "Save path = " << save_path << std::endl;
   return save_path;
 }
 

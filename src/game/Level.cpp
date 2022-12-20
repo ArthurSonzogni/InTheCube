@@ -1207,7 +1207,6 @@ void Level::EmitLaser(smk::Window& window,
     return;
   float a = angle * 0.0174532925;
   int max = 1000;
-  static int i = 0;
   float l = max;
   float xx = x + 2 * cos(a);
   float yy = y - 2 * sin(a);
@@ -1236,7 +1235,6 @@ void Level::EmitLaser(smk::Window& window,
   laser_.push_back(Laser{glm::vec2(x, y), glm::vec2(xx, yy)});
 
   // checking impact of the Laser with the Hero
-  i = 0;
   for (auto& it : hero_list) {
     if (IsCollision(Point(xx, yy), it.geometry.increase(4, 4))) {
       particule_list.push_front(particuleLaserOnHero(xx, yy, x, y));
@@ -1245,7 +1243,6 @@ void Level::EmitLaser(smk::Window& window,
       particule_list.push_front(particuleLaserOnHero(xx, yy, x, y));
       it.in_laser = true;
     }
-    i++;
   }
   // checking impact of the Laser with Glass
   for (auto it = glassBlock_list.begin(); it != glassBlock_list.end(); ++it) {
